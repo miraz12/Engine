@@ -11,8 +11,6 @@
 #include "MeshResource.h"
 #include "matrix4D.h"
 #include "GraphicsNode.h"
-#include "collisionhandler.h"
-#include "fluidsimulation.h"
 
 namespace Example
 {
@@ -77,18 +75,12 @@ private:
 	double deltaTime;
 	float camSpeed = 20.5f;
 
-	std::vector<GraphicsNode*> gNodesPlane;
-	GraphicsNode* gNodesRay;
-	GraphicsNode* gNodesPoints;
 	GraphicsNode* box1;
 	GraphicsNode* box2;
 	GraphicsNode* box3;
 	GraphicsNode* sphere;
 
 	std::shared_ptr<LightNode> lNode;
-
-
-	std::vector<GraphicsNode*> gNodesPhysics;
 
     float mX, mY;
     float moX, moY;
@@ -97,7 +89,6 @@ private:
 
     double timeStep = 1.0/16.0;
 
-	FluidSimulation* sim;
 
 
 

@@ -4,8 +4,6 @@
 //------------------------------------------------------------------------------
 #include "config.h"
 #include "application.h"
-#include "ray.h"
-#include "fluidsimulation.h"
 #include <cstring>
 #include <imgui.h>
 #include <algorithm>
@@ -21,7 +19,6 @@ namespace Example
 */
     Application::Application()
     {
-        this->gNodesRay = nullptr;
         // empty
     }
 
@@ -30,16 +27,7 @@ namespace Example
 */
     Application::~Application()
     {
-        for (int i = 0; i < gNodesPlane.size(); ++i)
-        {
-            delete gNodesPlane[i];
-        }
-        for (int i = 0; i < gNodesPhysics.size(); ++i)
-        {
-            delete gNodesPhysics[i];
-        }
-        delete gNodesRay;
-        delete gNodesPoints;
+       
         // empty
     }
 
@@ -143,66 +131,6 @@ namespace Example
         return rad;
     }
 
-    void Application::CreatePlane(vector3D a, vector3D b, vector3D c, vector3D d)        //Create plane from dimensions
-    {
-        GraphicsNode *graph = new GraphicsNode();
-        Plane p = *graph->getMesh()->CreateQuadPlane(a, b, c, d);
-        gNodesPlane.push_back(graph);
-    }
-
-    void Application::CreateRay(vector3D a, vector3D b)
-    {
-        if (this->gNodesRay == nullptr)
-        {
-            this->gNodesRay = new GraphicsNode();
-        } else
-        {
-            delete this->gNodesRay->getMesh()->ra;
-        }
-        Ray *rayj = new Ray(a, b);
-        gNodesRay->getMesh()->ra = rayj;
-    }
-
-    void Application::RayFromMouse()     //Calculate ray from mouse
-    {
-        float nearPlane = 0.01f;
-        matrix4D tempInvProj = this->projection.inv();
-        matrix4D invView = this->view.inv();
-
-        vector4D p((moX / wWidht - 0.5f) * 2.0f, (moY / wHeight - 0.5f) * 2.0f, 1.0f, 1.0f);
-
-        vector4D pointView = tempInvProj.transform(p);
-        vector4D localMousePos = pointView * nearPlane * 1.1f;
-        localMousePos[1] = -1 * localMousePos[1];
-
-        vector4D worldMousePos = invView.transform(localMousePos);
-        vector4D worldMouseDir;
-        worldMouseDir[0] = worldMousePos[0] - invView[3][0];
-        worldMouseDir[1] = worldMousePos[1] - invView[3][1];
-        worldMouseDir[2] = worldMousePos[2] - invView[3][2];
-        worldMouseDir[3] = 0;
-        worldMouseDir.normalize();
-
-        vector4D endPoint = worldMousePos + worldMouseDir * 1000;
-
-        vector3D p0(worldMousePos[0], worldMousePos[1], worldMousePos[2]);
-        vector3D p1(endPoint[0], endPoint[1], endPoint[2]);
-        this->CreateRay(p0, p1);
-
-        for (int i = 0; i < gNodesPhysics.size(); ++i)
-        {
-            gNodesPhysics[i]->getMesh()->CollisionBox(gNodesRay->getMesh()->ra);
-        }
-        for (int i = 0; i < gNodesPhysics.size(); ++i)
-        {
-            gNodesPhysics[i]->getMesh()->PointOnMesh(gNodesRay->getMesh()->ra);
-            if (gNodesPhysics[i]->getMesh()->hitByRay == true)
-            {
-                break;
-            }
-        }
-    }
-
     void Application::RenderUI()
     {
         if (this->window->IsOpen() && showUI)
@@ -242,8 +170,6 @@ namespace Example
             }
             if (GLFW_KEY_1 == key && action == GLFW_RELEASE)
             {
-                //sim->nP += 1;
-                sim->MoveParticles();
             }
             if (GLFW_KEY_G == key)
             {
