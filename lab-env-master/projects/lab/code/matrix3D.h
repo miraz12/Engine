@@ -248,25 +248,5 @@ inline matrix3D inv()
 
 }
 
-inline void skewSymmetric(vector4D vec)
-{
-	this->values2D[0][0] = 1;
-	this->values2D[0][1] = -vec.x();
-	this->values2D[0][2] = vec.y();
-	this->values2D[0][3] = 0;
-
-	this->values2D[1][0] = vec.z();
-	this->values2D[1][1] = 1;
-	this->values2D[1][2] = -vec.x();
-	this->values2D[1][3] = 0;
-
-	this->values2D[2][0] = -vec.y();
-	this->values2D[2][1] = vec.x();
-	this->values2D[2][2] = 1;
-	this->values2D[2][3] = 0;
-}
-
-
-
 };
 

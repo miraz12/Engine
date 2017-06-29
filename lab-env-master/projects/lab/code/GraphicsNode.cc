@@ -11,9 +11,6 @@ GraphicsNode::GraphicsNode()
 	shader = std::make_shared<ShaderObject>("VertexShader.vs", "FragmentShader.fs");
 	light = std::make_shared<LightNode>();
 	
-	
-	//mesh->LoadMesh("crytek_sponza/banner.obj");
-
     camera.setValues(0, -5, 5);
     origin.setValues(0.0f, 0.0f, 0.0f);
     headUp.setValues(0.0f, 1, 0.0f);
@@ -22,36 +19,6 @@ GraphicsNode::GraphicsNode()
 GraphicsNode::~GraphicsNode()
 {
 	
-}
-
-std::shared_ptr<Mesh> GraphicsNode::getMesh()
-{
-	return mesh;
-}
-
-void GraphicsNode::setMesh(std::shared_ptr<Mesh> m)
-{
-	mesh = m;
-}
-
-std::shared_ptr<TextureResource> GraphicsNode::getTexture()
-{
-	return texture;
-}
-
-void GraphicsNode::setTexture(std::shared_ptr<TextureResource> t)
-{
-	texture = t;
-}
-
-std::shared_ptr<ShaderObject> GraphicsNode::getShader()
-{
-	return shader;
-}
-
-void GraphicsNode::setShader(std::shared_ptr<ShaderObject> s)
-{
-	shader = s;
 }
 
 void GraphicsNode::drawOBJ(matrix4D projection, matrix4D view, matrix4D model)
@@ -65,10 +32,29 @@ void GraphicsNode::drawOBJ(matrix4D projection, matrix4D view, matrix4D model)
 	shader->modMatrix4fv("view", view);
 	shader->modMatrix4fv("model", model);
 
-
 	mesh->Render();
-	//mesh->DrawOBJ();
 
+}
+
+
+std::shared_ptr<Mesh> GraphicsNode::getMesh()
+{
+	return mesh;
+}
+
+void GraphicsNode::setMesh(std::shared_ptr<Mesh> m)
+{
+	mesh = m;
+}
+
+std::shared_ptr<ShaderObject> GraphicsNode::getShader()
+{
+	return shader;
+}
+
+void GraphicsNode::setShader(std::shared_ptr<ShaderObject> s)
+{
+	shader = s;
 }
 
 void GraphicsNode::setProjec(const matrix4D &projec) {
@@ -90,6 +76,12 @@ void GraphicsNode::setLight(std::shared_ptr<LightNode> s)
 {
     light = s;
 }
+
+void GraphicsNode::setupLight()
+{
+
+}
+
 
 
 

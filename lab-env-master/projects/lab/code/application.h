@@ -73,7 +73,7 @@ private:
 
 	int FPS;
 	double deltaTime;
-	float camSpeed = 20.5f;
+	float camSpeed = 100.f;
 
 	GraphicsNode* box1;
 	GraphicsNode* box2;

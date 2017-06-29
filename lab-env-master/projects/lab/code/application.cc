@@ -54,8 +54,9 @@ namespace Example
 			//Meshes---
 
 			box1 = new GraphicsNode();
-			box1->getMesh()->LoadMesh("ocrytek_sponza/sponza.obj");
+			box1->getMesh()->LoadMesh("crytek_sponza/sponza.obj");
 			box1->setLight(lNode);
+			box1->getLightNode()->setPos(vector3D(5, 5, 0));
 
 			//this->sphere = new GraphicsNode();
 			//sphere->getMesh()->loadOBJ("sphere.obj");
@@ -82,7 +83,7 @@ namespace Example
     Application::Run()
     {
 
-        projection = projection.setPerspective(45.0f, (wWidht / wHeight), 0.01f, 100.0f);
+        projection = projection.setPerspective(45.0f, (wWidht / wHeight), 1.0f, 2.0f);
 
 
 		matrix4D boxMat; 
@@ -98,6 +99,7 @@ namespace Example
         int iter = 0;
 
         glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_MULTISAMPLE);
         //Wireframe
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         while (!glfwWindowShouldClose(this->window->window))

@@ -1,7 +1,5 @@
 #pragma once
-#include "GL/glew.h"
 #include "ShaderObject.h"
-#include "TextureResource.h"
 #include "LightNode.h"
 #include <memory>
 #include "Mesh.h"
@@ -21,9 +19,6 @@ public:
 	std::shared_ptr<Mesh> getMeshConst() const { return mesh; }
 	void setMesh(std::shared_ptr<Mesh>);
 
-	std::shared_ptr<TextureResource> getTexture();
-	void setTexture(std::shared_ptr<TextureResource>);
-
 	std::shared_ptr<ShaderObject> getShader();
 	void setShader(std::shared_ptr<ShaderObject>);
 	void drawOBJ(matrix4D projection, matrix4D view, matrix4D model);
@@ -31,9 +26,8 @@ public:
 	std::shared_ptr<LightNode> getLightNode() { return light; };
     void setLight(std::shared_ptr<LightNode> s);
 
-
-
-
+	void setupLight();
+	void setupText();
 
 private:
 
@@ -54,9 +48,6 @@ public:
 
 	void setProjec(const matrix4D &projec);
 	void setMod(const matrix4D &mod);
-
-
-
 
 };
 
