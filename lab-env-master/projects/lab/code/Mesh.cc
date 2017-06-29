@@ -56,6 +56,8 @@ bool Mesh::LoadMesh(const std::string& Filename)
 	// Release the previously loaded mesh (if it exists)
 	Clear();
 
+	printf("Loading: '%s'\n", Filename.c_str());
+
 	bool Ret = false;
 	Assimp::Importer Importer;
 

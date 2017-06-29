@@ -11,7 +11,7 @@ GraphicsNode::GraphicsNode()
 	shader = std::make_shared<ShaderObject>("VertexShader.vs", "FragmentShader.fs");
 	light = std::make_shared<LightNode>();
 	
-	mesh->LoadMesh("crytek_sponza/sponza.obj");
+	
 	//mesh->LoadMesh("crytek_sponza/banner.obj");
 
     camera.setValues(0, -5, 5);

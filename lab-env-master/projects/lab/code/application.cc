@@ -54,10 +54,8 @@ namespace Example
 			//Meshes---
 
 			box1 = new GraphicsNode();
-			//box1->getMesh()->loadOBJ("cat.obj");
-			//box1->getMesh()->LoadObjAssimp("sponza.obj");
-			//box1->setTexture(std::make_shared<TextureResource>("cat_diff.tga"));
-			//box1->setLight(lNode);
+			box1->getMesh()->LoadMesh("ocrytek_sponza/sponza.obj");
+			box1->setLight(lNode);
 
 			//this->sphere = new GraphicsNode();
 			//sphere->getMesh()->loadOBJ("sphere.obj");
