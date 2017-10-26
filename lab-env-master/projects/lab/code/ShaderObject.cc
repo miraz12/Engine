@@ -6,6 +6,10 @@
 ShaderObject::ShaderObject(const std::string& vertexFile, const std::string& fragmentFile)
 {
 	program = glCreateProgram();
+	m_fileNameVs = vertexFile;
+	m_fileNameFs = fragmentFile;
+
+
 	shaders[0] = CreateShader(LoadFile(vertexFile), GL_VERTEX_SHADER);
 	shaders[1] = CreateShader(LoadFile(fragmentFile), GL_FRAGMENT_SHADER);
 
@@ -67,6 +71,38 @@ std::string ShaderObject::LoadFile(const std::string& fileName)
 	}
 
 	return output;
+}
+
+void ShaderObject::ReloadShader()
+{
+	// check if shader already exists
+	if (this->program)
+	{
+		glDeleteProgram(this->program);
+		this->program = 0;
+	}
+	if (this->shaders[0])
+	{
+		glDeleteShader(this->shaders[0]);
+		this->shaders[0] = 0;
+	}
+	if (this->shaders[1])
+	{
+		glDeleteShader(this->shaders[1]);
+		this->shaders[1] = 0;
+	}
+
+	// create a program object
+	this->program = glCreateProgram();
+
+	shaders[0] = CreateShader(LoadFile(m_fileNameVs), GL_VERTEX_SHADER);
+	shaders[1] = CreateShader(LoadFile(m_fileNameFs), GL_FRAGMENT_SHADER);
+
+	glAttachShader(this->program, this->shaders[0]);
+	glAttachShader(this->program, this->shaders[1]);
+	glLinkProgram(this->program);
+
+	bind();
 }
 
 
@@ -153,4 +189,6 @@ ShaderObject::ShaderObject(const std::string &computeShader)
 		printf("[PROGRAM LINK ERROR]: %s", buf);
 		delete[] buf;
 	}
+
+
 }

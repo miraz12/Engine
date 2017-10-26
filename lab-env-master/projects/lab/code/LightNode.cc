@@ -6,6 +6,8 @@ LightNode::LightNode()
 	color = vector3D(0.1f, 0.1f, 0.1f);
 	pos = vector3D(1.0, 1.0, 1.0);
 	intens = 1.0f;
+
+
 }
 
 

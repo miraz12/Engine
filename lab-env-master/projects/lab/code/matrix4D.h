@@ -1,13 +1,8 @@
+#pragma once
 #include <iostream>
 #include "vector4D.h"
 #include "vector3D.h"
 #include "matrix3D.h"
-
-#pragma once
-
-
-#define PI 3.14159265
-
 
 class matrix4D
 {
@@ -407,8 +402,8 @@ inline vector3D getPosition()
 inline matrix4D rot_x(float r)
 {
 	matrix4D x;
-	float c = cos(r * PI / 180.0f);
-	float s = sin(r * PI / 180.0f);
+	float c = cosf(r * PI / 180.0f);
+	float s = sinf(r * PI / 180.0f);
 
 	x.values2D[0][0] = 1;
 	x.values2D[0][1] = 0;
@@ -427,8 +422,8 @@ inline matrix4D rot_x(float r)
 inline matrix4D rot_y(float r)
 {
 	matrix4D y;
-	float c = cos(r * PI / 180.0f);
-	float s = sin(r * PI / 180.0f);
+	float c = cosf(r * PI / 180.0f);
+	float s = sinf(r * PI / 180.0f);
 
 	y.values2D[0][0] = c;
 	y.values2D[0][1] = 0;
@@ -448,8 +443,8 @@ inline matrix4D rot_y(float r)
 inline matrix4D rot_z(float r)
 {
 	matrix4D z;
-	float c = cos(r * PI / 180.0f);
-	float s = sin(r * PI / 180.0f);
+	float c = cosf(r * PI / 180.0f);
+	float s = sinf(r * PI / 180.0f);
 
 	z.values2D[0][0] = c;
 	z.values2D[0][1] = -s;
@@ -468,8 +463,8 @@ inline matrix4D rot_v(const vector4D v, float r)
 {
 	matrix4D temp;
 
-	float c = cos(r * PI / 180.0f);
-	float s = sin(r * PI / 180.0f);
+	float c = cosf(r * PI / 180.0f);
+	float s = sinf(r * PI / 180.0f);
 	float x = v.Varray[0];
 	float y = v.Varray[1];
 	float z = v.Varray[2];
@@ -551,7 +546,7 @@ inline friend std::ostream& operator<<(std::ostream& os,const matrix4D& m)
 	return os;
 }
 //S�tter alla v�rden i matrisen till "v"
-inline void setValues(int v)
+inline void setValues(float v)
 {
 	for (int i = 0; i<4; i++)
 	{
@@ -775,15 +770,15 @@ inline matrix4D scaled(vector3D v)
 {
     matrix4D temp = *this;
     
-    temp.values2D[0][0] * v.x();
-    temp.values2D[0][1] * v.y();
-    temp.values2D[0][2] * v.z();
-    temp.values2D[1][0] * v.x();
-    temp.values2D[1][1] * v.y();
-    temp.values2D[1][2] * v.z();
-    temp.values2D[2][0] * v.x();
-    temp.values2D[2][1] * v.y();
-    temp.values2D[2][2] * v.z();
+    temp.values2D[0][0] *= v.x();
+	temp.values2D[0][1] *= v.y();
+	temp.values2D[0][2] *= v.z();
+	temp.values2D[1][0] *= v.x();
+	temp.values2D[1][1] *= v.y();
+	temp.values2D[1][2] *= v.z();
+	temp.values2D[2][0] *= v.x();
+	temp.values2D[2][1] *= v.y();
+	temp.values2D[2][2] *= v.z();
 
     return  temp;
 

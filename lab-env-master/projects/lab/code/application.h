@@ -73,12 +73,14 @@ private:
 
 	int FPS;
 	double deltaTime;
-	float camSpeed = 100.f;
+	float camSpeed = 1.0f;//100.f;
 
 	GraphicsNode* box1;
 	GraphicsNode* box2;
 	GraphicsNode* box3;
 	GraphicsNode* sphere;
+
+	std::vector<GraphicsNode*> objList;
 
 	std::shared_ptr<LightNode> lNode;
 

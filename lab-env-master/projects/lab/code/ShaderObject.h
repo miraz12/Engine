@@ -13,12 +13,13 @@ class ShaderObject
 		ShaderObject();
 		ShaderObject(const std::string&, const std::string&);
 		ShaderObject(const std::string& computeShader);
-
+		GLuint getProgram() { return program; };
 
 		/// destructor
 		~ShaderObject();
 
 		std::string LoadFile(const std::string&);
+		void ReloadShader();
 		GLuint CreateShader(const std::string&, unsigned int);
 		void bind();
 
@@ -44,13 +45,15 @@ class ShaderObject
 
 	private:
 		static const unsigned int NUM_SHADERS = 2;
-		static const unsigned int NUM_UNIFORMS = 3;
+		//static const unsigned int NUM_UNIFORMS = 3;
 
 		GLuint program;
 		GLuint vertexShader;
 		GLuint pixelShader;
 
 		GLuint shaders[NUM_SHADERS];
-		GLuint uniforms[NUM_UNIFORMS];
+		std::string m_fileNameVs;
+		std::string m_fileNameFs;
+		//GLuint uniforms[NUM_UNIFORMS];
 
 	};

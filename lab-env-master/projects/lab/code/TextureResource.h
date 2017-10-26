@@ -6,7 +6,7 @@ class TextureResource
 public:
 	/// constructor
 	TextureResource();
-	TextureResource(const char*);
+	TextureResource(const char* filename);
 	TextureResource(GLenum TextureTarget, const char* filename);
 
 	bool Load();
@@ -16,7 +16,7 @@ public:
 
 
 	void bind();
-	void bind(GLenum textureUnit);
+	void bind(GLenum textureUnit, GLuint textureID, int unit);
 
 private:
 	const char* m_fileName;

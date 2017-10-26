@@ -51,17 +51,30 @@ namespace Example
 			//LigtNode
 			lNode = std::make_shared<LightNode>();
 
+			lNode->setPos(vector3D(0, 5, 0));
+
 			//Meshes---
 
-			box1 = new GraphicsNode();
-			box1->getMesh()->LoadMesh("crytek_sponza/sponza.obj");
-			box1->setLight(lNode);
-			box1->getLightNode()->setPos(vector3D(5, 5, 0));
+			//box1 = new GraphicsNode();
+			//box1->getMesh()->LoadMesh("cat.obj");
+			//box1->setLight(lNode);
+			//box1->getLightNode()->setPos(vector3D(5, 5, 0));
+			//objList.push_back(box1);
 
-			//this->sphere = new GraphicsNode();
-			//sphere->getMesh()->loadOBJ("sphere.obj");
-			//sphere->setTexture(std::make_shared<TextureResource>("stone.jpg"));
-			//sphere->setLight(lNode);
+
+			//box2 = new GraphicsNode();
+			//box2->getMesh()->LoadMesh("sphere.obj");
+			//box2->setLight(lNode);
+			//box2->getLightNode()->setPos(lNode->getPos());
+			//objList.push_back(box2);
+
+			box3 = new GraphicsNode();
+			box3->getMesh()->LoadMesh("ocrytek_sponza/sponza.obj");
+			//box3->getMesh()->LoadMesh("cat.obj");
+			box3->setLight(lNode);
+			objList.push_back(box3);
+
+
 			///-------
 				
 
@@ -102,8 +115,14 @@ namespace Example
 		//glEnable(GL_MULTISAMPLE);
         //Wireframe
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
         while (!glfwWindowShouldClose(this->window->window))
         {
+			//lNode->setPos(camera);
+			//matrix4D sphereMove = box2->getMesh()->getMM().setPos(camera.x(), camera.y(), camera.z());
+			//box2->getMesh()->setMM(sphereMove);
+
+
 			//Calculate deltaTime
 			double currentTime = glfwGetTime();
 			deltaTime = fabs(currentTime - lastTime);
@@ -111,14 +130,23 @@ namespace Example
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             this->window->Update();
 
+
+			
             view = view.LookAtRH(camera, camera + camFront, headUp);
+			//view = view.LookAtRH(vector3D(0, 0, 2), vector3D(0, 0, 2) + camFront, headUp);
 
             pv = view * projection;
 
             lastTime = currentTime;
 
-			box1->drawOBJ(projection, view,  boxMat);
+			//box1->drawOBJ(projection, view,  boxMat);
 			//sphere->drawOBJ(pv, sphereMat);
+
+			for (int i = 0; i < objList.size(); i++)
+			{
+				matrix4D m = objList[i]->getMesh()->getMM();
+				objList[i]->drawOBJ(projection, view, objList[i]->getMesh()->getMM());
+			}
 
 
             this->window->SwapBuffers();
@@ -138,7 +166,24 @@ namespace Example
             bool show = true;
             ImGui::Begin("Debug", &show, ImGuiWindowFlags_NoSavedSettings);
 			ImGui::Text("FPS: %i", FPS);
-			ImGui::End();
+			
+			if (ImGui::Button("Toggle normalmapping"))
+			{
+				for (int i = 0; i < objList.size(); i++)
+				{
+					objList[i]->activateNormal *= -1;
+				}
+			}
+			if (ImGui::Button("Reload Shader"))
+			{
+				for (int i = 0; i < objList.size(); i++)
+				{
+					objList[i]->getShader()->ReloadShader();
+				}
+			}
+
+        	
+        	ImGui::End();
         }
     }
 
@@ -162,7 +207,7 @@ namespace Example
             }
             if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS)
             {
-                camSpeed = 10.f;
+                camSpeed = 100.f;
             }
             if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE)
             {

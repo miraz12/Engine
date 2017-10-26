@@ -200,7 +200,7 @@ inline friend vector3D operator*(float& f, vector3D m)
 	return temp;
 }
 
-inline void addScaledVector(vector3D v, double scale)
+inline void addScaledVector(vector3D v, float scale)
 {
 	this->Varray[0] += v[0] * scale;
 	this->Varray[1] += v[1] * scale;

@@ -8,7 +8,7 @@
 GraphicsNode::GraphicsNode()
 {
 	mesh = std::make_shared<Mesh>();
-	shader = std::make_shared<ShaderObject>("VertexShader.vs", "FragmentShader.fs");
+	//shader = std::make_shared<ShaderObject>("VertexShader.vs", "FragmentShader.fs");
 	light = std::make_shared<LightNode>();
 	
     camera.setValues(0, -5, 5);
@@ -23,14 +23,16 @@ GraphicsNode::~GraphicsNode()
 
 void GraphicsNode::drawOBJ(matrix4D projection, matrix4D view, matrix4D model)
 {
-	shader->bind();
+	mesh->shader->bind();
 
-	shader->modVector3f("in_lightPos", light->getPos());
-	shader->modVector3f("in_color", (light->getColor() * light->getIntensity()));
+	mesh->shader->modVector3f("in_lightPos", light->getPos());
+	mesh->shader->modVector3f("in_color", (light->getColor() * light->getIntensity()));
+	mesh->shader->modVector3f("activate_normal", vector3D(float(activateNormal), 0.0f, 0.0f));
 
-	shader->modMatrix4fv("projection", projection);
-	shader->modMatrix4fv("view", view);
-	shader->modMatrix4fv("model", model);
+
+	mesh->shader->modMatrix4fv("projection", projection);
+	mesh->shader->modMatrix4fv("view", view);
+	mesh->shader->modMatrix4fv("model", model);
 
 	mesh->Render();
 
@@ -49,13 +51,13 @@ void GraphicsNode::setMesh(std::shared_ptr<Mesh> m)
 
 std::shared_ptr<ShaderObject> GraphicsNode::getShader()
 {
-	return shader;
+	return mesh->shader;
 }
 
-void GraphicsNode::setShader(std::shared_ptr<ShaderObject> s)
-{
-	shader = s;
-}
+//void GraphicsNode::setShader(std::shared_ptr<ShaderObject> s)
+//{
+//	shader = s;
+//}
 
 void GraphicsNode::setProjec(const matrix4D &projec) {
 	GraphicsNode::projec = projec;

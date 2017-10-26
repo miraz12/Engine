@@ -177,7 +177,7 @@ void normalize(void)
 	}
 }
 
-inline void addScaledVector(vector4D v, double scale)
+inline void addScaledVector(vector4D v, float scale)
 {
 	this->Varray[0] += v[0] * scale;
 	this->Varray[1] += v[1] * scale;
@@ -185,7 +185,7 @@ inline void addScaledVector(vector4D v, double scale)
 	this->Varray[3] += v[3] * scale;
 }
 
-inline void addScaledVectorQuat(vector4D v, double scale)
+inline void addScaledVectorQuat(vector4D v, float scale)
 {
 	vector4D q = vector4D(v.x()*scale, v.y()*scale, v.z()*scale,0.f);
 

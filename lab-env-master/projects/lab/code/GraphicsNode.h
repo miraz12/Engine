@@ -32,8 +32,8 @@ public:
 private:
 
 		std::shared_ptr<Mesh> mesh;
-		std::shared_ptr<TextureResource> texture;
-		std::shared_ptr<ShaderObject> shader;
+		//std::shared_ptr<TextureResource> texture;
+		//std::shared_ptr<ShaderObject> shader;
 		std::shared_ptr<LightNode> light;
 
 		matrix4D projec, mod;
@@ -48,6 +48,10 @@ public:
 
 	void setProjec(const matrix4D &projec);
 	void setMod(const matrix4D &mod);
+
+
+	//TODO:
+	int activateNormal = 1;
 
 };
 

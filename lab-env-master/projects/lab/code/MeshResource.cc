@@ -1,9 +1,6 @@
 #include "MeshResource.h"
 #include "config.h"
-#include <cstring>
-#include <assimp/cimport.h>        // Plain-C interface
 #include <assimp/scene.h>          // Output data structure
-#include <assimp/postprocess.h>    // Post processing flags
 
 
 MeshResource::MeshResource()
@@ -109,32 +106,6 @@ void MeshResource::DrawOBJ()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-bool MeshResource::LoadObjAssimp(const char * path)
-{
-	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_Fast);
-
-	if (scene == nullptr)
-	{
-		printf("ERROR: Could not load mesh!\n");
-		assert(false);
-		return false;
-	}
-
-	aiMesh *mesh = scene->mMeshes[0];
-
-	float *vertexArray;
-	float *normalArray;
-	float *uvArray;
-
-	int numVerts;
-
-	numVerts = mesh->mNumFaces * 3;
-
-
-	return false;
-}
-
-
 bool MeshResource::loadOBJ(const char * path)
 {
     printf("Loading OBJ file %s...\n", path);
@@ -153,7 +124,8 @@ bool MeshResource::loadOBJ(const char * path)
     float minZ = 0;
 
 
-    FILE * file = fopen(path, "r");
+	FILE ** file = nullptr;
+	fopen_s(file, path, "r");
     if (file == NULL){
         printf("Impossible to open the file ! Are you in the right path ? See Tutorial 1 for details\n");
         getchar();
@@ -164,7 +136,7 @@ bool MeshResource::loadOBJ(const char * path)
 
         char lineHeader[128];
         // read the first word of the line
-        int res = fscanf(file, "%s", lineHeader);
+		int res = fscanf_s(*file, "%s", lineHeader);
         if (res == EOF)
             break; // EOF = End Of File. Quit the loop.
 
@@ -172,7 +144,7 @@ bool MeshResource::loadOBJ(const char * path)
 
         if (strcmp(lineHeader, "v") == 0){
             vector3D vertex;
-            fscanf(file, "%f %f %f\n", &vertex[0], &vertex[1], &vertex[2]);
+			fscanf_s(*file, "%f %f %f\n", &vertex[0], &vertex[1], &vertex[2]);
             temp_vertices.push_back(vertex);
 
             if (first)
@@ -203,19 +175,19 @@ bool MeshResource::loadOBJ(const char * path)
         }
         else if (strcmp(lineHeader, "vt") == 0){
             vector3D uv;
-            fscanf(file, "%f %f\n", &uv[0], &uv[1]);
+			fscanf_s(*file, "%f %f\n", &uv[0], &uv[1]);
             uv[1] = -uv[1]; // Invert V coordinate since we will only use DDS texture, which are inverted. Remove if you want to use TGA or BMP loaders.
             temp_uvs.push_back(uv);
         }
         else if (strcmp(lineHeader, "vn") == 0){
             vector3D normal;
-            fscanf(file, "%f %f %f\n", &normal[0], &normal[1], &normal[2]);
+			fscanf_s(*file, "%f %f %f\n", &normal[0], &normal[1], &normal[2]);
             temp_normals.push_back(normal);
         }
         else if (strcmp(lineHeader, "f") == 0){
             std::string vertex1, vertex2, vertex3;
             unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-            int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+			int matches = fscanf_s(*file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
             if (matches != 9){
                 printf("File can't be read by our simple parser :-( Try exporting with other options\n");
                 return false;
@@ -233,7 +205,7 @@ bool MeshResource::loadOBJ(const char * path)
         else{
             // Probably a comment, eat up the rest of the line
             char stupidBuffer[1000];
-            fgets(stupidBuffer, 1000, file);
+			fgets(stupidBuffer, 1000, *file);
         }
     }
 
@@ -282,28 +254,28 @@ void MeshResource::Setup()
     GLfloat buf[] =
     {
         -0.3f, -0.3f, -0.3f,	// pos 0
-        0, 0,			// color 0
+        0.0f, 0.0f,			// color 0
 
         -0.3f, 0.3f, -0.3f,		// pos 1
-        1.0, 0,				// color 1
+        1.0f, 0.0f,				// color 1
 
         0.3f, -0.3f, -0.3f,		// pos 2
-        0.0, 1.0,				// color 2
+        0.0f, 1.0f,				// color 2
 
         0.3f, 0.3f, -0.3f,		// pos 3
-        1.0, 1.0,				// color 3
+        1.0f, 1.0f,				// color 3
 
         -0.3f, -0.3f, 0.3f,		// pos 4
-        0.0, 0.0,				// color 4
+        0.0f, 0.0f,				// color 4
 
-        -0.3, 0.3f, 0.3f,		// pos 5
-        0.0, 0.0,				// color 5
+        -0.3f, 0.3f, 0.3f,		// pos 5
+        0.0f, 0.0f,				// color 5
 
         0.3f, -0.3f, 0.3f,		// pos 6
-        0.0, 1.0,				// color 6
+        0.0f, 1.0f,				// color 6
 
         0.3f, 0.3f, 0.3f,		// pos 7
-        0.0, 0.0,				// color 7
+        0.0f, 0.0f,				// color 7
 
 
     };

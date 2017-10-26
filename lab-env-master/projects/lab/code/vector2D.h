@@ -33,6 +33,15 @@ float& operator[](int n)
 
 }
 
+//Till�ter subtraktion med en vektor och en vektor
+vector2D operator-(const vector2D& m)
+{
+	vector2D temp = *this;
+	temp.Varray[0] -= m.Varray[0];
+	temp.Varray[1] -= m.Varray[1];
+	return temp;
+}
+
 inline float x()
 {
 	return this->Varray[0];

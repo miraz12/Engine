@@ -17,7 +17,6 @@ TextureResource::TextureResource(GLenum TextureTarget, const char* filename)
 {
 	m_textureTarget = TextureTarget;
 	m_fileName = filename;
-
 }
 
 bool TextureResource::Load()
@@ -35,6 +34,7 @@ bool TextureResource::Load()
 	glGenTextures(1, &m_texture);
 	glBindTexture(m_textureTarget, m_texture);
 	glTexImage2D(m_textureTarget, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
 	glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glBindTexture(m_textureTarget, 0);
@@ -55,8 +55,10 @@ void TextureResource::bind()
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 }
 
-void TextureResource::bind(GLenum textureUnit)
+void TextureResource::bind(GLenum textureUnit, GLuint textureID, int unit)
 {
-	glActiveTexture(textureUnit);
+	glActiveTexture(textureUnit); 
 	glBindTexture(m_textureTarget, m_texture);
+	// Set our "DiffuseTextureSampler" sampler to use Texture Unit 0
+	glUniform1i(textureID, unit);
 }
