@@ -23,6 +23,8 @@ class ShaderObject
 		GLuint CreateShader(const std::string&, unsigned int);
 		void bind();
 
+		void mod1f(const char*, float);
+		void mod1i(const char*, int);
 		void modMatrix4fv(const char*, matrix4D);
 		void modMatrix3fv(const char* name, matrix3D mat);
 		void modVector4f(const char*, vector4D);

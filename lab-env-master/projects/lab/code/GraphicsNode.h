@@ -26,6 +26,9 @@ public:
 	std::shared_ptr<LightNode> getLightNode() { return light; };
     void setLight(std::shared_ptr<LightNode> s);
 
+
+	void setupLights();
+
 	void setupLight();
 	void setupText();
 
@@ -37,6 +40,12 @@ private:
 		std::shared_ptr<LightNode> light;
 
 		matrix4D projec, mod;
+
+		float rad(float d)  //Degrees to rad
+		{
+			float rad = (PI / 180.f) * d;
+			return rad;
+		}
 
 public:
 	const matrix4D &getProjec() const;

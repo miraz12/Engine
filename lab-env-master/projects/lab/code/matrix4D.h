@@ -362,13 +362,12 @@ inline float* get()
 	return (float*)values2D;
 }
 
-inline matrix4D scale(float x, float y, float z)
+inline void scale(float x, float y, float z)
 {
 	matrix4D temp;
-	temp[0][0] = x;
-	temp[1][1] = y;
-	temp[2][2] = z;
-	return temp;
+	values2D[0][0] *= x;
+	values2D[1][1] *= y;
+	values2D[2][2] *= z;
 }
 
 inline matrix4D setPos(float x, float y, float z)
@@ -390,12 +389,7 @@ inline matrix4D setPos(vector3D v)
 
 inline vector3D getPosition()
 {
-    vector3D vec;
-    vec[0] = values2D[3][0];
-    vec[2] = values2D[3][1];
-    vec[3] = values2D[3][2];
-
-    return  vec;
+	return  vector3D(values2D[3][0], values2D[3][1], values2D[3][2]);
 }
 
 //Roatation runt x axeln i "r" grader

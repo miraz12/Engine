@@ -3,6 +3,7 @@
 #include "LightTypes.h"
 #include "matrix3D.h"
 #include "GL/glew.h"
+#include <vector>
 
 
 class LightNode
@@ -23,24 +24,26 @@ public:
 	float getIntensity();
 	void setIntensity(float);
 
-	PointLight* m_pLights;
-	SpotLight* m_sLights;
+	//PointLight* m_pLights;
+	//SpotLight* m_sLights;
 
 	matrix3D m_matSpecularIntensityLocation;
 	matrix3D m_matSpecularPowerLocation;
 	int m_numPointLightsLocation;
 	int m_numSpotLightsLocation;
 
-private:
+	std::vector<DirectionalLight> m_dLights;
+	std::vector<SpotLight> m_sLights;
+	std::vector<PointLight> m_pLights;
 
+	float specIntensity = 0.0f;
+	float specPower = 0.0f;
+
+private:
 
 	vector3D color;
 	vector3D pos;
 	float intens;
-
-
-
-
 
 };
 

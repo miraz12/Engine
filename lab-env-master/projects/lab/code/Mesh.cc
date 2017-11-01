@@ -39,8 +39,12 @@ void Mesh::MeshEntry::Init(const std::vector<Vertex>& Vertices,	const std::vecto
 
 Mesh::Mesh()
 {
-	shader = std::make_shared<ShaderObject>("VertexShader.vs", "FragmentShader.fs");
-	defaulNormal = new TextureResource("DefaultNormalMap.png");
+	shader = std::make_shared<ShaderObject>("content/Shader/VertexShader.vs", "content/Shader/lighting.fs");
+
+	defaultDiff = new TextureResource("content/test.png");
+	defaultDiff->Load();
+
+	defaulNormal = new TextureResource("content/DefaultNormalMap.png");
 	defaulNormal->Load();
 }
 
@@ -255,8 +259,15 @@ void Mesh::Render()
 
 		const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
 
-		if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
-			m_Textures[MaterialIndex]->bind(GL_TEXTURE0, glGetUniformLocation(shader->getProgram(), "DiffuseTextureSampler"), 0);
+		if (MaterialIndex < m_Textures.size()) {
+			if (m_Textures[MaterialIndex])
+			{
+				m_Textures[MaterialIndex]->bind(GL_TEXTURE0, glGetUniformLocation(shader->getProgram(), "DiffuseTextureSampler"), 0);
+			}
+			else
+			{
+				defaultDiff->bind(GL_TEXTURE0, glGetUniformLocation(shader->getProgram(), "DiffuseTextureSampler"), 0);
+			}
 		}
 		if (MaterialIndex < m_Normals.size()) {
 			if (m_Normals[MaterialIndex] != nullptr)

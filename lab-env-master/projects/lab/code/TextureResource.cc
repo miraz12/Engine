@@ -35,8 +35,12 @@ bool TextureResource::Load()
 	glBindTexture(m_textureTarget, m_texture);
 	glTexImage2D(m_textureTarget, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-	glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glGenerateMipmap(m_textureTarget);
+
+	glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	
 	glBindTexture(m_textureTarget, 0);
 
 	stbi_image_free(data);
@@ -48,6 +52,7 @@ TextureResource::~TextureResource()
 {
 	if(glIsTexture(this->m_texture))
 		glDeleteTextures(1, &m_texture);
+	glBindTexture(m_textureTarget, 0);
 }
 
 void TextureResource::bind()

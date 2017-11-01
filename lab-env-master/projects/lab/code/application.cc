@@ -4,7 +4,6 @@
 //------------------------------------------------------------------------------
 #include "config.h"
 #include "application.h"
-#include <cstring>
 #include <imgui.h>
 #include <algorithm>
 
@@ -27,11 +26,111 @@ namespace Example
 */
     Application::~Application()
     {
-       
-        // empty
+		for (auto i = 0; i < objList.size(); i++)
+		{
+			delete objList[i];
+		}
     }
 
-//------------------------------------------------------------------------------
+	void Application::LightSetup()
+	{
+		//LigtNode
+		lNode = std::make_shared<LightNode>();
+
+		DirectionalLight dirLight = DirectionalLight();
+		dirLight.Color = vector3D(1.0f, 1.0f, 1.0f);
+		dirLight.AmbientIntensity = 0.00f;
+		dirLight.DiffuseIntensity = 0.2f;
+		dirLight.Direction = vector3D(0.0f, 0.0, 1.0);
+		//lNode->m_dLights.push_back(dirLight);
+
+		PointLight pLight1 = PointLight();
+		pLight1.DiffuseIntensity = 5.0f; // 0.25f;
+		pLight1.Color = vector3D(1.0f, 1.0f, 1.0f);
+		pLight1.Position = vector3D(3.0f, 1.0f, 40.f * (cosf(0.0057f) + 1.0f));
+		pLight1.Attenuation.Linear = 0.1f;
+		PointLight pLight2 = PointLight();
+		pLight2.DiffuseIntensity = 5.0f; // 0.25f;
+		pLight2.Color = vector3D(1.0f, 1.f, 1.0f);
+		pLight2.Position = vector3D(7.0f, 1.0f, 40.f * (sinf(0.0057f) + 1.0f));
+		pLight2.Attenuation.Linear = 0.1f;
+		lNode->m_pLights.push_back(pLight1);
+		lNode->m_pLights.push_back(pLight2);
+
+		SpotLight sLight1 = SpotLight();
+		sLight1.DiffuseIntensity = 0.9f;
+		sLight1.Color = vector3D(1.0f, 1.0f, 1.0f);
+		sLight1.Position = vector3D(camera.x(), camera.y(), -camera.z());
+		sLight1.Direction = camFront;
+		sLight1.Attenuation.Linear = 0.1f;
+		sLight1.Cutoff = 10.0f;
+
+		SpotLight sLight2 = SpotLight();
+		sLight2.DiffuseIntensity = 0.9f;
+		sLight2.Color = vector3D(1.0f, 1.0f, 1.0f);
+		sLight2.Position = vector3D(0.0f, 3.0f, 0.0f);
+		sLight2.Direction = vector3D(0.0f, 1.0f, 0.0f);
+		sLight2.Attenuation.Linear = 0.1f;
+		sLight2.Cutoff = 20.0f;
+
+		//lNode->m_sLights.push_back(sLight1);
+		//lNode->m_sLights.push_back(sLight2);
+
+		lNode->specIntensity = 1.0f;
+		lNode->specPower = 32.0f;
+	}
+
+	void Application::UpdateLights(double time)
+	{
+		matrix4D boxMat1;
+		matrix4D boxMat2;
+
+		vector3D newPos1 = vector3D(70.0f, 500.0f, 0.f);
+		vector3D newPos2 = vector3D(-70.0f, 500.0f, 0.f);
+
+		lNode->m_pLights[0].Position = newPos1;
+		lNode->m_pLights[1].Position = newPos2;
+		boxMat1.setPos(newPos1);
+		boxMat2.setPos(newPos2);
+		box1->getMesh()->setMM(boxMat1);
+		box2->getMesh()->setMM(boxMat2);
+
+		//lNode->m_sLights[0].Position = camera;
+		//lNode->m_sLights[0].Direction = camFront;
+	}
+
+	void Application::ObjectSetup()
+	{
+		box1 = new GraphicsNode();
+		//box1->getMesh()->LoadMesh("content/box.obj");
+		//box1->setLight(lNode);
+		//box1->getLightNode()->setPos(vector3D(5, 5, 0));
+		//objList.push_back(box1);
+
+		box2 = new GraphicsNode();
+		//box2->getMesh()->LoadMesh("content/box.obj");
+		//box2->setLight(lNode);
+		//objList.push_back(box2);
+
+		box3 = new GraphicsNode();
+		box3->getMesh()->LoadMesh("content/cat.obj");
+		//box3->getMesh()->LoadMesh("content/ocrytek_sponza/sponza.obj");
+		box3->setLight(lNode);
+		objList.push_back(box3);
+	}
+
+	void Application::UpdateObjects(double time)
+	{
+		view = view.LookAtRH(camera, camera + camFront, headUp);
+
+		for (unsigned int i = 0; i < objList.size(); i++)
+		{
+			objList[i]->camera = camera;
+			objList[i]->drawOBJ(projection, view, objList[i]->getMesh()->getMM());
+		}
+	}
+
+	//------------------------------------------------------------------------------
 /**
 */
     bool
@@ -42,41 +141,16 @@ namespace Example
         wHeight = 768;
 
         this->window = new Display::Window;
-        this->window->SetSize(wWidht, wHeight);
+		this->window->SetSize(int32(wWidht), int32(wHeight));
 
-        KeyInput();		//Litsen on keys
+        KeyInput();	//Litsen on keys
 				
         if (this->window->Open())
         {
-			//LigtNode
-			lNode = std::make_shared<LightNode>();
-
-			lNode->setPos(vector3D(0, 5, 0));
-
-			//Meshes---
-
-			//box1 = new GraphicsNode();
-			//box1->getMesh()->LoadMesh("cat.obj");
-			//box1->setLight(lNode);
-			//box1->getLightNode()->setPos(vector3D(5, 5, 0));
-			//objList.push_back(box1);
-
-
-			//box2 = new GraphicsNode();
-			//box2->getMesh()->LoadMesh("sphere.obj");
-			//box2->setLight(lNode);
-			//box2->getLightNode()->setPos(lNode->getPos());
-			//objList.push_back(box2);
-
-			box3 = new GraphicsNode();
-			box3->getMesh()->LoadMesh("ocrytek_sponza/sponza.obj");
-			//box3->getMesh()->LoadMesh("cat.obj");
-			box3->setLight(lNode);
-			objList.push_back(box3);
-
-
-			///-------
-				
+			//Setup everyting
+			projection = projection.setPerspective(45.0f, (wWidht / wHeight), 1.0f, 100.0f);
+			LightSetup();
+			ObjectSetup();
 
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             // set ui rendering function
@@ -95,21 +169,8 @@ namespace Example
     void
     Application::Run()
     {
-
-        projection = projection.setPerspective(45.0f, (wWidht / wHeight), 1.0f, 2.0f);
-
-
-		matrix4D boxMat; 
-        matrix4D sphereMat;
-		
-		sphereMat.setPos(lNode->getPos());
-
-    	matrix4D pv;
-
         //Time variables for calculationg alg time
         double lastTime = glfwGetTime();
-
-        int iter = 0;
 
         glEnable(GL_DEPTH_TEST);
 		//glEnable(GL_MULTISAMPLE);
@@ -118,38 +179,19 @@ namespace Example
 
         while (!glfwWindowShouldClose(this->window->window))
         {
-			//lNode->setPos(camera);
-			//matrix4D sphereMove = box2->getMesh()->getMM().setPos(camera.x(), camera.y(), camera.z());
-			//box2->getMesh()->setMM(sphereMove);
-
-
-			//Calculate deltaTime
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			this->window->Update();
+        	//Calculate deltaTime
 			double currentTime = glfwGetTime();
 			deltaTime = fabs(currentTime - lastTime);
-			FPS = 1 / deltaTime;
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            this->window->Update();
+			FPS = int(1.0 / deltaTime);
 
-
-			
-            view = view.LookAtRH(camera, camera + camFront, headUp);
-			//view = view.LookAtRH(vector3D(0, 0, 2), vector3D(0, 0, 2) + camFront, headUp);
-
-            pv = view * projection;
-
-            lastTime = currentTime;
-
-			//box1->drawOBJ(projection, view,  boxMat);
-			//sphere->drawOBJ(pv, sphereMat);
-
-			for (int i = 0; i < objList.size(); i++)
-			{
-				matrix4D m = objList[i]->getMesh()->getMM();
-				objList[i]->drawOBJ(projection, view, objList[i]->getMesh()->getMM());
-			}
-
+			//Update things
+			UpdateLights(currentTime);
+			UpdateObjects(currentTime);
 
             this->window->SwapBuffers();
+			lastTime = currentTime;
         }
     }
 
@@ -167,27 +209,31 @@ namespace Example
             ImGui::Begin("Debug", &show, ImGuiWindowFlags_NoSavedSettings);
 			ImGui::Text("FPS: %i", FPS);
 			
+		
+
+			ImGui::CollapsingHeader("Buttons");
+
 			if (ImGui::Button("Toggle normalmapping"))
 			{
-				for (int i = 0; i < objList.size(); i++)
+				for (unsigned int i = 0; i < objList.size(); i++)
 				{
 					objList[i]->activateNormal *= -1;
 				}
 			}
 			if (ImGui::Button("Reload Shader"))
 			{
-				for (int i = 0; i < objList.size(); i++)
+				for (unsigned int i = 0; i < objList.size(); i++)
 				{
 					objList[i]->getShader()->ReloadShader();
 				}
 			}
 
-        	
         	ImGui::End();
         }
     }
 
-    void Application::KeyInput()
+
+	void Application::KeyInput()
     {
         camera.setValues(0, 0, 2);
         origin.setValues(0, 0, 0);
@@ -298,10 +344,10 @@ namespace Example
                 return;
             }
 
-            GLfloat xoffset = xpos - oldPosX;
-            GLfloat yoffset = oldPosY - ypos;
+            GLfloat xoffset = GLfloat(xpos - oldPosX);
+            GLfloat yoffset = GLfloat(oldPosY - ypos);
 
-            float sensitivity = 0.05;
+            float sensitivity = 0.05f;
             xoffset *= sensitivity;
             yoffset *= sensitivity;
 

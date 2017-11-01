@@ -81,5 +81,6 @@ class Mesh
 		std::vector<TextureResource*> m_Spec;
 		matrix4D modelMatrix;
 		TextureResource* defaulNormal;
+		TextureResource* defaultDiff;
 
 };

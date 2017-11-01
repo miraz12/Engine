@@ -8,6 +8,8 @@ LightNode::LightNode()
 	intens = 1.0f;
 
 
+	m_dLights = std::vector<DirectionalLight>();
+
 }
 
 

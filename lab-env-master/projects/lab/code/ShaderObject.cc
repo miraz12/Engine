@@ -139,6 +139,20 @@ void ShaderObject::bind()
 	glUseProgram(program);
 }
 
+void ShaderObject::mod1f(const char* name, float mat)
+{
+	GLint loc = glGetUniformLocation(this->program, name);
+	glUniform1f(loc, mat);
+
+}
+
+void ShaderObject::mod1i(const char* name, int i)
+{
+	GLint loc = glGetUniformLocation(this->program, name);
+	glUniform1i(loc, i);
+
+}
+
 void ShaderObject::modMatrix4fv(const char* name, matrix4D mat)
 {
 	GLint loc = glGetUniformLocation(this->program, name);

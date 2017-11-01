@@ -36,6 +36,12 @@ private:
 	void RayFromMouse();	//Cast ray from mouse
 	void RenderUI(); 	//UI handler, draws UI
 
+	void LightSetup(); // Setup all the lights TODO: fix an easier way to add light
+	void ObjectSetup(); // Setup all the objects TODO: Fix easier way to do this.
+
+	void UpdateLights(double time);	//Update all lights that should be updated
+	void UpdateObjects(double time);	//Update all objects that should be updated
+
 
 	bool showUI = true;
 	int uiIt = 0;
@@ -47,10 +53,6 @@ private:
 	matrix4D projection;
 	matrix4D view;
 
-    GLuint program;
-    GLuint vertexShader;
-    GLuint pixelShader;
-    GLuint triangle;
     Display::Window* window;
     float64 posX = 0.0f;
     float64 posY = 0.0f;
@@ -78,7 +80,6 @@ private:
 	GraphicsNode* box1;
 	GraphicsNode* box2;
 	GraphicsNode* box3;
-	GraphicsNode* sphere;
 
 	std::vector<GraphicsNode*> objList;
 
@@ -89,7 +90,7 @@ private:
 
 	float wWidht, wHeight;
 
-    double timeStep = 1.0/16.0;
+    float timeStep = 1.0f/16.0f;
 
 
 
