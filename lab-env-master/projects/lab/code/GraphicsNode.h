@@ -23,6 +23,8 @@ public:
 	void setShader(std::shared_ptr<ShaderObject>);
 	void drawOBJ(matrix4D projection, matrix4D view, matrix4D model);
 
+	void drawTerrain(matrix4D projection, matrix4D view, matrix4D model);
+
 	std::shared_ptr<LightNode> getLightNode() { return light; };
     void setLight(std::shared_ptr<LightNode> s);
 

@@ -46,6 +46,27 @@ void GraphicsNode::drawOBJ(matrix4D projection, matrix4D view, matrix4D model)
 
 }
 
+void GraphicsNode::drawTerrain(matrix4D projection, matrix4D view, matrix4D model)
+{
+	mesh->shader->bind();
+
+	mesh->shader->mod1i("gNumPointLights", (light->m_pLights.size()));
+	mesh->shader->mod1i("gNumSpotLights", (light->m_sLights.size()));
+	setupLights();
+
+	mesh->shader->modVector3f("in_lightPos", light->getPos());
+	mesh->shader->modVector3f("in_color", (light->getColor() * light->getIntensity()));
+	mesh->shader->modVector3f("activate_normal", vector3D(float(activateNormal), 0.0f, 0.0f));
+
+	mesh->shader->modVector3f("cameraPos", vector3D(camera.x(), camera.y(), camera.z()));
+	mesh->shader->modVector3f("worldPos", vector3D(model.getPosition()));
+	mesh->shader->modMatrix4fv("projection", projection);
+	mesh->shader->modMatrix4fv("view", view);
+	mesh->shader->modMatrix4fv("model", model);
+
+	mesh->RenderTerrain();
+}
+
 
 std::shared_ptr<Mesh> GraphicsNode::getMesh()
 {

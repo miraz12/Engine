@@ -23,6 +23,8 @@ Mesh::MeshEntry::~MeshEntry()
 	}
 }
 
+
+
 void Mesh::MeshEntry::Init(const std::vector<Vertex>& Vertices,	const std::vector<unsigned int>& Indices)
 {
 	NumIndices = Indices.size();
@@ -81,6 +83,41 @@ bool Mesh::LoadMesh(const std::string& Filename)
 	return Ret;
 }
 
+
+void Mesh::LoadTerrain(const std::string& Filename)
+{
+
+	this->terrGen = new TerrainGenerator();
+
+	printf("Loading Terrain: '%s'\n", Filename.c_str());
+
+	terrGen->Initialize(Filename.c_str());
+
+}
+
+void Mesh::RenderTerrain()
+{
+	int index;
+	int width = terrGen->width;
+	int height = terrGen->height;
+
+	std::vector<Vertex> Vertices;
+	std::vector<unsigned int> Indices;
+
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			index = (width * i) + j;
+
+
+
+		}
+	}
+
+
+}
 
 bool Mesh::InitFromScene(const aiScene* pScene, const std::string& Filename)
 {

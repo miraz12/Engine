@@ -102,6 +102,11 @@ namespace Example
 	void Application::ObjectSetup()
 	{
 		box1 = new GraphicsNode();
+		box1->getMesh()->LoadTerrain("content/ocrytek_sponza/textures/background_bump.png");
+		box1->setLight(lNode);
+		//objList.push_back(box1);
+
+
 		//box1->getMesh()->LoadMesh("content/box.obj");
 		//box1->setLight(lNode);
 		//box1->getLightNode()->setPos(vector3D(5, 5, 0));
@@ -113,15 +118,18 @@ namespace Example
 		//objList.push_back(box2);
 
 		box3 = new GraphicsNode();
-		box3->getMesh()->LoadMesh("content/cat.obj");
+		//box3->getMesh()->LoadMesh("content/cat.obj");
 		//box3->getMesh()->LoadMesh("content/ocrytek_sponza/sponza.obj");
-		box3->setLight(lNode);
-		objList.push_back(box3);
+		//box3->setLight(lNode);
+		//objList.push_back(box3);
 	}
 
 	void Application::UpdateObjects(double time)
 	{
 		view = view.LookAtRH(camera, camera + camFront, headUp);
+
+		box1->camera = camera;
+		box1->drawTerrain(projection, view, box1->getMesh()->getMM());
 
 		for (unsigned int i = 0; i < objList.size(); i++)
 		{

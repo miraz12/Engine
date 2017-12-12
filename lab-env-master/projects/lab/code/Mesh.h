@@ -10,6 +10,7 @@
 #include "matrix4D.h"
 #include "ShaderObject.h"
 #include <memory>
+#include "terrainGenerator.h"
 
 #define INVALID_MATERIAL 0xFFFFFFFF
 
@@ -49,6 +50,9 @@ class Mesh
 
 		std::shared_ptr<ShaderObject> shader;
 
+		void LoadTerrain(const std::string& Filename);
+		void RenderTerrain();
+
 
 	private:
 		bool InitFromScene(const aiScene* pScene, const std::string& Filename);
@@ -82,5 +86,7 @@ class Mesh
 		matrix4D modelMatrix;
 		TextureResource* defaulNormal;
 		TextureResource* defaultDiff;
+
+		TerrainGenerator* terrGen;
 
 };
