@@ -295,13 +295,17 @@ void Mesh::Render()
 	glDisableVertexAttribArray(3);
 }
 
-bool Mesh::GenerateTerrain()
+bool Mesh::GenerateTerrain(int widthi, int heighti, int seed)
 {
 	//setup buffers
 
-
+	if(terrainGen != nullptr)
+	{
+		delete terrainGen;
+	}
 	terrainGen = new TerrainGenerator();
-	if(!terrainGen->GenerateHeigthMap())
+
+	if(!terrainGen->GenerateHeigthMap(widthi, heighti, seed))
 	{
 		return false;
 	}

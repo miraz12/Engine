@@ -11,6 +11,15 @@ TerrainGenerator::TerrainGenerator()
 
 TerrainGenerator::~TerrainGenerator()
 {
+	if (remove(mapFilename) != 0)
+		std::cerr << "Error deleting file: " << mapFilename << std::endl;
+	else
+		puts("Removed map file");
+
+	delete mapFilename;
+	delete imageData;
+		
+
 }
 
 bool TerrainGenerator::Initialize(const char* filename)
@@ -27,21 +36,23 @@ bool TerrainGenerator::Initialize(const char* filename)
 		return false;
 	}
 
-	this->filename = filename;	
+	mapFilename = new char;
+	mapFilename = strdup(filename);
+
+
+	//this->filename = filename;
 	return true;
 }
 
-bool TerrainGenerator::GenerateHeigthMap()
+bool TerrainGenerator::GenerateHeigthMap(int widht, int height, int seed)
 {
-	Image image(512, 512);
+	Image image(widht, height);
 
 	double frequency = 8.0;
 	frequency = Clamp(frequency, 0.1, 64.0);
 
 	int octaves = 8;
 	octaves = int(Clamp(octaves, 1, 16));
-
-	int seed = 12345;
 
 	const siv::PerlinNoise perlin(seed);
 	const double fx = image.width() / frequency;
@@ -57,6 +68,7 @@ bool TerrainGenerator::GenerateHeigthMap()
 		}
 	}
 
+	std::stringstream mapPath;
 	mapPath << "content/" << 'f' << frequency << 'o' << octaves << '_' << seed << ".bmp";
 
 	if (image.saveBMP(mapPath.str()))

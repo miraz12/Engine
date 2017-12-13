@@ -6,7 +6,7 @@
 #include "application.h"
 #include <imgui.h>
 #include <algorithm>
-
+#include <ctime>
 
 
 using namespace Display;
@@ -102,7 +102,7 @@ namespace Example
 	void Application::ObjectSetup()
 	{
 		box1 = new GraphicsNode();
-		box1->getMesh()->GenerateTerrain();
+		box1->getMesh()->GenerateTerrain(512, 512, 12345);
 		//box1->getMesh()->LoadMesh("content/box.obj");
 		box1->setLight(lNode);
 
@@ -218,8 +218,10 @@ namespace Example
 			ImGui::Text("Camera position:");
 			ImGui::Text("x: %f, y: %f, z: %f", camera.x(), camera.y(), camera.z());
 
-
-			ImGui::CollapsingHeader("Buttons");
+			/* initialize random seed: */
+			srand(time(NULL));
+			
+        	//ImGui::CollapsingHeader("Buttons");
 
 			if (ImGui::Button("Toggle normalmapping"))
 			{
@@ -234,6 +236,11 @@ namespace Example
 				{
 					objList[i]->getShader()->ReloadShader();
 				}
+			}
+			if (ImGui::Button("Generate new Terrain"))
+			{
+				int seed = rand() % 10000 + 1;
+				box1->getMesh()->GenerateTerrain(512, 512, seed);
 			}
 
         	ImGui::End();

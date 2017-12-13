@@ -45,7 +45,7 @@ class Mesh
 
 		bool LoadMesh(const std::string& Filename);
 		void Render();
-		bool GenerateTerrain();
+		bool GenerateTerrain(int width, int height, int seed);
 		void RenderTerrain();
 
 
@@ -89,7 +89,7 @@ class Mesh
 		TextureResource* defaultDiff;
 
 		//Terrain variables
-		TerrainGenerator* terrainGen;
+		TerrainGenerator* terrainGen = nullptr;
 		GLuint terrainVertexBufferId, terrainIndexBufferId;
 		std::vector<Vertex> terrainVertices;
 		std::vector<unsigned int> terrainIndices;
