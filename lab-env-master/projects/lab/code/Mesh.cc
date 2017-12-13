@@ -295,6 +295,105 @@ void Mesh::Render()
 	glDisableVertexAttribArray(3);
 }
 
+bool Mesh::GenerateTerrain()
+{
+	//setup buffers
+	glGenVertexArrays(1, &this->terrainVertexArrayId);
+	glGenBuffers(1, &this->terrainVertexBufferId);
+	glBindVertexArray(this->terrainVertexArrayId);
+	glBindBuffer(GL_ARRAY_BUFFER, this->terrainVertexBufferId);
+
+	glEnableVertexAttribArray(0);  // Vertex position.
+	glEnableVertexAttribArray(1); // Vertex color
+	glEnableVertexAttribArray(2); // Vertex normal
+	//glEnableVertexAttribArray(3); // Tangents
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20);
+	//glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)32);
+
+	terrainGen = new TerrainGenerator();
+	if(!terrainGen->GenerateHeigthMap())
+	{
+		return false;
+	}
+
+	printf("Loaded Terrain\n");
+
+
+	long int index;;
+	vector3D left, right, up, down, pos, normal;
+
+	for (int i = 0; i < terrainGen->height; i++)
+	{
+		for (int j = 0; j < terrainGen->width; j++)
+		{
+			index = (terrainGen->width * i) + j;
+
+			Vertex v;
+
+			float x = float(j);
+			float y = float(terrainGen->imageData[i*terrainGen->width + j]);
+			float z = float(i);
+			pos = vector3D(x, y, z);
+			v.m_pos = pos;
+
+			left = terrainGen->GetNeighbourVertex(pos, -1, 0);
+			right = terrainGen->GetNeighbourVertex(pos, +1, 0);
+			up = terrainGen->GetNeighbourVertex(pos, 0, -1);
+			down = terrainGen->GetNeighbourVertex(pos, 0, +1);
+			normal = (left + right + up + down).normalizeRe();
+			v.m_normal = normal;
+
+			//v.m_tex = vector2D();
+
+			terrainMesh.push_back(v);
+		}
+	}
+
+	return true; 
+}
+
+void Mesh::RenderTerrain()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glBindBuffer(GL_ARRAY_BUFFER, this->terrainVertexBufferId);
+	glBufferData(GL_ARRAY_BUFFER, this->terrainMesh.size() * sizeof(Vertex), &this->terrainMesh[0], GL_STATIC_DRAW);
+
+	glBindVertexArray(this->terrainVertexArrayId);
+	glDrawArrays(GL_TRIANGLES, 0, this->terrainMesh.size());
+	glBindVertexArray(0);
+
+
+	/*
+	int ind1, ind2;
+	glDisable(GL_LIGHTING);
+	glColor3f(0.5f, 0.0f, 1.0f);
+	glDisable(GL_TEXTURE_2D);
+	glBegin(GL_LINES);
+	//glBegin(GL_TRIANGLE_STRIP);
+	for (int i = 1; i < terrainGen->height-1; i++)
+	{
+		for (int j = 0; j <  terrainGen->width-1; j++)
+		{
+			ind1 = (terrainGen->width * i) + j;
+			ind2 = (terrainGen->width * (i + 1)) + j;
+			glColor3f(0.5f, 0.0f, 1.0f);
+			glVertex3f( terrainGen->hData[ind1].xyz[0],  terrainGen->hData[ind1].xyz[1],  terrainGen->hData[ind1].xyz[2]);
+			glVertex3f( terrainGen->hData[ind2].xyz[0],  terrainGen->hData[ind2].xyz[1],  terrainGen->hData[ind2].xyz[2]);
+		
+			glVertex3f( terrainGen->hData[ind1].xyz[0],  terrainGen->hData[ind1].xyz[1],  terrainGen->hData[ind1].xyz[2]);
+			glVertex3f( terrainGen->hData[ind1 + 1].xyz[0],  terrainGen->hData[ind1 + 1].xyz[1],  terrainGen->hData[ind1 + 1].xyz[2]);
+
+			ind2 = (terrainGen->width * (i - 1) + j + 1);
+			glVertex3f( terrainGen->hData[ind1].xyz[0],  terrainGen->hData[ind1].xyz[1],  terrainGen->hData[ind1].xyz[2]);
+			glVertex3f( terrainGen->hData[ind2].xyz[0],  terrainGen->hData[ind2].xyz[1],  terrainGen->hData[ind2].xyz[2]);
+		}
+	}
+	glEnd();
+	*/
+}
+
 void Mesh::computeTangentBasis(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices)
 {
 	for (unsigned int i = 0; i < indices.size(); i += 3) {

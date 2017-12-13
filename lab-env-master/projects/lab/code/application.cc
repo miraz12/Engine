@@ -102,17 +102,17 @@ namespace Example
 	void Application::ObjectSetup()
 	{
 		box1 = new GraphicsNode();
+		box1->getMesh()->GenerateTerrain();
 		//box1->getMesh()->LoadMesh("content/box.obj");
-		//box1->setLight(lNode);
+		box1->setLight(lNode);
 		//box1->getLightNode()->setPos(vector3D(5, 5, 0));
-		//objList.push_back(box1);
+		objList.push_back(box1);
 
 		box2 = new GraphicsNode();
 		//box2->getMesh()->LoadMesh("content/box.obj");
 		//box2->setLight(lNode);
 		//objList.push_back(box2);
 
-		box3 = new GraphicsNode();
 		box3 = new GraphicsNode();
 		box3->getMesh()->LoadMesh("content/cat.obj");
 		//box3->getMesh()->LoadMesh("content/ocrytek_sponza/sponza.obj");
@@ -123,6 +123,8 @@ namespace Example
 	void Application::UpdateObjects(double time)
 	{
 		view = view.LookAtRH(camera, camera + camFront, headUp);
+
+		box1->getMesh()->RenderTerrain();
 
 		for (unsigned int i = 0; i < objList.size(); i++)
 		{
@@ -209,8 +211,9 @@ namespace Example
             bool show = true;
             ImGui::Begin("Debug", &show, ImGuiWindowFlags_NoSavedSettings);
 			ImGui::Text("FPS: %i", FPS);
-			
-		
+			ImGui::Text("Camera position:");
+			ImGui::Text("x: %f, y: %f, z: %f", camera.x(), camera.y(), camera.z());
+
 
 			ImGui::CollapsingHeader("Buttons");
 
@@ -260,8 +263,9 @@ namespace Example
             {
                 camSpeed = 2.5f;
             }
-            if (GLFW_KEY_1 == key && action == GLFW_RELEASE)
+            if (GLFW_KEY_SPACE == key)
             {
+				camera[1] += camSpeed;
             }
             if (GLFW_KEY_G == key)
             {

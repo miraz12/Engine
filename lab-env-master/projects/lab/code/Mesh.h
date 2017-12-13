@@ -10,6 +10,7 @@
 #include "matrix4D.h"
 #include "ShaderObject.h"
 #include <memory>
+#include "terrainGenerator.h"
 
 #define INVALID_MATERIAL 0xFFFFFFFF
 
@@ -44,6 +45,10 @@ class Mesh
 
 		bool LoadMesh(const std::string& Filename);
 		void Render();
+		bool GenerateTerrain();
+		void RenderTerrain();
+
+
 		matrix4D getMM(){ return modelMatrix; };
 		void setMM(matrix4D m){ modelMatrix = m; };
 
@@ -82,5 +87,11 @@ class Mesh
 		matrix4D modelMatrix;
 		TextureResource* defaulNormal;
 		TextureResource* defaultDiff;
+
+		//Terrain variables
+		TerrainGenerator* terrainGen;
+		GLuint terrainVertexArrayId, terrainVertexBufferId;
+		std::vector<Vertex> terrainMesh;
+
 
 };
