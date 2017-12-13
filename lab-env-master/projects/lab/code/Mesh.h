@@ -90,8 +90,9 @@ class Mesh
 
 		//Terrain variables
 		TerrainGenerator* terrainGen;
-		GLuint terrainVertexArrayId, terrainVertexBufferId;
-		std::vector<Vertex> terrainMesh;
+		GLuint terrainVertexBufferId, terrainIndexBufferId;
+		std::vector<Vertex> terrainVertices;
+		std::vector<unsigned int> terrainIndices;
 
 
 };

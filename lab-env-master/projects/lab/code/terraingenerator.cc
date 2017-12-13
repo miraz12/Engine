@@ -19,6 +19,7 @@ bool TerrainGenerator::Initialize(const char* filename)
 	long int index;
 	imageData = stbi_load(filename, &this->width, &this->height, &error, 1);
 
+
 	if (imageData == NULL) 
 	{
 
@@ -26,36 +27,7 @@ bool TerrainGenerator::Initialize(const char* filename)
 		return false;
 	}
 
-	this->filename = filename;
-
-	hData = new MapData[width * height];
-	/*
-	vector3D left, right, up, down, pos, normal;
-
-	for (int i = 0; i < height; i++)
-	{
-		for (int j = 0; j < width; j++)
-		{
-			index = (width * i) + j;
-
-			hData[index].xyz[0] = float(j * 4);	//Set width 
-			hData[index].xyz[1] = float(imageData[i*width + j] - 100.0f);	//Set 
-			hData[index].xyz[2] = float(i * 4.0);
-
-			hData[index].width = width;
-			hData[index].height = height;
-
-			pos = vector3D(j, imageData[i*width + j] * 0.25f, i);
-			left = GetNeighbourVertex(pos, -1, 0);
-			right = GetNeighbourVertex(pos, +1, 0);
-			up = GetNeighbourVertex(pos, 0, -1);
-			down = GetNeighbourVertex(pos, 0, +1);
-			normal = (left + right + up + down).normalizeRe();
-
-			//TODO: Set colors
-		}
-	}
-	*/
+	this->filename = filename;	
 	return true;
 }
 

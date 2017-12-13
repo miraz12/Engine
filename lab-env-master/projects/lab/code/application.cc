@@ -47,15 +47,15 @@ namespace Example
 		PointLight pLight1 = PointLight();
 		pLight1.DiffuseIntensity = 5.0f; // 0.25f;
 		pLight1.Color = vector3D(1.0f, 1.0f, 1.0f);
-		pLight1.Position = vector3D(3.0f, 1.0f, 40.f * (cosf(0.0057f) + 1.0f));
+		pLight1.Position = vector3D(3.0f, 250.0f, 40.f *(cosf(0.0057f) + 1.0f));
 		pLight1.Attenuation.Linear = 0.1f;
 		PointLight pLight2 = PointLight();
 		pLight2.DiffuseIntensity = 5.0f; // 0.25f;
 		pLight2.Color = vector3D(1.0f, 1.f, 1.0f);
-		pLight2.Position = vector3D(7.0f, 1.0f, 40.f * (sinf(0.0057f) + 1.0f));
+		pLight2.Position = vector3D(7.0f, 1, 40.f * (sinf(0.0057f) + 1.0f));
 		pLight2.Attenuation.Linear = 0.1f;
 		lNode->m_pLights.push_back(pLight1);
-		lNode->m_pLights.push_back(pLight2);
+		//lNode->m_pLights.push_back(pLight2);
 
 		SpotLight sLight1 = SpotLight();
 		sLight1.DiffuseIntensity = 0.9f;
@@ -85,15 +85,15 @@ namespace Example
 		matrix4D boxMat1;
 		matrix4D boxMat2;
 
-		vector3D newPos1 = vector3D(70.0f, 500.0f, 0.f);
-		vector3D newPos2 = vector3D(-70.0f, 500.0f, 0.f);
+		//vector3D newPos1 = vector3D(70.0f, 500.0f, 0.f);
+		//vector3D newPos2 = vector3D(-70.0f, 500.0f, 0.f);
 
-		lNode->m_pLights[0].Position = newPos1;
-		lNode->m_pLights[1].Position = newPos2;
-		boxMat1.setPos(newPos1);
-		boxMat2.setPos(newPos2);
-		box1->getMesh()->setMM(boxMat1);
-		box2->getMesh()->setMM(boxMat2);
+		//lNode->m_pLights[0].Position = newPos1;
+		//lNode->m_pLights[1].Position = newPos2;
+		//boxMat1.setPos(newPos1);
+		//boxMat2.setPos(newPos2);
+		//box1->getMesh()->setMM(boxMat1);
+		//box2->getMesh()->setMM(boxMat2);
 
 		//lNode->m_sLights[0].Position = camera;
 		//lNode->m_sLights[0].Direction = camFront;
@@ -105,26 +105,30 @@ namespace Example
 		box1->getMesh()->GenerateTerrain();
 		//box1->getMesh()->LoadMesh("content/box.obj");
 		box1->setLight(lNode);
+
 		//box1->getLightNode()->setPos(vector3D(5, 5, 0));
-		objList.push_back(box1);
+		//objList.push_back(box1);
 
 		box2 = new GraphicsNode();
 		//box2->getMesh()->LoadMesh("content/box.obj");
 		//box2->setLight(lNode);
 		//objList.push_back(box2);
 
-		box3 = new GraphicsNode();
-		box3->getMesh()->LoadMesh("content/cat.obj");
+		//box3 = new GraphicsNode();
+		//box3->getMesh()->LoadMesh("content/cat.obj");
 		//box3->getMesh()->LoadMesh("content/ocrytek_sponza/sponza.obj");
-		box3->setLight(lNode);
-		objList.push_back(box3);
+		//box3->setLight(lNode);
+		//objList.push_back(box3);
 	}
 
 	void Application::UpdateObjects(double time)
 	{
 		view = view.LookAtRH(camera, camera + camFront, headUp);
 
-		box1->getMesh()->RenderTerrain();
+
+		//box1->getMesh()->RenderTerrain();
+		box1->camera = camera;
+		box1->drawTerrain(projection, view, box1->getMesh()->getMM());
 
 		for (unsigned int i = 0; i < objList.size(); i++)
 		{
@@ -239,7 +243,7 @@ namespace Example
 
 	void Application::KeyInput()
     {
-        camera.setValues(0, 0, 2);
+        camera.setValues(0, 100, 2);
         origin.setValues(0, 0, 0);
         headUp.setValues(0, 1, 0);
         camFront.setValues(0.0f, 0.0f, 1.0f);
