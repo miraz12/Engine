@@ -113,6 +113,7 @@ namespace Example
 		//objList.push_back(box2);
 
 		box3 = new GraphicsNode();
+		box3 = new GraphicsNode();
 		box3->getMesh()->LoadMesh("content/cat.obj");
 		//box3->getMesh()->LoadMesh("content/ocrytek_sponza/sponza.obj");
 		box3->setLight(lNode);
