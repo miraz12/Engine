@@ -21,7 +21,7 @@ public:
 	~TerrainGenerator();
 
 	bool Initialize(const char* filename);
-	bool GenerateHeigthMap(int widht, int height, float freq, int oct, int seed);
+	bool GenerateHeigthMap(int widht, int height, float freq, int oct, float lacu, float persi, int seed);
 	
 
 	int width, height;

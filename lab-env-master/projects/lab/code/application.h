@@ -92,9 +92,14 @@ private:
 
     float timeStep = 1.0f/16.0f;
 
+	//Terrain variables
 	int terrainSeed;
 	float frequency;
 	int octave;
+	float lacunarity;
+	float persistence;
+	float tWidth;
+	float tHeigth;
 
 
 

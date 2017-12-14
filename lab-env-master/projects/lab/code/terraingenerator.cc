@@ -1,11 +1,9 @@
 #pragma once
 #include "terrainGenerator.h"
 #include "stb_image.h"
-#include "PerlinNoise.h"
 #include "image.h"
-#include <cmath>;
-#include "FastNoise.h"
-#include "SimplexNoise.h"
+#include <noise/noise.h>
+#include "noiseutils.h"
 
 TerrainGenerator::TerrainGenerator()
 {
@@ -47,51 +45,53 @@ bool TerrainGenerator::Initialize(const char* filename)
 	mapFilename = new char;
 	mapFilename = strdup(filename);
 
-
-	//this->filename = filename;
 	return true;
 }
 
-bool TerrainGenerator::GenerateHeigthMap(int widht, int height, float freq, int oct, int seed)
+bool TerrainGenerator::GenerateHeigthMap(int widht, int height, float freq, int oct, float lacu, float persi, int seed)
 {
-	Image image(widht, height);
+	noise::module::Perlin myModule;
+	/*Noise seed*/
+	myModule.SetSeed(seed);
 
-	double frequency = freq;
-	frequency = Clamp(frequency, 0.1, 64.0);
+	/*The number of cycles per unit length that a specific coherent-noise function outputs.*/
+	myModule.SetFrequency(freq);
+	
+	/*One of the coherent-noise functions in a series of coherent-noise functions that are added together to form Perlin noise.*/
+	myModule.SetOctaveCount(oct);
 
-	int octaves = oct;
-	octaves = int(Clamp(octaves, 1, 16));
+	/*A multiplier that determines how quickly the frequency increases for each successive octave in a Perlin-noise function.*/
+	myModule.SetLacunarity(lacu);
 
+	/*A multiplier that determines how quickly the amplitudes diminish for each successive octave in a Perlin-noise function.*/
+	myModule.SetPersistence(persi);
 
-	const siv::PerlinNoise perlin(seed);
-	const double fx = image.width() / frequency;
-	const double fy = image.height() / frequency;
+	//myModule.SetSourceModule(0, myModule);
 
-	int index = 0;
-	for (int i = 0; i < image.height(); i++)
-	{
-		for (int j = 0; j < image.width(); j++)
-		{
+	utils::NoiseMap heightMap;
+	utils::NoiseMapBuilderPlane heightMapBuilder;
+	heightMapBuilder.SetSourceModule(myModule);
+	heightMapBuilder.SetDestNoiseMap(heightMap);
+	heightMapBuilder.SetDestSize(widht, height);
+	heightMapBuilder.SetBounds(2.0, 6.0, 1.0, 5.0);
+	heightMapBuilder.Build();
 
-			float e = 1 * perlin.octaveNoise0_1(j / fx, i / fy, octaves);
-			const RGB color(e);
+	utils::RendererImage renderer;
+	utils::Image image;
+	renderer.SetSourceNoiseMap(heightMap);
+	renderer.SetDestImage(image);
+	renderer.Render();
 
-			image.set(j, i, color);
-		}
-	}
+	utils::WriterBMP writer;
+	writer.SetSourceImage(image);
 
 	std::stringstream mapPath;
-	mapPath << "content/" << 'f' << frequency << 'o' << octaves << '_' << seed << ".bmp";
+	mapPath << "content/" << 'f' << freq << 'o' << oct << '_' << seed << ".bmp";
 
-	if (image.saveBMP(mapPath.str()))
-	{
-		std::cout << "...saved \"" << mapPath.str() << "\"\n";
-	}
-	else
-	{
-		std::cout << "...failed\n";
-		return false;
-	}
+	writer.SetDestFilename(mapPath.str());
+	writer.WriteDestFile();
+
+	std::cout << "Loaded file " << mapPath.str() << "\n";
 
 	return Initialize(mapPath.str().c_str());
 }

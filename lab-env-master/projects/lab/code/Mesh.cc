@@ -295,7 +295,7 @@ void Mesh::Render()
 	glDisableVertexAttribArray(3);
 }
 
-bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, int seed)
+bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, float lacu, float persi, int seed)
 {
 	//setup buffers
 
@@ -305,7 +305,7 @@ bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, int see
 	}
 	terrainGen = new TerrainGenerator();
 
-	if(!terrainGen->GenerateHeigthMap(widhti, heighti, freq, oct, seed))
+	if(!terrainGen->GenerateHeigthMap(widhti, heighti, freq, oct, lacu, persi, seed))
 	{
 		return false;
 	}
