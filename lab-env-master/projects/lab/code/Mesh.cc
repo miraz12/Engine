@@ -295,7 +295,7 @@ void Mesh::Render()
 	glDisableVertexAttribArray(3);
 }
 
-bool Mesh::GenerateTerrain(int widthi, int heighti, int seed)
+bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, int seed)
 {
 	//setup buffers
 
@@ -305,7 +305,7 @@ bool Mesh::GenerateTerrain(int widthi, int heighti, int seed)
 	}
 	terrainGen = new TerrainGenerator();
 
-	if(!terrainGen->GenerateHeigthMap(widthi, heighti, seed))
+	if(!terrainGen->GenerateHeigthMap(widhti, heighti, freq, oct, seed))
 	{
 		return false;
 	}
@@ -341,7 +341,7 @@ bool Mesh::GenerateTerrain(int widthi, int heighti, int seed)
 			normal = (left + right + up + down).normalizeRe();
 			
 			v.m_pos = pos;
-			v.m_normal = vector3D(1,1,1);
+			v.m_normal = normal;
 
 			terrainVertices[index] = v;
 
@@ -391,6 +391,7 @@ bool Mesh::GenerateTerrain(int widthi, int heighti, int seed)
 
 	return true; 
 }
+
 
 void Mesh::RenderTerrain()
 {

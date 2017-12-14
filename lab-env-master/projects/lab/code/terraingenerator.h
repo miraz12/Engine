@@ -21,10 +21,12 @@ public:
 	~TerrainGenerator();
 
 	bool Initialize(const char* filename);
-	bool GenerateHeigthMap(int widht, int height, int seed);
+	bool GenerateHeigthMap(int widht, int height, float freq, int oct, int seed);
+	
 
 	int width, height;
 	unsigned char* imageData;
+	std::vector<MapData> mapData;
 	vector3D GetNeighbourVertex(vector3D pos, int xOffset, int yOffset);
 
 

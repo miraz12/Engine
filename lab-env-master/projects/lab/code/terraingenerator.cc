@@ -3,23 +3,31 @@
 #include "stb_image.h"
 #include "PerlinNoise.h"
 #include "image.h"
-
+#include <cmath>;
+#include "FastNoise.h"
+#include "SimplexNoise.h"
 
 TerrainGenerator::TerrainGenerator()
 {
+	mapFilename = nullptr;
+	imageData = nullptr;
 }
 
 TerrainGenerator::~TerrainGenerator()
 {
-	if (remove(mapFilename) != 0)
-		std::cerr << "Error deleting file: " << mapFilename << std::endl;
-	else
-		puts("Removed map file");
+	if(mapFilename != nullptr)
+	{
+		if (remove(mapFilename) != 0)
+			std::cerr << "Error deleting file: " << mapFilename << std::endl;
+		else
+			puts("Removed map file");
 
-	delete mapFilename;
-	delete imageData;
-		
-
+		delete mapFilename;
+	}
+	if (imageData != nullptr)
+	{
+		delete imageData;
+	}
 }
 
 bool TerrainGenerator::Initialize(const char* filename)
@@ -44,25 +52,29 @@ bool TerrainGenerator::Initialize(const char* filename)
 	return true;
 }
 
-bool TerrainGenerator::GenerateHeigthMap(int widht, int height, int seed)
+bool TerrainGenerator::GenerateHeigthMap(int widht, int height, float freq, int oct, int seed)
 {
 	Image image(widht, height);
 
-	double frequency = 8.0;
+	double frequency = freq;
 	frequency = Clamp(frequency, 0.1, 64.0);
 
-	int octaves = 8;
+	int octaves = oct;
 	octaves = int(Clamp(octaves, 1, 16));
+
 
 	const siv::PerlinNoise perlin(seed);
 	const double fx = image.width() / frequency;
 	const double fy = image.height() / frequency;
 
+	int index = 0;
 	for (int i = 0; i < image.height(); i++)
 	{
 		for (int j = 0; j < image.width(); j++)
 		{
-			const RGB color(perlin.octaveNoise0_1(j / fx, i / fy, octaves));
+
+			float e = 1 * perlin.octaveNoise0_1(j / fx, i / fy, octaves);
+			const RGB color(e);
 
 			image.set(j, i, color);
 		}
@@ -78,6 +90,7 @@ bool TerrainGenerator::GenerateHeigthMap(int widht, int height, int seed)
 	else
 	{
 		std::cout << "...failed\n";
+		return false;
 	}
 
 	return Initialize(mapPath.str().c_str());

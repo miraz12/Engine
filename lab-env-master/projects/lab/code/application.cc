@@ -42,12 +42,12 @@ namespace Example
 		dirLight.AmbientIntensity = 0.00f;
 		dirLight.DiffuseIntensity = 0.2f;
 		dirLight.Direction = vector3D(0.0f, 0.0, 1.0);
-		//lNode->m_dLights.push_back(dirLight);
+		lNode->m_dLights.push_back(dirLight);
 
 		PointLight pLight1 = PointLight();
-		pLight1.DiffuseIntensity = 5.0f; // 0.25f;
+		pLight1.DiffuseIntensity = 5000.0f; // 0.25f;
 		pLight1.Color = vector3D(1.0f, 1.0f, 1.0f);
-		pLight1.Position = vector3D(3.0f, 250.0f, 40.f *(cosf(0.0057f) + 1.0f));
+		pLight1.Position = vector3D(0.0f, 25000.0f, 0.f *(cosf(0.0057f) + 1.0f));
 		pLight1.Attenuation.Linear = 0.1f;
 		PointLight pLight2 = PointLight();
 		pLight2.DiffuseIntensity = 5.0f; // 0.25f;
@@ -102,7 +102,10 @@ namespace Example
 	void Application::ObjectSetup()
 	{
 		box1 = new GraphicsNode();
-		box1->getMesh()->GenerateTerrain(512, 512, 12345);
+		terrainSeed = 12345;
+		frequency = 8.0;
+		octave = 8;
+		box1->getMesh()->GenerateTerrain(512, 512, frequency, octave, terrainSeed);
 		//box1->getMesh()->LoadMesh("content/box.obj");
 		box1->setLight(lNode);
 
@@ -223,13 +226,13 @@ namespace Example
 			
         	//ImGui::CollapsingHeader("Buttons");
 
-			if (ImGui::Button("Toggle normalmapping"))
+			/*if (ImGui::Button("Toggle normalmapping"))
 			{
 				for (unsigned int i = 0; i < objList.size(); i++)
 				{
 					objList[i]->activateNormal *= -1;
 				}
-			}
+			}*/
 			if (ImGui::Button("Reload Shader"))
 			{
 				for (unsigned int i = 0; i < objList.size(); i++)
@@ -239,8 +242,21 @@ namespace Example
 			}
 			if (ImGui::Button("Generate new Terrain"))
 			{
-				int seed = rand() % 10000 + 1;
-				box1->getMesh()->GenerateTerrain(512, 512, seed);
+				terrainSeed = rand() % 10000 + 1;
+				box1->getMesh()->GenerateTerrain(512, 512, frequency, octave, terrainSeed);
+			}
+			static float freq = frequency;
+			static int oct = octave;
+
+			if(ImGui::SliderFloat("Frequency", &freq, 0, 30))
+			{
+				frequency = freq;
+				box1->getMesh()->GenerateTerrain(512, 512, frequency, octave, terrainSeed);
+			}
+			if (ImGui::SliderInt("Octave", &oct, 0, 30))
+			{
+				octave = oct;
+				box1->getMesh()->GenerateTerrain(512, 512, frequency, octave, terrainSeed);
 			}
 
         	ImGui::End();
