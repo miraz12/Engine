@@ -28,12 +28,12 @@ public:
 	unsigned char* imageData;
 	std::vector<MapData> mapData;
 	vector3D GetNeighbourVertex(vector3D pos, int xOffset, int yOffset);
+	char* mapFilename;
 
 
 private:
 	
 	double Clamp(const double& x, const double& min, const double& max);
-	char* mapFilename;
 
 
 

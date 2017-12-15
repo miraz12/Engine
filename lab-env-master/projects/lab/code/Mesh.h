@@ -45,7 +45,7 @@ class Mesh
 
 		bool LoadMesh(const std::string& Filename);
 		void Render();
-		bool GenerateTerrain(int widht, int height, float freq, int oct, float lacu, float persi, int seed);
+		bool GenerateTerrain(int widht, int height, float freq, int oct, float lacu, float persi, int seed, float xS, float yS, float zS);
 		void RenderTerrain();
 
 
@@ -53,6 +53,9 @@ class Mesh
 		void setMM(matrix4D m){ modelMatrix = m; };
 
 		std::shared_ptr<ShaderObject> shader;
+		
+		//Terrain texture
+		TextureResource* tTextrue;
 
 
 	private:

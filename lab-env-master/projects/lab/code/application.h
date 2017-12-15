@@ -35,6 +35,7 @@ private:
 	void CreateRay(vector3D a, vector3D b);		//Create a ray
 	void RayFromMouse();	//Cast ray from mouse
 	void RenderUI(); 	//UI handler, draws UI
+	void UpdateTerrain(); //Update terrain
 
 	void LightSetup(); // Setup all the lights TODO: fix an easier way to add light
 	void ObjectSetup(); // Setup all the objects TODO: Fix easier way to do this.
@@ -100,6 +101,7 @@ private:
 	float persistence;
 	float tWidth;
 	float tHeigth;
+	float tScaleX, tScaleY, tScaleZ;
 
 
 

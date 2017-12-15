@@ -18,9 +18,11 @@ public:
 	void bind();
 	void bind(GLenum textureUnit, GLuint textureID, int unit);
 
-private:
 	const char* m_fileName;
 	GLenum m_textureTarget = GL_TEXTURE_2D;
 	GLuint m_texture;
+
+private:
+	
 
 };

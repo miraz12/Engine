@@ -46,6 +46,9 @@ Mesh::Mesh()
 
 	defaulNormal = new TextureResource("content/DefaultNormalMap.png");
 	defaulNormal->Load();
+
+	tTextrue = new TextureResource("content/test.png");
+	tTextrue->Load();
 }
 
 
@@ -295,7 +298,7 @@ void Mesh::Render()
 	glDisableVertexAttribArray(3);
 }
 
-bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, float lacu, float persi, int seed)
+bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, float lacu, float persi, int seed, float xS, float yS, float zS)
 {
 	//setup buffers
 
@@ -303,12 +306,19 @@ bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, float l
 	{
 		delete terrainGen;
 	}
+	if (tTextrue != nullptr)
+	{
+		delete tTextrue;
+	}
 	terrainGen = new TerrainGenerator();
 
 	if(!terrainGen->GenerateHeigthMap(widhti, heighti, freq, oct, lacu, persi, seed))
 	{
 		return false;
 	}
+
+	tTextrue = new TextureResource(terrainGen->mapFilename);
+	tTextrue->Load();
 
 	printf("Loaded Terrain\n");
 
@@ -329,10 +339,10 @@ bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, float l
 
 			Vertex v;
 
-			float x = float(j) -width * 0.5;
-			float y = float(terrainGen->imageData[i*width + j]) * 0.25f;
-			float z = float(i) -height * 0.5;
-			pos = vector3D(x, y, z);
+			float x = float(i) -width * 0.5;
+			float y = float(terrainGen->imageData[i*width + j]);
+			float z = float(j) -height * 0.5 * zS;
+			pos = vector3D(x * xS, y * yS, z * zS);
 
 			left = terrainGen->GetNeighbourVertex(pos, -1, 0);
 			right = terrainGen->GetNeighbourVertex(pos, +1, 0);
@@ -415,32 +425,6 @@ void Mesh::RenderTerrain()
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(3);
-	
-	/*
-	int ind1, ind2;
-	glColor3f(0.5f, 0.0f, 1.0f);
-	glBegin(GL_LINES);
-	//glBegin(GL_TRIANGLE_STRIP);
-	for (int i = 1; i < terrainGen->height-1; i++)
-	{
-		for (int j = 1; j <  terrainGen->width-1; j++)
-		{
-			ind1 = (terrainGen->width * i) + j;
-			ind2 = (terrainGen->width * (i + 1)) + j - 1;
-			glColor3f(0.5f, 0.0f, 1.0f);
-			glVertex3f( terrainVertices[ind1].m_pos[0], terrainVertices[ind1].m_pos[1], terrainVertices[ind1].m_pos[2]);
-			glVertex3f(terrainVertices[ind2].m_pos[0], terrainVertices[ind2].m_pos[1], terrainVertices[ind2].m_pos[2]);
-		
-			glVertex3f( terrainVertices[ind1].m_pos[0], terrainVertices[ind1].m_pos[1], terrainVertices[ind1].m_pos[2]);
-			glVertex3f( terrainVertices[ind1 + 1].m_pos[0], terrainVertices[ind1 + 1].m_pos[1], terrainVertices[ind1 + 1].m_pos[2]);
-
-			ind2 = (terrainGen->width * (i - 1) + j + 1);
-			glVertex3f( terrainVertices[ind1].m_pos[0], terrainVertices[ind1].m_pos[1], terrainVertices[ind1].m_pos[2]);
-			glVertex3f( terrainVertices[ind2].m_pos[0], terrainVertices[ind2].m_pos[1], terrainVertices[ind2].m_pos[2]);
-		}
-	}
-	glEnd();
-	*/
 }
 
 void Mesh::computeTangentBasis(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices)
