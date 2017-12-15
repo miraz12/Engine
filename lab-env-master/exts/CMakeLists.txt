@@ -21,6 +21,13 @@ ADD_SUBDIRECTORY(assimp-3.3.1)
 SET_TARGET_PROPERTIES(assimp PROPERTIES FOLDER "exts/assimp")
 TARGET_INCLUDE_DIRECTORIES(exts INTERFACE assimp-3.3.1/include)
 
+ADD_LIBRARY(libnoise STATIC libnoise/bin/libnoise.lib )
+TARGET_LINK_LIBRARIES(libnoise PUBLIC exts "-SAFESEH:NO")
+TARGET_INCLUDE_DIRECTORIES(exts INTERFACE libnoise/include)
+TARGET_INCLUDE_DIRECTORIES(libnoise PUBLIC libnoise/bin)
+SET_TARGET_PROPERTIES(libnoise PROPERTIES FOLDER "exts/libnoise")
+
+
 ADD_LIBRARY(nanovg STATIC nanovg/src/nanovg.c nanovg/src/nanovg.h nanovg/src/nanovg_gl.h nanovg/src/nanovg_gl_utils.h)
 TARGET_LINK_LIBRARIES(nanovg PUBLIC exts)
 TARGET_INCLUDE_DIRECTORIES(nanovg PUBLIC nanovg/src)
@@ -36,4 +43,4 @@ TARGET_LINK_LIBRARIES(imgui PUBLIC exts)
 TARGET_INCLUDE_DIRECTORIES(imgui PUBLIC imgui imgui/examples/opengl3_example)
 SET_TARGET_PROPERTIES(imgui PROPERTIES FOLDER "exts/imgui")
 
-TARGET_LINK_LIBRARIES(exts INTERFACE imgui nanovg assimp)
+TARGET_LINK_LIBRARIES(exts INTERFACE imgui nanovg assimp libnoise)
