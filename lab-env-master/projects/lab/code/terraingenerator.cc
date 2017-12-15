@@ -1,7 +1,6 @@
 #pragma once
 #include "terrainGenerator.h"
 #include "stb_image.h"
-#include "image.h"
 #include <noise/noise.h>
 #include "noiseutils.h"
 
