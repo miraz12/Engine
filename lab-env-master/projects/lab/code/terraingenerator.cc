@@ -27,21 +27,18 @@ TerrainGenerator::~TerrainGenerator()
 	}
 }
 
-bool TerrainGenerator::Initialize(const char* filename)
+bool TerrainGenerator::LoadHeightMap(const char* filename)
 {
 	int error;
 	long int index;
-	imageData = stbi_load(filename, &this->width, &this->height, &error, 1);
-
-
+	imageData = stbi_load(filename, &this->width, &this->height, &error, 1);	//Load file	
 	if (imageData == NULL) 
 	{
-
-		std::cerr << "Unable to load texture: " << filename << std::endl;
+		std::cerr << "Unable to load heightmap: " << filename << std::endl;
 		return false;
 	}
 
-	mapFilename = new char;
+	mapFilename = new char;	//Save file name for later use
 	mapFilename = strdup(filename);
 
 	return true;
@@ -92,7 +89,7 @@ bool TerrainGenerator::GenerateHeigthMap(int widht, int height, float freq, int 
 
 	std::cout << "Loaded file " << mapPath.str() << "\n";
 
-	return Initialize(mapPath.str().c_str());
+	return LoadHeightMap(mapPath.str().c_str());
 }
 
 vector3D TerrainGenerator::GetNeighbourVertex(vector3D pos, int xOffset, int yOffset)
@@ -105,9 +102,4 @@ vector3D TerrainGenerator::GetNeighbourVertex(vector3D pos, int xOffset, int yOf
 	int y = pos[2] + yOffset;
 	int x = pos[0] + xOffset;
 	return vector3D(x, imageData[y*width + x] * 0.25f, y);
-}
-
-double TerrainGenerator::Clamp(const double& x, const double& min, const double& max)
-{
-	return (x < min) ? min : ((max < x) ? max : x);
 }

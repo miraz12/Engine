@@ -103,6 +103,9 @@ private:
 	float tHeigth;
 	float tScaleX, tScaleY, tScaleZ;
 
+	GraphicsNode* terrainObject;
+
+
 
 
 };

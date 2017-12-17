@@ -337,13 +337,14 @@ bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, float l
 		{
 			index = (width * i) + j;
 
+			//Get vertex postition from height map
 			Vertex v;
-
 			float x = float(i) -width * 0.5;
 			float y = float(terrainGen->imageData[i*width + j]);
 			float z = float(j) -height * 0.5 * zS;
 			pos = vector3D(x * xS, y * yS, z * zS);
 
+			//Calculate normal
 			left = terrainGen->GetNeighbourVertex(pos, -1, 0);
 			right = terrainGen->GetNeighbourVertex(pos, +1, 0);
 			up = terrainGen->GetNeighbourVertex(pos, 0, -1);
@@ -355,7 +356,9 @@ bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, float l
 
 			terrainVertices[index] = v;
 
-			if((i < height-1) && (j < width-1))
+			/*Calculate indices for drawing the map. Set all indicies from corner 
+			vertices to themself to avoid having them coupled with vertices that dont exist*/
+			if((i < height-1) && (j < width-1))	
 			{
 				// Top triangle (T0)
 				terrainIndices[inIndex++] = index;               // V0
@@ -379,8 +382,9 @@ bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, float l
 		}
 	}
 
-	computeTangentBasis(terrainVertices, terrainIndices);
+	computeTangentBasis(terrainVertices, terrainIndices);	//Compute tangents, for lighting.
 
+	//Setup buffers
 	glGenBuffers(1, &terrainVertexBufferId);
 	glBindBuffer(GL_ARRAY_BUFFER, terrainVertexBufferId);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* terrainVertices.size(), &terrainVertices[0], GL_STATIC_DRAW);
@@ -405,14 +409,15 @@ bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, float l
 
 void Mesh::RenderTerrain()
 {
+	//Render the map
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 	glEnableVertexAttribArray(3);
 	
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //Uncommet if wirefram is wanted
 	glBindBuffer(GL_ARRAY_BUFFER, terrainVertexBufferId);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);	//Indices
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);	//Vertices
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12); //UVs
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20); //Normals
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)32);	//Tangents
