@@ -113,8 +113,12 @@ namespace Example
 		tScaleY = 0.25f;
 		tScaleZ = 1.0f;
 
+		noiseType = 0;
+
 		terrainObject = new GraphicsNode();
-		terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave, lacunarity, persistence, terrainSeed, tScaleX, tScaleY, tScaleZ);
+		terrainObject->getMesh()->GenerateTerrain(	tWidth, tHeigth, frequency, octave,
+													lacunarity, persistence, terrainSeed, tScaleX,
+													tScaleY, tScaleZ, noiseType);
 		terrainObject->setLight(lNode);
 
 
@@ -261,18 +265,32 @@ namespace Example
 			scal[0] = tScaleX;
 			scal[1] = tScaleY;
 			scal[2] = tScaleZ;
+			static int noise_type = noiseType;
 
 			if (ImGui::Button("Generate new Terrain"))
 			{
 				terrainSeed = rand() % 10000 + 1;
-				terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave, lacunarity, persistence, terrainSeed, tScaleX, tScaleY, tScaleZ);
+				terrainObject->getMesh()->GenerateTerrain(	tWidth, tHeigth, frequency, octave,
+															lacunarity, persistence, terrainSeed, tScaleX,
+															tScaleY, tScaleZ, noise_type);
 			}
+
+			if (ImGui::Combo("Noise type", &noise_type, "Perlin\0Voronni\0Ridged-multifractal\0Billow\0Checkerboard\0Const\0Cylinders\0Spheres\0"))
+			{
+				noiseType = noise_type;
+				terrainObject->getMesh()->GenerateTerrain(	tWidth, tHeigth, frequency, octave,
+															lacunarity, persistence, terrainSeed, tScaleX,
+															tScaleY, tScaleZ, noise_type);
+			}
+
 			if (ImGui::SliderInt2("Width and Height", dim, 1, 1080))
 			{
 				tWidth = dim[0];
 				tHeigth = dim[1];
 
-				terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave, lacunarity, persistence, terrainSeed, tScaleX, tScaleY, tScaleZ);
+				terrainObject->getMesh()->GenerateTerrain(	tWidth, tHeigth, frequency, octave,
+															lacunarity, persistence, terrainSeed, tScaleX,
+															tScaleY, tScaleZ, noise_type);
 			}
 			if (ImGui::SliderFloat3("Scale x, y, z", scal, 0.0, 1.0))
 			{
@@ -280,28 +298,73 @@ namespace Example
 				tScaleY = scal[1];
 				tScaleZ = scal[2];
 
-				terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave, lacunarity, persistence, terrainSeed, tScaleX, tScaleY, tScaleZ);
+				terrainObject->getMesh()->GenerateTerrain(	tWidth, tHeigth, frequency, octave,
+															lacunarity, persistence, terrainSeed, tScaleX,
+															tScaleY, tScaleZ, noise_type);
 			}
 
-			if(ImGui::SliderFloat("Frequency", &freq, 0.001, 5))
+			if (noise_type == 1)
 			{
-				frequency = freq;
-				terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave, lacunarity, persistence, terrainSeed, tScaleX, tScaleY, tScaleZ);
+				/*Use oct to not have an even more insane amount of arguments*/
+				if (ImGui::SliderInt("Displacement", &oct, 0, 10))
+				{
+					octave = oct;
+					terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave,
+						lacunarity, persistence, terrainSeed, tScaleX,
+						tScaleY, tScaleZ, noise_type);
+				}
 			}
-			if (ImGui::SliderInt("Octaves", &oct, 1, 30))
+
+			if (noise_type == 5)
 			{
-				octave = oct;
-				terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave, lacunarity, persistence, terrainSeed, tScaleX, tScaleY, tScaleZ);
+				/*Use oct to not have an even more insane amount of arguments*/
+				if (ImGui::SliderFloat("Const Value", &freq, -1.0, 1.0))
+				{
+					frequency = freq;
+					terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave,
+						lacunarity, persistence, terrainSeed, tScaleX,
+						tScaleY, tScaleZ, noise_type);
+				}
 			}
-			if (ImGui::SliderFloat("Lacunarity", &lacu, 1.5, 3.5))
+
+			if (noise_type != 4 && noise_type != 5)
 			{
-				lacunarity = lacu;
-				terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave, lacunarity, persistence, terrainSeed, tScaleX, tScaleY, tScaleZ);
+				if (ImGui::SliderFloat("Frequency", &freq, 0.001, 5))
+				{
+					frequency = freq;
+					terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave,
+						lacunarity, persistence, terrainSeed, tScaleX,
+						tScaleY, tScaleZ, noise_type);
+				}
 			}
-			if (ImGui::SliderFloat("Persistence", &per, 0.0, 1.0))
+
+			if (noise_type == 0 || noise_type == 2 || noise_type == 3)
 			{
-				persistence = per;
-				terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave, lacunarity, persistence, terrainSeed, tScaleX, tScaleY, tScaleZ);
+				if (ImGui::SliderInt("Octaves", &oct, 1, 30))
+				{
+					octave = oct;
+					terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave,
+						lacunarity, persistence, terrainSeed, tScaleX,
+						tScaleY, tScaleZ, noise_type);
+				}
+				if (ImGui::SliderFloat("Lacunarity", &lacu, 1.5, 3.5))
+				{
+					lacunarity = lacu;
+					terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave,
+						lacunarity, persistence, terrainSeed, tScaleX,
+						tScaleY, tScaleZ, noise_type);
+				}
+				if (noise_type != 2)
+				{
+
+					if (ImGui::SliderFloat("Persistence", &per, 0.0, 1.0))
+					{
+						persistence = per;
+						terrainObject->getMesh()->GenerateTerrain(tWidth, tHeigth, frequency, octave,
+							lacunarity, persistence, terrainSeed, tScaleX,
+							tScaleY, tScaleZ, noise_type);
+					}
+				}
 			}
 			ImTextureID my_tex_id = (void *)(intptr_t) terrainObject->getMesh()->tTextrue->m_texture;
 			ImGui::Image(my_tex_id, ImVec2(tWidth, tHeigth), ImVec2(0, 0), ImVec2(1, 1), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));

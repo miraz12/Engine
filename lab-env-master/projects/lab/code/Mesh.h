@@ -45,7 +45,7 @@ class Mesh
 
 		bool LoadMesh(const std::string& Filename);
 		void Render();
-		bool GenerateTerrain(int widht, int height, float freq, int oct, float lacu, float persi, int seed, float xS, float yS, float zS);
+		bool GenerateTerrain(int widht, int height, float freq, int oct, float lacu, float persi, int seed, float xS, float yS, float zS, int noiseType);
 		void RenderTerrain();
 
 

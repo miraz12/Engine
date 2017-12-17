@@ -1,13 +1,13 @@
 #pragma once
 #include "terrainGenerator.h"
 #include "stb_image.h"
-#include <noise/noise.h>
 #include "noiseutils.h"
 
 TerrainGenerator::TerrainGenerator()
 {
 	mapFilename = nullptr;
 	imageData = nullptr;
+	noiseModule = nullptr;
 }
 
 TerrainGenerator::~TerrainGenerator()
@@ -44,29 +44,127 @@ bool TerrainGenerator::LoadHeightMap(const char* filename)
 	return true;
 }
 
-bool TerrainGenerator::GenerateHeigthMap(int widht, int height, float freq, int oct, float lacu, float persi, int seed)
+bool TerrainGenerator::GenerateHeigthMap(int widht, int height, float freq, int oct, float lacu, float persi, int seed, int noiseType)
 {
-	noise::module::Perlin myModule;
-	/*Noise seed*/
-	myModule.SetSeed(seed);
+	if (noiseModule != nullptr)
+	{
+		delete noiseModule;
+	}
 
-	/*The number of cycles per unit length that a specific coherent-noise function outputs.*/
-	myModule.SetFrequency(freq);
-	
-	/*One of the coherent-noise functions in a series of coherent-noise functions that are added together to form Perlin noise.*/
-	myModule.SetOctaveCount(oct);
+	if (noiseType == 0)
+	{
+		noise::module::Perlin* newMod = new noise::module::Perlin();
 
-	/*A multiplier that determines how quickly the frequency increases for each successive octave in a Perlin-noise function.*/
-	myModule.SetLacunarity(lacu);
+		/*Noise seed*/
+		newMod->SetSeed(seed);
 
-	/*A multiplier that determines how quickly the amplitudes diminish for each successive octave in a Perlin-noise function.*/
-	myModule.SetPersistence(persi);
+		/*The number of cycles per unit length that a specific coherent-noise function outputs.*/
+		newMod->SetFrequency(freq);
 
-	//myModule.SetSourceModule(0, myModule);
+		/*One of the coherent-noise functions in a series of coherent-noise functions that are added together to form Perlin noise.*/
+		newMod->SetOctaveCount(oct);
+
+		/*A multiplier that determines how quickly the frequency increases for each successive octave in a Perlin-noise function.*/
+		newMod->SetLacunarity(lacu);
+
+		/*A multiplier that determines how quickly the amplitudes diminish for each successive octave in a Perlin-noise function.*/
+		newMod->SetPersistence(persi);
+
+		noiseModule = newMod;
+	}
+	else if (noiseType == 1)
+	{
+		noise::module::Voronoi* newMod = new noise::module::Voronoi();
+
+		/*Noise seed*/
+		newMod->SetSeed(seed);
+
+		/*The number of cycles per unit length that a specific coherent-noise function outputs.*/
+		newMod->SetFrequency(freq);
+
+		/*Use oct to not have an even more insane amount of arguments*/
+		newMod->SetDisplacement(oct);
+
+		noiseModule = newMod;
+
+	}
+	else if (noiseType == 2)
+	{
+		noise::module::RidgedMulti* newMod = new noise::module::RidgedMulti();
+
+		/*Noise seed*/
+		newMod->SetSeed(seed);
+
+		/*The number of cycles per unit length that a specific coherent-noise function outputs.*/
+		newMod->SetFrequency(freq);
+
+		/*One of the coherent-noise functions in a series of coherent-noise functions that are added together to form Perlin noise.*/
+		newMod->SetOctaveCount(oct);
+
+		/*A multiplier that determines how quickly the frequency increases for each successive octave in a Perlin-noise function.*/
+		newMod->SetLacunarity(lacu);
+
+		noiseModule = newMod;
+	}
+	else if (noiseType == 3)
+	{
+		noise::module::Billow* newMod = new noise::module::Billow();
+
+		/*Noise seed*/
+		newMod->SetSeed(seed);
+
+		/*The number of cycles per unit length that a specific coherent-noise function outputs.*/
+		newMod->SetFrequency(freq);
+
+		/*One of the coherent-noise functions in a series of coherent-noise functions that are added together to form Perlin noise.*/
+		newMod->SetOctaveCount(oct);
+
+		/*A multiplier that determines how quickly the frequency increases for each successive octave in a Perlin-noise function.*/
+		newMod->SetLacunarity(lacu);
+
+		/*A multiplier that determines how quickly the amplitudes diminish for each successive octave in a Perlin-noise function.*/
+		newMod->SetPersistence(persi);
+
+		noiseModule = newMod;
+	}
+	else if (noiseType == 4)
+	{
+		noise::module::Checkerboard* newMod = new noise::module::Checkerboard();
+
+		noiseModule = newMod;
+	}
+	else if (noiseType == 5)
+	{
+		noise::module::Const* newMod = new noise::module::Const();
+
+		/*Set the constant value*/
+		newMod->SetConstValue(freq);
+
+		noiseModule = newMod;
+	}
+	else if (noiseType == 6)
+	{
+		noise::module::Cylinders* newMod = new noise::module::Cylinders();
+
+		newMod->SetFrequency(freq);
+
+		noiseModule = newMod;
+	}
+	else if (noiseType == 7)
+	{
+		noise::module::Spheres* newMod = new noise::module::Spheres();
+
+		/*The number of cycles per unit length that a specific coherent-noise function outputs.*/
+		newMod->SetFrequency(freq);
+
+		noiseModule = newMod;
+	}
+
+
 
 	utils::NoiseMap heightMap;
 	utils::NoiseMapBuilderPlane heightMapBuilder;
-	heightMapBuilder.SetSourceModule(myModule);
+	heightMapBuilder.SetSourceModule(*noiseModule);
 	heightMapBuilder.SetDestNoiseMap(heightMap);
 	heightMapBuilder.SetDestSize(widht, height);
 	heightMapBuilder.SetBounds(2.0, 6.0, 1.0, 5.0);

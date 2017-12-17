@@ -102,6 +102,7 @@ private:
 	float tWidth;
 	float tHeigth;
 	float tScaleX, tScaleY, tScaleZ;
+	int noiseType;
 
 	GraphicsNode* terrainObject;
 
