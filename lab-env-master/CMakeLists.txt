@@ -22,7 +22,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
 ENDIF()
 
 IF(MSVC)
-    SET(OPENGL_LIBS opengl32.lib)
+    SET(OPENGL_LIBS opengl32.lib -SAFESEH:NO)
 ELSE()
     SET(OPENGL_LIBS GL GLU X11 Xxf86vm pthread Xrandr Xi Xinerama Xcursor)
 ENDIF()

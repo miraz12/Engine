@@ -25,6 +25,7 @@ TerrainGenerator::~TerrainGenerator()
 	{
 		delete imageData;
 	}
+
 }
 
 bool TerrainGenerator::LoadHeightMap(const char* filename)
@@ -36,6 +37,10 @@ bool TerrainGenerator::LoadHeightMap(const char* filename)
 	{
 		std::cerr << "Unable to load heightmap: " << filename << std::endl;
 		return false;
+	}
+	if (mapFilename != nullptr)
+	{
+		delete mapFilename;
 	}
 
 	mapFilename = new char;	//Save file name for later use
@@ -160,8 +165,6 @@ bool TerrainGenerator::GenerateHeigthMap(int widht, int height, float freq, int 
 		noiseModule = newMod;
 	}
 
-
-
 	utils::NoiseMap heightMap;
 	utils::NoiseMapBuilderPlane heightMapBuilder;
 	heightMapBuilder.SetSourceModule(*noiseModule);
@@ -199,5 +202,5 @@ vector3D TerrainGenerator::GetNeighbourVertex(vector3D pos, int xOffset, int yOf
 
 	int y = pos[2] + yOffset;
 	int x = pos[0] + xOffset;
-	return vector3D(x, imageData[y*width + x] * 0.25f, y);
+	return vector3D(x, imageData[y*width + x], y);
 }

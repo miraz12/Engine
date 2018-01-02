@@ -300,7 +300,6 @@ void Mesh::Render()
 
 bool Mesh::GenerateTerrain(int widhti, int heighti, float freq, int oct, float lacu, float persi, int seed, float xS, float yS, float zS, int noiseType)
 {
-	//setup buffers
 
 	if(terrainGen != nullptr)
 	{

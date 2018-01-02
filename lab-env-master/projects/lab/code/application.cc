@@ -176,7 +176,7 @@ namespace Example
 			LightSetup();
 			ObjectSetup();
 
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
             // set ui rendering function
             this->window->SetUiRender([this]()
             {
@@ -275,7 +275,7 @@ namespace Example
 															tScaleY, tScaleZ, noise_type);
 			}
 
-			if (ImGui::Combo("Noise type", &noise_type, "Perlin\0Voronni\0Ridged-multifractal\0Billow\0Checkerboard\0Const\0Cylinders\0Spheres\0"))
+			if (ImGui::Combo("Noise type", &noise_type, "Perlin\0Voronoi\0Ridged-multifractal\0Billow\0Checkerboard\0Const\0Cylinders\0Spheres\0"))
 			{
 				noiseType = noise_type;
 				terrainObject->getMesh()->GenerateTerrain(	tWidth, tHeigth, frequency, octave,
@@ -317,7 +317,7 @@ namespace Example
 
 			if (noise_type == 5)
 			{
-				/*Use oct to not have an even more insane amount of arguments*/
+				/*Use freq to not have an even more insane amount of arguments*/
 				if (ImGui::SliderFloat("Const Value", &freq, -1.0, 1.0))
 				{
 					frequency = freq;
