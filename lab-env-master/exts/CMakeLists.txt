@@ -17,9 +17,10 @@ ADD_SUBDIRECTORY(glfw-3.1.1)
 SET_TARGET_PROPERTIES(glfw PROPERTIES FOLDER "exts/glfw")
 TARGET_INCLUDE_DIRECTORIES(exts INTERFACE glfw-3.1.1/include)
 
-ADD_SUBDIRECTORY(assimp-3.3.1)
+ADD_SUBDIRECTORY(assimp-4.1.0)
 SET_TARGET_PROPERTIES(assimp PROPERTIES FOLDER "exts/assimp")
-TARGET_INCLUDE_DIRECTORIES(exts INTERFACE assimp-3.3.1/include)
+TARGET_INCLUDE_DIRECTORIES(exts INTERFACE assimp-4.1.0/include)
+TARGET_INCLUDE_DIRECTORIES(exts INTERFACE ${CMAKE_BINARY_DIR}/exts/assimp-4.1.0/include)
 
 ADD_LIBRARY(nanovg STATIC nanovg/src/nanovg.c nanovg/src/nanovg.h nanovg/src/nanovg_gl.h nanovg/src/nanovg_gl_utils.h)
 TARGET_LINK_LIBRARIES(nanovg PUBLIC exts)
@@ -31,6 +32,8 @@ ADD_LIBRARY(imgui STATIC imgui/imgui.cpp imgui/imgui_demo.cpp imgui/imgui_draw.c
 			imgui/stb_rect_pack.h imgui/stb_textedit.h imgui/stb_truetype.h 
 			imgui/examples/opengl3_example/imgui_impl_glfw_gl3.h
 			imgui/examples/opengl3_example/imgui_impl_glfw_gl3.cpp)
+			
+
 
 TARGET_LINK_LIBRARIES(imgui PUBLIC exts)
 TARGET_INCLUDE_DIRECTORIES(imgui PUBLIC imgui imgui/examples/opengl3_example)

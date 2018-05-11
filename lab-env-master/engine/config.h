@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <atomic>
 #include <xmmintrin.h>
+#include <emmintrin.h>  
 #include <assert.h>
 
 typedef uint32_t	uint32;
@@ -36,6 +37,7 @@ typedef double		float64;
 typedef __m128		vec4;
 typedef __m128i		ivec4;
 typedef __m128d		dvec4;
+
 
 #define j_min(x, y) x < y ? x : y
 #define j_max(x, y) x > y ? x : y

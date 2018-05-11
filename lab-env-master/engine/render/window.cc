@@ -10,6 +10,8 @@
 #define NANOVG_GL3_IMPLEMENTATION 1
 #include "nanovg_gl.h"
 
+
+
 namespace Display
 {
 
@@ -90,7 +92,7 @@ Window::StaticKeyPressCallback(GLFWwindow* win, int32 key, int32 scancode, int32
 	Window* window = (Window*)glfwGetWindowUserPointer(win);
 	if (ImGui::IsMouseHoveringAnyWindow())
 	{
-		ImGui_ImplGlfwGL3_KeyCallback(win, key, scancode, action, mods);
+		ImGui_ImplGlfw_KeyCallback(win, key, scancode, action, mods);
 	}
 	else if (nullptr != window->keyPressCallback) window->keyPressCallback(key, scancode, action, mods);
 }
@@ -104,7 +106,7 @@ Window::StaticMousePressCallback(GLFWwindow* win, int32 button, int32 action, in
 	Window* window = (Window*)glfwGetWindowUserPointer(win);
 	if (ImGui::IsMouseHoveringAnyWindow())
 	{
-		ImGui_ImplGlfwGL3_MouseButtonCallback(win, button, action, mods);
+		ImGui_ImplGlfw_MouseButtonCallback(win, button, action, mods);
 	}
 	else if (nullptr != window->mousePressCallback) window->mousePressCallback(button, action, mods);
 }
@@ -138,11 +140,26 @@ Window::StaticMouseScrollCallback(GLFWwindow* win, float64 x, float64 y)
 	Window* window = (Window*)glfwGetWindowUserPointer(win);
 	if (ImGui::IsMouseHoveringAnyWindow())
 	{
-		ImGui_ImplGlfwGL3_ScrollCallback(win, x, y);
+		ImGui_ImplGlfw_ScrollCallback(win, x, y);
 	}
 	else if (nullptr != window->mouseScrollCallback) window->mouseScrollCallback(x, y);
 }
 
+//------------------------------------------------------------------------------
+/**
+*/
+void
+Window::StaticWindowSizeCallback(GLFWwindow* win, int width, int height)
+{
+    Window* window = (Window*)glfwGetWindowUserPointer(win);
+    if (nullptr != window->windowResizeCallback)
+    {
+        window->width = width;
+        window->height = height;
+        window->windowResizeCallback();
+        window->Resize();
+    }
+}
 //------------------------------------------------------------------------------
 /**
 */
@@ -192,6 +209,13 @@ Window::Open()
 	this->window = glfwCreateWindow(this->width, this->height, this->title.c_str(), nullptr, nullptr);
 	glfwMakeContextCurrent(this->window);
 
+	// Setup ImGui binding
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
+
+
 	if (nullptr != this->window && WindowCount == 0)
 	{
 		GLenum res = glewInit();
@@ -230,9 +254,10 @@ Window::Open()
 	glfwSetCursorPosCallback(this->window, Window::StaticMouseMoveCallback);
 	glfwSetCursorEnterCallback(this->window, Window::StaticMouseEnterLeaveCallback);
 	glfwSetScrollCallback(this->window, Window::StaticMouseScrollCallback);
+    glfwSetWindowSizeCallback(this->window, Window::StaticWindowSizeCallback);
 	// setup imgui implementation
 	ImGui_ImplGlfwGL3_Init(this->window, false);
-	glfwSetCharCallback(window, ImGui_ImplGlfwGL3_CharCallback);
+	glfwSetCharCallback(window, ImGui_ImplGlfw_CharCallback);
 
 	// setup nanovg
 	this->vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
@@ -265,6 +290,8 @@ void
 Window::MakeCurrent()
 {
 	glfwMakeContextCurrent(this->window);
+	ImGui::DestroyContext();
+
 }
 
 //------------------------------------------------------------------------------
@@ -299,6 +326,7 @@ Window::SwapBuffers()
 			ImGui_ImplGlfwGL3_NewFrame();
 			this->uiFunc();
 			ImGui::Render();
+			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 		}
 		glfwSwapBuffers(this->window);
 	}

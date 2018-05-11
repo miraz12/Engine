@@ -26,6 +26,11 @@ public:
 	/// set title of window
 	void SetTitle(const std::string& title);
 
+    ///Get window width
+    int32 GetWidth() const { return width; }
+    ///Get window height
+    int32 GetHeight() const { return height; }
+
 	/// open window
 	bool Open();
 	/// close window
@@ -56,6 +61,9 @@ public:
 	void SetUiRender(const std::function<void()>& func);
 	/// set optional nanovg render function
 	void SetNanoVGRender(const std::function<void(NVGcontext *)> & func);
+
+    ///set window function callback
+    void SetWindowResizeCallback(const std::function<void()> & func);
 	GLFWwindow* window;
 
 
@@ -71,6 +79,9 @@ private:
 	static void StaticMouseEnterLeaveCallback(GLFWwindow* win, int32 mode);
 	/// static mouse scroll callback
 	static void StaticMouseScrollCallback(GLFWwindow* win, float64 x, float64 y);
+    /// Static window resize callback
+    static void StaticWindowSizeCallback(GLFWwindow* win, int width, int height);
+
 
 	/// resize update
 	void Resize();
@@ -93,6 +104,9 @@ private:
 	std::function<void()> uiFunc;
 	/// function for nanovg rendering callback
 	std::function<void(NVGcontext *)> nanoFunc;
+    /// function for window resize callback
+    std::function<void()> windowResizeCallback;
+
 
 
 	int32 width;
@@ -193,7 +207,14 @@ Window::SetNanoVGRender(const std::function<void(NVGcontext *)> & func)
 {
 	this->nanoFunc = func;
 }
-
+//------------------------------------------------------------------------------
+/**
+*/
+inline void
+Window::SetWindowResizeCallback(const std::function<void()> & func)
+{
+    this->windowResizeCallback = func;
+}
 
 
 
