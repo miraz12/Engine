@@ -9,10 +9,10 @@
 #include "core/app.h"
 #include "render/window.h"
 #include "render/camera.h"
-#include "core/math/matrix4D.h"
 #include "render/resources/graphicsnode.h"
-#include "render/particles/particlesystem.h"
 #include "render/input/keyhandler.h"
+#include "render/managers/entitymanager.h"
+#include "core/toolkit/userinterface.h"
 
 
 namespace Example
@@ -29,36 +29,32 @@ public:
 	bool Open();
 	/// run app
 	void Run();
+
+    int GetFPS() { return FPS; }
+
+    EntityManager* GetEntityManager() const
+    {
+        return entityManager;
+    }
+
 private:
 
-	void CreatePlane(vector3D a, vector3D b, vector3D c, vector3D d); //Create a plane
-	void CreateRay(vector3D a, vector3D b);		//Create a ray
-	void RayFromMouse();	//Cast ray from mouse
-	void RenderUI(); 	//UI handler, draws UI
-
-	void LightSetup(); // Setup all the lights TODO: fix an easier way to add light
-	void ObjectSetup(); // Setup all the objects TODO: Fix easier way to do this.
-
+	void LightSetup(); // Setup all the lights 
+	void ObjectSetup(); // Setup all the objects 
 	void UpdateLights(double time);	//Update all lights that should be updated
-	void UpdateObjects(double time, double deltatime);	//Update all objects that should be updated
+
+    void CalculateFPS(double& currentTime, double& lastTimeFPS, int& nbFrames);
 
     Display::Window* window;
-    float aspect;
-    float wWidht, wHeight;
-
     Camera* mainCamera; 
     KeyHandler* keyHanderl;
+    EntityManager* entityManager;
+    UserInterface* ui;
 
-	int FPS;
-	double deltaTime;
+    std::shared_ptr<LightManager> lNode;
 
-	GraphicsNode* box1;
-	GraphicsNode* box2;
-	GraphicsNode* box3;
-
-	std::vector<GraphicsNode*> objList;
-	std::shared_ptr<LightResource> lNode;
-
+	int FPS{ 0 };
+	double deltaTime{ 0 };
 
 };
 } // namespace Example

@@ -2,7 +2,7 @@
 #include "lightresource.h"
 
 
-LightResource::LightResource(float specularintensity, float speculatpower)
+LightManager::LightManager(float specularintensity, float speculatpower)
 {
 	color = vector3D(0.1f, 0.1f, 0.1f);
 	pos = vector3D(1.0, 1.0, 1.0);
@@ -15,7 +15,7 @@ LightResource::LightResource(float specularintensity, float speculatpower)
 
 }
 
-void LightResource::AddDirectionalLight(vector3D color, float ambientintensity, float diffuseintensity,
+void LightManager::AddDirectionalLight(vector3D color, float ambientintensity, float diffuseintensity,
     vector3D direction)
 {
     DirectionalLight dirLight = DirectionalLight();
@@ -26,7 +26,7 @@ void LightResource::AddDirectionalLight(vector3D color, float ambientintensity, 
     this->m_dLights.push_back(dirLight);
 }
 
-void LightResource::AddPointLight(vector3D color, float diffuseintensity, vector3D position, float attenuationConst,
+void LightManager::AddPointLight(vector3D color, float diffuseintensity, vector3D position, float attenuationConst,
     float attenuationLin, float attenuationExp)
 {
     PointLight pLight = PointLight();
@@ -39,7 +39,7 @@ void LightResource::AddPointLight(vector3D color, float diffuseintensity, vector
     this->m_pLights.push_back(pLight);
 }
 
-void LightResource::AddSpotLight(vector3D color, float diffuseintensity, vector3D position, vector3D direction, float attenuationConst,
+void LightManager::AddSpotLight(vector3D color, float diffuseintensity, vector3D position, vector3D direction, float attenuationConst,
     float attenuationLin, float attenuationExp, float cutoff)
 {
     SpotLight sLight = SpotLight();
@@ -54,36 +54,36 @@ void LightResource::AddSpotLight(vector3D color, float diffuseintensity, vector3
 }
 
 
-LightResource::~LightResource()
+LightManager::~LightManager()
 {
 }
 
-vector3D LightResource::getPos()
+vector3D LightManager::getPos()
 {
 	return pos;
 }
 
-void LightResource::setPos(vector3D p)
+void LightManager::setPos(vector3D p)
 {
 	pos = p;
 }
 
-vector3D LightResource::getColor()
+vector3D LightManager::getColor()
 {
 	return color;
 }
 
-void LightResource::setColor(vector3D c)
+void LightManager::setColor(vector3D c)
 {
 	color = c;
 }
 
-float LightResource::getIntensity()
+float LightManager::getIntensity()
 {
 	return intens;
 }
 
-void LightResource::setIntensity(float i)
+void LightManager::setIntensity(float i)
 {
 	intens = i;
 }

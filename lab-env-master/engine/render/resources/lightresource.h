@@ -6,14 +6,14 @@
 #include <vector>
 
 
-class LightResource
+class LightManager
 {
 public:
 	static const unsigned int MAX_POINT_LIGHTS = 2;
 	static const unsigned int MAX_SPOT_LIGHTS = 2;
 
-    LightResource(){};
-	LightResource(float specularintensity, float speculatpower);
+    LightManager(){};
+	LightManager(float specularintensity, float speculatpower);
     void AddDirectionalLight(vector3D color, float ambientintensity, float diffuseintensity, vector3D direction);
     void AddPointLight(vector3D color, float diffuseintensity, vector3D position, float attenuationConst,
         float attenuationLin, float attenuationExp);
@@ -21,7 +21,7 @@ public:
         float attenuationConst, float attenuationLin, float attenuationExp, float cutoff);
 
 
-    ~LightResource();
+    ~LightManager();
 
 	vector3D getPos();
 	void setPos(vector3D);

@@ -14,7 +14,7 @@ GraphicsNode::GraphicsNode()
 {
 	mesh = std::make_shared<MeshResource>();
 	//shader = std::make_shared<ShaderObject>("VertexShader.vs", "FragmentShader.fs");
-	light = std::make_shared<LightResource>();
+	light = std::make_shared<LightManager>();
 	
     camera.setValues(0, -5, 5);
     origin.setValues(0.0f, 0.0f, 0.0f);
@@ -77,7 +77,7 @@ matrix4D &GraphicsNode::getMod() {
 	return mod;
 }
 
-void GraphicsNode::setLight(std::shared_ptr<LightResource> s)
+void GraphicsNode::setLight(std::shared_ptr<LightManager> s)
 {
     light = s;
 }

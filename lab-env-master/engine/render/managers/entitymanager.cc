@@ -23,7 +23,7 @@ void EntityManager::AddNewEntity(const char* filename)
 }
 
 
-void EntityManager::Init(std::shared_ptr<LightResource> lnode)
+void EntityManager::Init(std::shared_ptr<LightManager> lnode)
 {
     lNode = lnode;
 }

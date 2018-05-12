@@ -22,8 +22,8 @@ public:
 	std::shared_ptr<ShaderObject> getShader();
 	void drawOBJ(matrix4D projection, matrix4D view, matrix4D model);
 
-	std::shared_ptr<LightResource> getLightNode() { return light; };
-    void setLight(std::shared_ptr<LightResource> s);
+	std::shared_ptr<LightManager> getLightNode() { return light; };
+    void setLight(std::shared_ptr<LightManager> s);
 
 
 	void setupLights();
@@ -32,7 +32,7 @@ public:
 private:
 
 		std::shared_ptr<MeshResource> mesh;
-		std::shared_ptr<LightResource> light;
+		std::shared_ptr<LightManager> light;
 
 		matrix4D projec, mod;
 
