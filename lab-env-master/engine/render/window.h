@@ -63,7 +63,7 @@ public:
 	void SetNanoVGRender(const std::function<void(NVGcontext *)> & func);
 
     ///set window function callback
-    void SetWindowResizeCallback(const std::function<void()> & func);
+    void SetWindowResizeCallback(const std::function<void(int width, int height)> & func);
 	GLFWwindow* window;
 
 
@@ -105,7 +105,7 @@ private:
 	/// function for nanovg rendering callback
 	std::function<void(NVGcontext *)> nanoFunc;
     /// function for window resize callback
-    std::function<void()> windowResizeCallback;
+    std::function<void(int, int)> windowResizeCallback;
 
 
 
@@ -211,7 +211,7 @@ Window::SetNanoVGRender(const std::function<void(NVGcontext *)> & func)
 /**
 */
 inline void
-Window::SetWindowResizeCallback(const std::function<void()> & func)
+Window::SetWindowResizeCallback(const std::function<void(int width, int height)> & func)
 {
     this->windowResizeCallback = func;
 }

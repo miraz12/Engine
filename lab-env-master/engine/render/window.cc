@@ -156,7 +156,7 @@ Window::StaticWindowSizeCallback(GLFWwindow* win, int width, int height)
     {
         window->width = width;
         window->height = height;
-        window->windowResizeCallback();
+        window->windowResizeCallback(width, height);
         window->Resize();
     }
 }
@@ -280,6 +280,7 @@ Window::Close()
 	{
 		ImGui_ImplGlfwGL3_Shutdown();
 		glfwTerminate();
+        exit(0);
 	}
 }
 

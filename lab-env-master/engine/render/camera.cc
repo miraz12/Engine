@@ -1,11 +1,14 @@
 #include "config.h"
 #include "camera.h"
 
+Camera* Camera::instance = 0;
 
-Camera::Camera(float width, float height)
+Camera::Camera()
 {
-    m_width = width;
-    m_height = height;
+    m_width = 1024;
+    m_height = 768;
+
+    projection = projection.setPerspective(45.0f, (m_width / m_height), 1.0f, 100.0f);
 
     position.setValues(0, 0, 2);
     origin.setValues(0, 0, 0);
@@ -16,4 +19,22 @@ Camera::Camera(float width, float height)
 
     oldPosX = m_width / 2.0f;
     oldPosY = m_height / 2.0f;
+}
+
+
+Camera* Camera::GetInstance()
+{
+    if (instance == 0)
+    {
+        instance = new Camera();
+    }
+    return instance;
+}
+
+
+void Camera::UpdatePerspective(float w, float h)
+{
+    m_width = w;
+    m_height = h;
+    projection = projection.setPerspective(45.0f, (m_width / m_height), 1.0f, 100.0f);
 }

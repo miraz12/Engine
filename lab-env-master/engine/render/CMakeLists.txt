@@ -30,16 +30,24 @@ SET(files_input
 	${input_sources})
 SOURCE_GROUP("input" FILES ${files_input})
 
+FILE(GLOB managers_headers managers/*.h)
+FILE(GLOB managers_sources managers/*.cc)
+SET(files_managers 
+	${managers_headers}
+	${managers_sources})
+SOURCE_GROUP("managers" FILES ${files_managers})
+
 SET(files_render
 	${files_render_display}
 	${files_render_pch}
 	${files_resources}
 	${files_particles}
-	${files_input})
+	${files_input}
+	${files_managers})
 
 SET(files_pch ../config.h ../config.cc)
 SOURCE_GROUP("pch" FILES ${files_pch})
-ADD_LIBRARY(render STATIC ${files_render} ${files_pch} ${files_resources} ${files_particles} ${files_input})
+ADD_LIBRARY(render STATIC ${files_render} ${files_pch} ${files_resources} ${files_particles} ${files_input} ${files_managers})
 TARGET_PCH(render ../)	
 ADD_DEPENDENCIES(render core assimp glew glfw)
 TARGET_LINK_LIBRARIES(render PUBLIC engine exts glew glfw imgui ${OPENGL_LIBS})

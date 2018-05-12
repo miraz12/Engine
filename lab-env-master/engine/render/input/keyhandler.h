@@ -7,12 +7,10 @@ class KeyHandler
 
 public:
     KeyHandler();
-    void Init(Display::Window* window, Camera* camera);
+    void Init(Display::Window* window);
 
 
 private:
-
-    Camera * cam;
 
     float rad(float d);
 

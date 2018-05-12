@@ -16,17 +16,17 @@ SET(files_math
 	${math_sources})
 SOURCE_GROUP("math" FILES ${files_math})
 
-FILE(GLOB weather_headers weatherinfo/*.h)
-FILE(GLOB weather_sources weatherinfo/*.cc)
-SET(files_weather 
-	${weather_headers}
-	${weather_sources})
-SOURCE_GROUP("weatherinfo" FILES ${files_weather})
+FILE(GLOB toolkit_headers toolkit/*.h)
+FILE(GLOB toolkit_sources toolkit/*.cc)
+SET(files_toolkit 
+	${toolkit_headers}
+	${toolkit_sources})
+SOURCE_GROUP("toolkit" FILES ${files_toolkit})
 
 	
 SET(files_pch ../config.h ../config.cc)
 SOURCE_GROUP("pch" FILES ${files_pch})
-ADD_LIBRARY(core STATIC ${files_core} ${files_pch} ${files_math} ${files_weather})
+ADD_LIBRARY(core STATIC ${files_core} ${files_pch} ${files_math} ${files_toolkit})
 TARGET_PCH(core ../)
 ADD_DEPENDENCIES(core glew)
 TARGET_LINK_LIBRARIES(core PUBLIC engine exts glew)

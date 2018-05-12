@@ -1,6 +1,7 @@
 #include "config.h"
 #include "graphicsnode.h"
 #include <ctime>
+#include "render/resources/lighttypes.h"
 
 
 #ifdef __WIN32__
@@ -141,7 +142,7 @@ void GraphicsNode::setupLights()
 		mesh->shader->modVector3f(Name, vector3D(Direction.x(), Direction.y(), Direction.z()));
 
 		snprintf(Name, sizeof(Name), "gSpotLights[%d].Cutoff", i);
-		mesh->shader->mod1f(Name, cosf(rad(light->m_sLights[i].Cutoff)));
+		//mesh->shader->mod1f(Name, cosf(rad(light->m_sLights[i].Cutoff)));
 
 		snprintf(Name, sizeof(Name), "gSpotLights[%d].Base.Base.DiffuseIntensity", i);
 		mesh->shader->mod1f(Name, light->m_sLights[i].DiffuseIntensity);

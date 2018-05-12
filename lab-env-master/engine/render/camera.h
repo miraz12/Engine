@@ -8,7 +8,9 @@ class Camera
     
 public:
 
-    Camera(float width, float height);
+    Camera();
+    static Camera* GetInstance();
+    void UpdatePerspective(float w, float h);
 
     float m_width, m_height;
 
@@ -42,6 +44,8 @@ public:
     matrix4D view;
 
 private:
+
+    static Camera* instance;
 
 
 

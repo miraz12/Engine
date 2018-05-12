@@ -8,11 +8,11 @@ KeyHandler::KeyHandler()
 }
 
 
-void KeyHandler::Init(Display::Window* window, Camera* camera)
+void KeyHandler::Init(Display::Window* window)
 {
-    cam = camera;
+    Camera* cam = Camera::GetInstance();
 
-    window->SetKeyPressFunction([this, window](int32 key, int32, int32 action, int32)
+    window->SetKeyPressFunction([this, window, cam](int32 key, int32, int32 action, int32)
     {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         {
@@ -64,7 +64,7 @@ void KeyHandler::Init(Display::Window* window, Camera* camera)
         }
 
     });
-    window->SetMousePressFunction([this](int32 key, int32 state, int32)
+    window->SetMousePressFunction([this, cam](int32 key, int32 state, int32)
     {
         if (key == GLFW_MOUSE_BUTTON_LEFT && state == GLFW_PRESS)
         {
@@ -84,12 +84,12 @@ void KeyHandler::Init(Display::Window* window, Camera* camera)
         }
     });
 
-    window->SetMouseScrollFunction([this](float64 x, float64 y)
+    window->SetMouseScrollFunction([this, cam](float64 x, float64 y)
     {
         cam->scrollX += 0.1f * y;
     });
 
-    window->SetMouseMoveFunction([this](float64 xpos, float64 ypos)
+    window->SetMouseMoveFunction([this, cam](float64 xpos, float64 ypos)
     {
         if (!cam->mousePressed)
         {
