@@ -4,14 +4,19 @@
 #include "../../../projects/example/code/application.h"
 
 
-UserInterface::UserInterface(Example::Application* app)
-{
-    this->app = app;
-}
+using namespace Core;
 
-void UserInterface::Run()
+namespace Toolkit
 {
-        bool show = true; 
+
+    UserInterface::UserInterface(Example::Application* app)
+    {
+        this->app = app;
+    }
+
+    void UserInterface::Run()
+    {
+        bool show = true;
         ImGui::Begin("Debug", &show);
         ImGui::Text("FPS: %i", app->GetFPS());
 
@@ -22,4 +27,6 @@ void UserInterface::Run()
         }
 
         ImGui::End();
+    }
+
 }

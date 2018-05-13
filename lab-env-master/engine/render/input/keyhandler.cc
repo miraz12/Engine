@@ -1,6 +1,12 @@
 #include "config.h"
 #include "keyhandler.h"
 #include "core/math/matrix3D.h"
+#include "render/camera.h"
+
+
+namespace Input
+{
+    
 
 KeyHandler::KeyHandler()
 {
@@ -10,7 +16,7 @@ KeyHandler::KeyHandler()
 
 void KeyHandler::Init(Display::Window* window)
 {
-    Camera* cam = Camera::GetInstance();
+    Display::Camera* cam = Display::Camera::GetInstance();
 
     window->SetKeyPressFunction([this, window, cam](int32 key, int32, int32 action, int32)
     {
@@ -130,4 +136,6 @@ float KeyHandler::rad(float d)  //Degrees to rad
 {
     float rad = (PI / 180.f) * d;
     return rad;
+}
+
 }

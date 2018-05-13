@@ -32,7 +32,7 @@ public:
 
     int GetFPS() { return FPS; }
 
-    EntityManager* GetEntityManager() const
+    Managers::EntityManager* GetEntityManager() const
     {
         return entityManager;
     }
@@ -46,12 +46,12 @@ private:
     void CalculateFPS(double& currentTime, double& lastTimeFPS, int& nbFrames);
 
     Display::Window* window;
-    Camera* mainCamera; 
-    KeyHandler* keyHanderl;
-    EntityManager* entityManager;
-    UserInterface* ui;
+    Display::Camera* mainCamera;
+    Input::KeyHandler* keyHandler;
+    Managers::EntityManager* entityManager;
+    Toolkit::UserInterface* ui;
 
-    std::shared_ptr<LightManager> lNode;
+    std::shared_ptr<Managers::LightManager> lNode;
 
 	int FPS{ 0 };
 	double deltaTime{ 0 };

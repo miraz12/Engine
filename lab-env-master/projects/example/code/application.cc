@@ -33,7 +33,7 @@ namespace Example
 	void Application::LightSetup()
 	{
 		//LigtNode
-		lNode = std::make_shared<LightManager>(0.5f, 15.0f);
+		lNode = std::make_shared<Managers::LightManager>(0.5f, 15.0f);
         lNode->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f, vector3D(0.0f, -1.0, 0.0));
 	}
 
@@ -55,13 +55,14 @@ namespace Example
     Application::Open()
     {
         App::Open();
-
         this->window = new Display::Window;
 		this->window->SetSize(int32(1024), int32(768));
         this->mainCamera = Camera::GetInstance();
-        this->keyHanderl = new KeyHandler();
-        this->entityManager = new EntityManager();
-        this->ui = new UserInterface(this);
+        mainCamera->m_width = 1024;
+        mainCamera->m_height = 768;
+        this->keyHandler = new Input::KeyHandler();
+        this->entityManager = new Managers::EntityManager();
+        this->ui = new Toolkit::UserInterface(this);
 
         if (this->window->Open())
         {
@@ -69,8 +70,7 @@ namespace Example
 			LightSetup();
             entityManager->Init(lNode);
 			ObjectSetup();
-            keyHanderl->Init(window);
-
+            keyHandler->Init(window);
 
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             // set ui rendering function

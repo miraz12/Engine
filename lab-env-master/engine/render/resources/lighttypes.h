@@ -1,14 +1,11 @@
 #pragma once
-
 #include "core/math/vector3D.h"
 #include "shaderobject.h"
 #include <memory>
-/*
-float rads(float d)  //Degrees to rad
-{
-    float rad = (PI / 180.f) * d;
-    return rad;
-}*/
+
+#ifdef __WIN32__
+#define snprintf _snprintf_s
+#endif
 
 struct BaseLight
 {
@@ -23,7 +20,7 @@ struct BaseLight
 		DiffuseIntensity = 0.0f;
 	}
 
-    virtual void Setup(std::shared_ptr<ShaderObject>, int i = -1) = 0;
+    virtual void Setup(std::shared_ptr<Resources::ShaderObject>, int i = -1) = 0;
 };
 
 struct DirectionalLight : public BaseLight
@@ -34,16 +31,14 @@ struct DirectionalLight : public BaseLight
 	{
 		Direction = vector3D(0.0f, 0.0f, 0.0f);
 	}
-    void Setup(std::shared_ptr<ShaderObject> s, int i)
+    void Setup(std::shared_ptr<Resources::ShaderObject> s, int i)
 	{
-        /*
         s->modVector3f("gDirectionalLight.Base.Color", vector3D(this->Color.x(), this->Color.y(), this->Color.z()));
         s->mod1f("gDirectionalLight.Base.AmbientIntensity", this->AmbientIntensity);
         vector3D Direction = this->Direction;
         Direction.normalize();
         s->modVector3f("gDirectionalLight.Direction", vector3D(Direction.x(), Direction.y(), Direction.z()));
         s->mod1f("gDirectionalLight.Base.DiffuseIntensity", this->DiffuseIntensity);
-	*/
 	}
 };
 
@@ -65,10 +60,8 @@ struct PointLight : public BaseLight
 		Attenuation.Linear = 0.0f;
 		Attenuation.Exp = 0.0f;
 	}
-    void Setup(std::shared_ptr<ShaderObject> s, int i)
+    void Setup(std::shared_ptr<Resources::ShaderObject> s, int i)
     {
-
-        /*
         char Name[128];
         memset(Name, 0, sizeof(Name));
         snprintf(Name, sizeof(Name), "gPointLights[%d].Base.Color", i);
@@ -91,7 +84,6 @@ struct PointLight : public BaseLight
 
         snprintf(Name, sizeof(Name), "gPointLights[%d].Atten.Exp", i);
         s->mod1f(Name, this->Attenuation.Exp);
-        */
     }
 };
 
@@ -105,9 +97,8 @@ struct SpotLight : public PointLight
 		Direction = vector3D(0.0f, 0.0f, 0.0f);
 		Cutoff = 0.0f;
 	}
-    void Setup(std::shared_ptr<ShaderObject> s, int i)
+    void Setup(std::shared_ptr<Resources::ShaderObject> s, int i)
     {
-        /*
         char Name[128];
         memset(Name, 0, sizeof(Name));
         snprintf(Name, sizeof(Name), "gSpotLights[%d].Base.Base.Color", i);
@@ -126,7 +117,7 @@ struct SpotLight : public PointLight
         s->modVector3f(Name, vector3D(Direction.x(), Direction.y(), Direction.z()));
 
         snprintf(Name, sizeof(Name), "gSpotLights[%d].Cutoff", i);
-        s->mod1f(Name, cosf(rads(this->Cutoff)));
+        s->mod1f(Name, cosf((PI / 180.f) * (this->Cutoff))); //Convert to radians
 
         snprintf(Name, sizeof(Name), "gSpotLights[%d].Base.Base.DiffuseIntensity", i);
         s->mod1f(Name, this->DiffuseIntensity);
@@ -139,7 +130,6 @@ struct SpotLight : public PointLight
 
         snprintf(Name, sizeof(Name), "gSpotLights[%d].Base.Atten.Exp", i);
         s->mod1f(Name, this->Attenuation.Exp);
-        */
     }
 };
 

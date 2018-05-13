@@ -1,21 +1,23 @@
-
+#pragma once
 #include "render/resources/graphicsnode.h"
 
-class EntityManager
+namespace Managers
 {
-public:
-    EntityManager();
-    ~EntityManager();
-    void Init(std::shared_ptr<LightManager> lnode);
-    void AddNewEntity(const char* filename);
-    void DrawEntitys();
-    void ReloadShaders();
+    class EntityManager
+    {
+    public:
+        EntityManager();
+        ~EntityManager();
+        void Init(std::shared_ptr<LightManager> lnode);
+        void AddNewEntity(const char* filename);
+        void DrawEntitys();
+        void ReloadShaders();
 
+    private:
 
-private:
+        std::vector<Resources::GraphicsNode*> m_objList;
+        matrix4D world;
+        std::shared_ptr<LightManager> lNode;
 
-    std::vector<GraphicsNode*> m_objList;
-    matrix4D world;
-    std::shared_ptr<LightManager> lNode;
-
-};
+    };
+}

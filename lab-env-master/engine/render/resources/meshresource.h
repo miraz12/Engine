@@ -31,53 +31,58 @@ struct Vertex
 	}
 };
 
-class MeshResource 
-	{
-	public:
-		/// constructor
-		MeshResource();
-		/// destructor
-		~MeshResource();
+namespace Resources
+{
 
-		bool LoadMesh(const std::string& Filename);
-		void Render();
-		matrix4D getMM(){ return modelMatrix; };
-		void setMM(matrix4D m){ modelMatrix = m; };
+    class MeshResource
+    {
+    public:
+        /// constructor
+        MeshResource();
+        /// destructor
+        ~MeshResource();
 
-		std::shared_ptr<ShaderObject> shader;
+        bool LoadMesh(const std::string& Filename);
+        void Render();
+        matrix4D getMM() { return modelMatrix; };
+        void setMM(matrix4D m) { modelMatrix = m; };
 
-
-	private:
-		bool InitFromScene(const aiScene* pScene, const std::string& Filename);
-		void InitMesh(unsigned int Index, const aiMesh* paiMesh);
-		bool InitMaterials(const aiScene* pScene, const std::string& Filename);
-		void Clear();
-		void computeTangentBasis(std::vector<Vertex>& vertices, std::vector<unsigned int>& ind);
+        std::shared_ptr<ShaderObject> shader;
 
 
-		struct MeshEntry {
-			MeshEntry();
+    private:
+        bool InitFromScene(const aiScene* pScene, const std::string& Filename);
+        void InitMesh(unsigned int Index, const aiMesh* paiMesh);
+        bool InitMaterials(const aiScene* pScene, const std::string& Filename);
+        void Clear();
+        void computeTangentBasis(std::vector<Vertex>& vertices, std::vector<unsigned int>& ind);
 
-			~MeshEntry();
 
-			void Init(const std::vector<Vertex>& Vertices,
-				const std::vector<unsigned int>& Indices);
+        struct MeshEntry {
+            MeshEntry();
 
-			GLuint VB;
-			GLuint IB;
-			//GLuint TB;
-			//GLuint BTB;
-			unsigned int NumIndices;
-			unsigned int MaterialIndex;
-		};
+            ~MeshEntry();
 
-		std::vector<MeshEntry> m_Entries;
-		std::vector<TextureResource*> m_Textures;
-		std::vector<TextureResource*> m_Normals;
-		std::vector<TextureResource*> m_Masks;
-		std::vector<TextureResource*> m_Spec;
-		matrix4D modelMatrix;
-		TextureResource* defaulNormal;
-		TextureResource* defaultDiff;
+            void Init(const std::vector<Vertex>& Vertices,
+                const std::vector<unsigned int>& Indices);
 
-};
+            GLuint VB;
+            GLuint IB;
+            //GLuint TB;
+            //GLuint BTB;
+            unsigned int NumIndices;
+            unsigned int MaterialIndex;
+        };
+
+        std::vector<MeshEntry> m_Entries;
+        std::vector<TextureResource*> m_Textures;
+        std::vector<TextureResource*> m_Normals;
+        std::vector<TextureResource*> m_Masks;
+        std::vector<TextureResource*> m_Spec;
+        matrix4D modelMatrix;
+        TextureResource* defaulNormal;
+        TextureResource* defaultDiff;
+
+    };
+
+}
