@@ -71,6 +71,8 @@ namespace Example
             entityManager->Init(lNode);
 			ObjectSetup();
             keyHandler->Init(window);
+            skybox = new Skybox::Skybox(1500);
+
 
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             // set ui rendering function
@@ -119,6 +121,7 @@ namespace Example
 			//Update things
 			UpdateLights(currentTime);
             entityManager->DrawEntitys();
+            skybox->Draw(this->mainCamera->view, this->mainCamera->projection);
             lastTime = currentTime;
 
             this->window->SwapBuffers();
