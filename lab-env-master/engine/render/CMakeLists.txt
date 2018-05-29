@@ -37,17 +37,26 @@ SET(files_managers
 	${managers_sources})
 SOURCE_GROUP("managers" FILES ${files_managers})
 
+FILE(GLOB skybox_headers skybox/*.h)
+FILE(GLOB skybox_sources skybox/*.cc)
+SET(files_skybox 
+	${skybox_headers}
+	${skybox_sources})
+SOURCE_GROUP("skybox" FILES ${files_skybox})
+
+
 SET(files_render
 	${files_render_display}
 	${files_render_pch}
 	${files_resources}
 	${files_particles}
 	${files_input}
-	${files_managers})
+	${files_managers}
+	${files_skybox})
 
 SET(files_pch ../config.h ../config.cc)
 SOURCE_GROUP("pch" FILES ${files_pch})
-ADD_LIBRARY(render STATIC ${files_render} ${files_pch} ${files_resources} ${files_particles} ${files_input} ${files_managers})
+ADD_LIBRARY(render STATIC ${files_render} ${files_pch})
 TARGET_PCH(render ../)	
 ADD_DEPENDENCIES(render core assimp glew glfw)
 TARGET_LINK_LIBRARIES(render PUBLIC engine exts glew glfw imgui ${OPENGL_LIBS})
