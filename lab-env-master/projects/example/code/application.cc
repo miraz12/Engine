@@ -32,7 +32,7 @@ namespace Example
 
 	void Application::LightSetup()
 	{
-		//LigtNode
+		//LigtSetup
 		lNode = std::make_shared<Managers::LightManager>(0.5f, 15.0f);
         lNode->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f, vector3D(0.0f, -1.0, 0.0));
 	}
@@ -44,8 +44,8 @@ namespace Example
 
 	void Application::ObjectSetup()
 	{
-        this->entityManager->AddNewEntity("content/cat.obj");
-        //this->entityManager->AddNewEntity("content/ocrytek_sponza/sponza.obj");
+        //this->entityManager->AddNewEntity("content/cat.obj");
+        this->entityManager->AddNewEntity("content/ocrytek_sponza/sponza.obj");
 	}
 
 	//------------------------------------------------------------------------------
@@ -78,6 +78,7 @@ namespace Example
             {
                 ui->Run();
             });
+            // Set window resize function
             window->SetWindowResizeCallback([this](float w, float h)
             {
                 mainCamera->UpdatePerspective(w, h);
