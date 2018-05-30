@@ -30,6 +30,9 @@ namespace Example
 
     }
 
+//------------------------------------------------------------------------------
+/**
+*/
 	void Application::LightSetup()
 	{
 		//LigtSetup
@@ -37,18 +40,25 @@ namespace Example
         lNode->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f, vector3D(0.0f, -1.0, 0.0));
 	}
 
+//------------------------------------------------------------------------------
+/**
+*/
 	void Application::UpdateLights(double time)
 	{
         //empty
+
 	}
 
+//------------------------------------------------------------------------------
+/**
+*/
 	void Application::ObjectSetup()
 	{
-        //this->entityManager->AddNewEntity("content/cat.obj");
-        this->entityManager->AddNewEntity("content/ocrytek_sponza/sponza.obj");
+       // this->entityManager->AddNewEntity("content/cat.obj");
+        //this->entityManager->AddNewEntity("content/ocrytek_sponza/sponza.obj");
 	}
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 /**
 */
     bool
@@ -68,7 +78,7 @@ namespace Example
         {
 			//Setup everyting
 			LightSetup();
-            entityManager->Init(lNode);
+            //entityManager->Init(lNode);
 			ObjectSetup();
             keyHandler->Init(window);
             skybox = new Skybox::Skybox(1500);
@@ -121,7 +131,7 @@ namespace Example
 
 			//Update things
 			UpdateLights(currentTime);
-            entityManager->DrawEntitys();
+            //entityManager->DrawEntitys();
             skybox->Draw(this->mainCamera->view, this->mainCamera->projection);
             lastTime = currentTime;
 
@@ -129,6 +139,9 @@ namespace Example
         }
     }
 
+//------------------------------------------------------------------------------
+/**
+*/
     void Application::CalculateFPS(double& currentTime, double& lastTimeFPS, int& nbFrames)
     {
         if (currentTime - lastTimeFPS >= 1.0) { // If last prinf() was more than 1 sec ago
@@ -137,4 +150,8 @@ namespace Example
             lastTimeFPS += 1.0;
         }
     }
+
+//------------------------------------------------------------------------------
+/**
+*/
 } // namespace Example

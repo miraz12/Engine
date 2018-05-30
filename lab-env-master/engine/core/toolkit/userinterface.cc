@@ -23,7 +23,7 @@ namespace Toolkit
 
         if (ImGui::Button("Reload Shader"))
         {
-            app->GetEntityManager()->ReloadShaders();
+            //app->GetEntityManager()->ReloadShaders();
         }
 
         ImGui::End();

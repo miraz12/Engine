@@ -1,6 +1,5 @@
 #include "config.h"
 #include "entitymanager.h"
-#include "render/camera.h"
 
 namespace Managers
 {
@@ -10,48 +9,52 @@ namespace Managers
 
     EntityManager::~EntityManager()
     {
-        for (unsigned int i = 0; i < m_objList.size(); i++)
+    }
+
+
+    void EntityManager::OnDeactivate()
+    {
+    }
+
+    void EntityManager::OnStart()
+    {
+        for (size_t i = 0; i < this->activeEntities.size(); i++)
         {
-            delete m_objList[i];
+            activeEntities[i]->OnStart();
         }
     }
 
-    void EntityManager::AddNewEntity(const char* filename)
+    void EntityManager::OnBeginFrame()
     {
-        Resources::GraphicsNode* newEntity = new Resources::GraphicsNode();
-        newEntity->getMesh()->LoadMesh(filename);
-        newEntity->setLight(lNode);
-        m_objList.push_back(newEntity);
     }
 
-
-    void EntityManager::Init(std::shared_ptr<LightManager> lnode)
+    void EntityManager::OnEndFrame()
     {
-        lNode = lnode;
     }
 
-    void EntityManager::DrawEntitys()
+    void EntityManager::OnLoad()
     {
-        Display::Camera* cam = Display::Camera::GetInstance();
-
-        cam->view = cam->view.LookAtRH(cam->position, cam->position + cam->camFront, cam->headUp);
-
-        for (unsigned int i = 0; i < m_objList.size(); i++)
-        {
-            m_objList[i]->camera = cam->position;
-            matrix4D modelM = m_objList[i]->getMesh()->getMM();
-            //modelM.scale(0.3, 0.3, 0.3);
-
-            m_objList[i]->drawOBJ(cam->projection, cam->view, modelM);
-        }
     }
 
-    void EntityManager::ReloadShaders()
+    void EntityManager::OnSave()
     {
-        for (unsigned int i = 0; i < m_objList.size(); i++)
-        {
-            m_objList[i]->getShader()->ReloadShader();
-        }
     }
 
+    void EntityManager::OnRenderDebug()
+    {
+    }
+
+    void EntityManager::Cleanup()
+    {
+    }
+
+    bool EntityManager::HasActiveEntities() const
+    {
+        return this->activeEntities.size() > 0;
+    }
+
+    const std::vector<Base::Entity*>& EntityManager::GetEntities() const
+    {
+        return this->GetEntities();
+    }
 }

@@ -37,13 +37,19 @@ SET(files_managers
 	${managers_sources})
 SOURCE_GROUP("managers" FILES ${files_managers})
 
+FILE(GLOB base_headers base/*.h)
+FILE(GLOB base_sources base/*.cc)
+SET(files_base 
+	${base_headers}
+	${base_sources})
+SOURCE_GROUP("base" FILES ${files_base})
+
 FILE(GLOB skybox_headers skybox/*.h)
 FILE(GLOB skybox_sources skybox/*.cc)
 SET(files_skybox 
 	${skybox_headers}
 	${skybox_sources})
 SOURCE_GROUP("skybox" FILES ${files_skybox})
-
 
 SET(files_render
 	${files_render_display}
@@ -52,6 +58,7 @@ SET(files_render
 	${files_particles}
 	${files_input}
 	${files_managers}
+	${files_base}
 	${files_skybox})
 
 SET(files_pch ../config.h ../config.cc)
