@@ -15,7 +15,6 @@ namespace Managers
     {
 
         this->activeEntities.push_back(entity);
-        //this->untriggeredEntities.Append(entity);
         this->entityRegistry.insert({ entity->GetUniqueId(), entity });
         // activate entity
         entity->OnActivate();

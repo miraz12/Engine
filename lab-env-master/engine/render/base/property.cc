@@ -21,24 +21,19 @@ namespace Base
         return entity == NULL;
     }
 
-    void Property::SetupDefaultAttributes()
-    {
-    }
-
-    void Property::SetupExternalAttributes()
-    {
-    }
-
     void Property::SetupCallbacks()
     {
+        // empty
     }
 
     void Property::OnActivate()
     {
+        this->active = true;
     }
 
     void Property::OnDeactivate()
     {
+        this->active = false;
     }
 
     bool Property::IsActive() const
@@ -48,58 +43,31 @@ namespace Base
 
     void Property::OnLoad()
     {
+        // empty
     }
 
     void Property::OnStart()
     {
-    }
-
-    void Property::OnSave()
-    {
+        // empty
     }
 
     void Property::OnBeginFrame()
     {
-
-    }
-
-    void Property::OnMoveBefore()
-    {
-    }
-
-    void Property::OnMoveAfter()
-    {
+        // empty
     }
 
     void Property::OnRender()
     {
-    }
-
-    void Property::OnRenderDebug()
-    {
-    }
-
-    void Property::OnLoseActivity()
-    {
-    }
-
-    void Property::OnGainActivity()
-    {
-    }
-
-    void Property::OnHandleDeferred()
-    {
-    }
-
-    void Property::HandleDeferredMessages()
-    {
+        // empty
     }
 
     void Property::SetEntity(Entity* v)
     {
+        this->entity = v;
     }
 
     void Property::ClearEntity()
     {
+        this->entity = 0;
     }
 }

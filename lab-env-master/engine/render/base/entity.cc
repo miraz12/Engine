@@ -12,7 +12,8 @@ namespace Base
         isInOnActivate(false),
         isInOnDeactivate(false)
     {
-        callbackProperties.reserve(Property::NumCallbackTypes);
+        callbackProperties.reserve(8);
+
     }
 
     Entity::~Entity()
