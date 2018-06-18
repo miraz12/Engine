@@ -58,11 +58,9 @@ namespace Example
         Base::Entity* temp = new Base::Entity();
         Properties::GraphicsProperty* prop = new Properties::GraphicsProperty();
         prop->mesh->LoadMesh("content/cat.obj");
-        prop->light = lNode;
+        prop->setLight(lNode);
         temp->AttachProperty(prop);
         this->entityManager->AttachEntity(temp);
-       // this->entityManager->AddNewEntity("content/cat.obj");
-        //this->entityManager->AddNewEntity("content/ocrytek_sponza/sponza.obj");
 	}
 
 //------------------------------------------------------------------------------
@@ -139,7 +137,6 @@ namespace Example
 
 			//Update things
 			UpdateLights(currentTime);
-            //entityManager->DrawEntitys();
             entityManager->OnBeginFrame();
             skybox->Draw(this->mainCamera->view, this->mainCamera->projection);
             lastTime = currentTime;
