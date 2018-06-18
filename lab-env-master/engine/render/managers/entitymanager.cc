@@ -11,6 +11,23 @@ namespace Managers
     {
     }
 
+    void EntityManager::AttachEntity(Base::Entity* entity)
+    {
+
+        this->activeEntities.push_back(entity);
+        //this->untriggeredEntities.Append(entity);
+        this->entityRegistry.insert({ entity->GetUniqueId(), entity });
+        // activate entity
+        entity->OnActivate();
+    }
+
+    void EntityManager::RemoveEntity(Base::Entity* entity)
+    {
+    }
+
+    void EntityManager::DeleteEntity(Base::Entity* entity)
+    {
+    }
 
     void EntityManager::OnDeactivate()
     {
@@ -26,7 +43,13 @@ namespace Managers
 
     void EntityManager::OnBeginFrame()
     {
+        for (size_t i = 0; i < this->activeEntities.size(); i++)
+        {
+            activeEntities[i]->OnBeginFrame();
+        }
     }
+
+    
 
     void EntityManager::OnEndFrame()
     {

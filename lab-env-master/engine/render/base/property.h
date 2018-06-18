@@ -79,10 +79,9 @@ namespace Base
         /// adds a deferred message to the deferred message list
         //virtual void AddDeferredMessage(const Ptr<Messaging::Message>& msg);
 
-    protected:
         friend class Entity;
         /// Set entity, this is attached to, to `v'.
-        void SetEntity(const Entity& v);
+        void SetEntity(Entity* v);
         /// Remove entity.
         void ClearEntity();
 

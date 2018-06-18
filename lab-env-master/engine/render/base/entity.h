@@ -17,6 +17,13 @@ namespace Base
         /// destructor
         virtual ~Entity();
 
+        /// these can only be called when the entity is not active
+        /// mainly public to make custom factory managers easier
+        /// attach a property to the entity
+        void AttachProperty(Property* prop);
+        /// remove a property from the entity
+        void RemoveProperty(Property* prop);
+
         /// get the entity's category
         const std::string& GetCategory() const;
         /// get unique id of entity
@@ -43,7 +50,7 @@ namespace Base
         //=== callbacks ===
 
         /// register a property callback, called by Property::SetupCallback() method
-        //void RegisterPropertyCallback(const Ptr<Property>& prop, Property::CallbackType callback);
+        void RegisterPropertyCallback(Property* prop, Property::CallbackType callback);
         /// called when attached to world
         virtual void OnActivate();
         /// called when removed from world
@@ -77,11 +84,16 @@ namespace Base
         //friend class Base::EntityManager;
 
 
+        /// call OnActivate() on all properties
+        void ActivateProperties();
+        /// call OnDeactivate() on all properties
+        void DeactivateProperties();
+
         std::string category;
         //Ptr<Messaging::Dispatcher> dispatcher;
         //Ptr<Db::ValueTable> attrTable;
         //IndexT attrTableRowIndex;
-        std::vector<Property> properties;
+        std::vector<Property*> properties;
         std::unordered_map<Property::CallbackType, std::vector<Property*>> callbackProperties;
         EntityId uniqueId;
 

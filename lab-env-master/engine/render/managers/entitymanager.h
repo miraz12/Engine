@@ -14,6 +14,12 @@ namespace Managers
         ~EntityManager();
 
 
+        /// immediately attach an entity to the world
+        void AttachEntity(Base::Entity* entity);
+        /// remove an entity from the world, delayed until end of frame
+        void RemoveEntity(Base::Entity* entity);
+        /// delete an entity from the world (also deletes the entity from DB!), delayed until end of frame
+        void DeleteEntity(Base::Entity* entity);
 
         /// called when removed from game server
         virtual void OnDeactivate();
@@ -42,6 +48,10 @@ namespace Managers
 
         std::unordered_map<Base::Entity::EntityId, Base::Entity*> entityRegistry;  // map unique ids to entities
         std::vector<Base::Entity*> activeEntities;                                  // currently active entities
+
+
+    protected:
+        friend class Base::Entity;
 
     };
 }

@@ -12,11 +12,28 @@ namespace Base
         isInOnActivate(false),
         isInOnDeactivate(false)
     {
-
+        callbackProperties.reserve(Property::NumCallbackTypes);
     }
 
     Entity::~Entity()
     {
+    }
+
+    void Entity::AttachProperty(Property* prop)
+    {
+        this->properties.push_back(prop);
+        prop->SetEntity(this);
+    }
+
+    void Entity::RemoveProperty(Property* prop)
+    {
+
+    }
+
+
+    void Entity::RegisterPropertyCallback(Property* prop, Property::CallbackType callback)
+    {
+        this->callbackProperties[callback].push_back(prop);
     }
 
     const std::string& Entity::GetCategory() const
@@ -26,6 +43,8 @@ namespace Base
 
     void Entity::OnActivate()
     {
+        // activate all properties
+        this->ActivateProperties();
     }
 
     void Entity::OnDeactivate()
@@ -34,6 +53,12 @@ namespace Base
 
     void Entity::OnBeginFrame()
     {
+        std::vector<Property*> props = callbackProperties[Property::BeginFrame];
+
+        for (int i = 0; i < props.size(); ++i)
+        {
+            props[i]->OnBeginFrame();
+        }
     }
 
     void Entity::OnMoveBefore()
@@ -46,13 +71,6 @@ namespace Base
 
     void Entity::OnRender()
     {
-        std::vector<Property*> props = callbackProperties[Property::BeginFrame];
-
-        for (int i = 0; i < props.size(); ++i)
-        {
-            props[i]->BeginFrame;
-        }
-
 
     }
 
@@ -77,6 +95,26 @@ namespace Base
     }
 
     void Entity::OnStart()
+    {
+    }
+
+    void Entity::ActivateProperties()
+    {
+        int num = this->properties.size();
+        for (int i = 0; i < num; i++)
+        {
+            Property* prop = this->properties[i];
+        
+            prop->SetupCallbacks();
+
+            // activate property
+            prop->OnActivate();
+
+        }
+
+    }
+
+    void Entity::DeactivateProperties()
     {
     }
 

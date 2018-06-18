@@ -6,6 +6,7 @@
 #include "application.h"
 #include <imgui.h>
 #include <algorithm>
+#include "render/properties/graphicsproperty.h"
 
 
 using namespace Display;
@@ -54,6 +55,10 @@ namespace Example
 */
 	void Application::ObjectSetup()
 	{
+        Base::Entity* temp = new Base::Entity();
+        Properties::GraphicsProperty* prop = new Properties::GraphicsProperty();
+        temp->AttachProperty(prop);
+        this->entityManager->AttachEntity(temp);
        // this->entityManager->AddNewEntity("content/cat.obj");
         //this->entityManager->AddNewEntity("content/ocrytek_sponza/sponza.obj");
 	}
@@ -73,6 +78,7 @@ namespace Example
         this->keyHandler = new Input::KeyHandler();
         this->entityManager = new Managers::EntityManager();
         this->ui = new Toolkit::UserInterface(this);
+
 
         if (this->window->Open())
         {
@@ -132,6 +138,7 @@ namespace Example
 			//Update things
 			UpdateLights(currentTime);
             //entityManager->DrawEntitys();
+            entityManager->OnBeginFrame();
             skybox->Draw(this->mainCamera->view, this->mainCamera->projection);
             lastTime = currentTime;
 

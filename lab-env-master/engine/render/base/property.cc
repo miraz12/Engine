@@ -60,6 +60,7 @@ namespace Base
 
     void Property::OnBeginFrame()
     {
+
     }
 
     void Property::OnMoveBefore()
@@ -94,7 +95,7 @@ namespace Base
     {
     }
 
-    void Property::SetEntity(const Entity& v)
+    void Property::SetEntity(Entity* v)
     {
     }
 
