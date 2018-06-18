@@ -21,7 +21,7 @@ namespace  Properties
     {
         mesh->shader->bind();
 
-        light->Setup(mesh->shader);
+        Managers::LightManager::GetInstance()->Setup(mesh->shader);
 
         Display::Camera* cam = Display::Camera::GetInstance();
         cam->view = cam->view.LookAtRH(cam->position, cam->position + cam->camFront, cam->headUp);
@@ -47,10 +47,6 @@ namespace  Properties
         this->entity->RegisterPropertyCallback(this, BeginFrame);
     }
 
-    void GraphicsProperty::setLight(std::shared_ptr<Managers::LightManager> s)
-    {
-        light = s;
-    }
 }
 
 

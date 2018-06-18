@@ -37,8 +37,7 @@ namespace Example
 	void Application::LightSetup()
 	{
 		//LigtSetup
-		lNode = std::make_shared<Managers::LightManager>(0.5f, 15.0f);
-        lNode->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f, vector3D(0.0f, -1.0, 0.0));
+        Managers::LightManager::GetInstance()->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f, vector3D(0.0f, -1.0, 0.0));
 	}
 
 //------------------------------------------------------------------------------
@@ -58,7 +57,6 @@ namespace Example
         Base::Entity* temp = new Base::Entity();
         Properties::GraphicsProperty* prop = new Properties::GraphicsProperty();
         prop->mesh->LoadMesh("content/cat.obj");
-        prop->setLight(lNode);
         temp->AttachProperty(prop);
         this->entityManager->AttachEntity(temp);
 	}

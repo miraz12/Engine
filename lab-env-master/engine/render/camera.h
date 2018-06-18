@@ -12,8 +12,8 @@ namespace Display
     public:
 
         Camera();
-        static Camera* GetInstance();
         void UpdatePerspective(float w, float h);
+        static Camera* GetInstance();
         Camera(const Camera&) = delete; 
         void operator=(const Camera) = delete; 
 

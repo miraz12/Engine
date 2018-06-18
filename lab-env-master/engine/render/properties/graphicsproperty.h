@@ -1,7 +1,6 @@
 #pragma once
 #include "render/base/property.h"
 #include <memory>
-#include "core/math/vector3D.h"
 #include "core/math/matrix3D.h"
 #include "render/managers/lightmanager.h"
 #include "render/resources/meshresource.h"
@@ -27,9 +26,6 @@ namespace Properties
         /// setup callbacks for this property, call by entity in OnActivate()
         virtual void SetupCallbacks();
 
-
-        void setLight(std::shared_ptr<Managers::LightManager> s);
-
         std::shared_ptr<Resources::MeshResource> mesh;
         std::shared_ptr<Managers::LightManager> light;
 
@@ -38,15 +34,6 @@ namespace Properties
             float rad = (PI / 180.f) * d;
             return rad;
         }
-
-    public:
-        const matrix4D &getProjec() const;
-
-        matrix4D& getMod();
-
-        void setProjec(const matrix4D &projec);
-        void setMod(const matrix4D &mod);
-
     };
 }
 

@@ -13,9 +13,14 @@ namespace Managers
     public:
         static const unsigned int MAX_POINT_LIGHTS = 2;
         static const unsigned int MAX_SPOT_LIGHTS = 2;
+        static LightManager* instance;
 
-        LightManager() {};
-        LightManager(float specularintensity, float speculatpower);
+
+
+        LightManager();
+        static LightManager* GetInstance();
+        LightManager(const LightManager&) = delete;
+        void operator=(const LightManager) = delete;
 
         void Setup(std::shared_ptr<Resources::ShaderObject> s);
 
@@ -55,6 +60,9 @@ namespace Managers
         vector3D color;
         vector3D pos;
         float intens;
+
+
+
 
     };
 }

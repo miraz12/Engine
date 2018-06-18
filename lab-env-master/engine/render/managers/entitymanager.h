@@ -1,6 +1,4 @@
 #pragma once
-#include "render/resources/graphicsnode.h"
-#include "lightmanager.h"
 #include "render/base/manager.h"
 #include <unordered_map>
 #include "render/base/entity.h"

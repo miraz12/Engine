@@ -9,7 +9,6 @@
 #include "core/app.h"
 #include "render/window.h"
 #include "render/camera.h"
-#include "render/resources/graphicsnode.h"
 #include "render/input/keyhandler.h"
 #include "render/managers/entitymanager.h"
 #include "core/toolkit/userinterface.h"
@@ -53,8 +52,6 @@ private:
     Input::KeyHandler* keyHandler;
     Managers::EntityManager* entityManager;
     Toolkit::UserInterface* ui;
-
-    std::shared_ptr<Managers::LightManager> lNode;
 
 	int FPS{ 0 };
 	double deltaTime{ 0 };
