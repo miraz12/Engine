@@ -13,7 +13,7 @@ namespace Base
         virtual ~FramePass();
         virtual void Setup();
         virtual void Execute();
-
+          
         //virtual void UpdateResolution();
 
     protected:
