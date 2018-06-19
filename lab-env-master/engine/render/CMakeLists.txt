@@ -51,6 +51,20 @@ SET(files_base
 	${base_sources})
 SOURCE_GROUP("base" FILES ${files_base})
 
+FILE(GLOB servers_headers servers/*.h)
+FILE(GLOB servers_sources servers/*.cc)
+SET(files_servers 
+	${servers_headers}
+	${servers_sources})
+SOURCE_GROUP("servers" FILES ${files_servers})
+
+FILE(GLOB passes_headers passes/*.h)
+FILE(GLOB passes_sources passes/*.cc)
+SET(files_passes 
+	${passes_headers}
+	${passes_sources})
+SOURCE_GROUP("passes" FILES ${files_passes})
+
 FILE(GLOB skybox_headers skybox/*.h)
 FILE(GLOB skybox_sources skybox/*.cc)
 SET(files_skybox 
@@ -67,6 +81,8 @@ SET(files_render
 	${files_input}
 	${files_managers}
 	${files_base}
+	${files_servers}
+	${files_passes}
 	${files_skybox})
 
 SET(files_pch ../config.h ../config.cc)

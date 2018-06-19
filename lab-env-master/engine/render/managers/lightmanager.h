@@ -13,9 +13,6 @@ namespace Managers
     public:
         static const unsigned int MAX_POINT_LIGHTS = 2;
         static const unsigned int MAX_SPOT_LIGHTS = 2;
-        static LightManager* instance;
-
-
 
         LightManager();
         static LightManager* GetInstance();
@@ -61,8 +58,7 @@ namespace Managers
         vector3D pos;
         float intens;
 
-
-
+        static LightManager* instance;
 
     };
 }
