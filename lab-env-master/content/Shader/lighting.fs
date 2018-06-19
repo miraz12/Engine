@@ -52,6 +52,7 @@ uniform SpotLight gSpotLights[MAX_SPOT_LIGHTS];
                                             
 uniform sampler2D DiffuseTextureSampler;
 uniform sampler2D NormalTextureSampler;    
+uniform sampler2D MaskTextureSampler;    
                                     
 
 uniform vec3 activate_normal;									
@@ -149,7 +150,10 @@ void main()
                                                                                             
     for (int i = 0 ; i < gNumSpotLights ; i++) {                                            
         TotalLight += CalcSpotLight(gSpotLights[i], Normal);                                
-    }                                                                                       
+    }                   
+
+	//vec4 color = texture(DiffuseTextureSampler, TexCoord0);
+    //vec4 mask  = texture(MaskTextureSampler, TexCoord0);	
                                                                                             
-    FragColor = texture2D(DiffuseTextureSampler, TexCoord0.xy) * TotalLight;                             
+    FragColor = texture(DiffuseTextureSampler, TexCoord0) * TotalLight;                             
 }

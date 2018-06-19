@@ -84,6 +84,7 @@ namespace Resources
         matrix4D modelMatrix;
         TextureResource* defaulNormal;
         TextureResource* defaultDiff;
+        TextureResource* defaulMask;
 
     };
 

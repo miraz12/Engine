@@ -48,8 +48,6 @@ namespace Managers
         }
     }
 
-    
-
     void EntityManager::OnEndFrame()
     {
     }
@@ -77,6 +75,6 @@ namespace Managers
 
     const std::vector<Base::Entity*>& EntityManager::GetEntities() const
     {
-        return this->GetEntities();
+        return this->activeEntities;
     }
 }

@@ -49,23 +49,60 @@ namespace Resources
 
         defaulNormal = new TextureResource("content/DefaultNormalMap.png");
         defaulNormal->Load();
+
+        defaulMask = new TextureResource("content/DefaultMask.png");
+        defaulMask->Load();
+
     }
 
 
     MeshResource::~MeshResource()
     {
-        Clear();
+        for (int i = 0; i < m_Textures.size(); i++)
+        {
+            delete(m_Textures[i]);
+        }
+        for (int i = 0; i < m_Normals.size(); i++)
+        {
+            delete(m_Normals[i]);
+        }
+        for (int i = 0; i < m_Masks.size(); i++)
+        {
+            delete(m_Masks[i]);
+        }
+        for (int i = 0; i < m_Spec.size(); i++)
+        {
+            delete(m_Spec[i]);
+        }
+
+        delete(defaulNormal);
+        delete(defaultDiff);
     }
 
     void MeshResource::Clear()
     {
-
+        for (int i = 0; i < m_Textures.size(); i++) 
+        {
+            delete(m_Textures[i]);
+        }
+        for (int i = 0; i < m_Normals.size(); i++)
+        {
+            delete(m_Normals[i]);
+        }
+        for (int i = 0; i < m_Masks.size(); i++)
+        {
+            delete(m_Masks[i]);
+        }
+        for (int i = 0; i < m_Spec.size(); i++)
+        {
+            delete(m_Spec[i]);
+        }
     }
 
     bool MeshResource::LoadMesh(const std::string& Filename)
     {
         // Release the previously loaded mesh (if it exists)
-        Clear();
+        //Clear();
 
         printf("Loading: '%s'\n", Filename.c_str());
 
@@ -282,13 +319,17 @@ namespace Resources
                     defaulNormal->bind(GL_TEXTURE1, glGetUniformLocation(shader->getProgram(), "NormalTextureSampler"), 1);
                 }
             }
-            //if (MaterialIndex < m_masks.size()) {
-            //	if (m_masks[MaterialIndex] != nullptr)
-            //	{
-            //		m_masks[MaterialIndex]->bind(GL_TEXTURE1, glGetUniformLocation(shader->getProgram(), "Masks"), 1);
-            //	}
+            /*if (MaterialIndex < m_Masks.size()) {
+            	if (m_Masks[MaterialIndex] != nullptr)
+            	{
+            		m_Masks[MaterialIndex]->bind(GL_TEXTURE2, glGetUniformLocation(shader->getProgram(), "MaskTextureSampler"), 2);
+            	}
+                else
+                {
+                    defaulMask->bind(GL_TEXTURE2, glGetUniformLocation(shader->getProgram(), "MaskTextureSampler"), 2);
+                }
 
-            //}
+            }*/
             glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
         }
 

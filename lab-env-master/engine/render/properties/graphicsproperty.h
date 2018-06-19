@@ -27,7 +27,6 @@ namespace Properties
         virtual void SetupCallbacks();
 
         std::shared_ptr<Resources::MeshResource> mesh;
-        std::shared_ptr<Managers::LightManager> light;
 
         float rad(float d)  //Degrees to rad
         {

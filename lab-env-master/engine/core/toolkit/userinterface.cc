@@ -21,11 +21,6 @@ namespace Toolkit
         ImGui::Text("FPS: %i", app->GetFPS());
 
 
-        if (ImGui::Button("Reload Shader"))
-        {
-            //app->GetEntityManager()->ReloadShaders();
-        }
-
         ImGui::End();
     }
 

@@ -66,7 +66,6 @@ namespace Resources
     {
         glActiveTexture(textureUnit);
         glBindTexture(m_textureTarget, m_texture);
-        // Set our "DiffuseTextureSampler" sampler to use Texture Unit 0
         glUniform1i(textureID, unit);
     }
 }

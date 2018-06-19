@@ -6,10 +6,6 @@
 
 namespace Skybox
 {
-
-    
-
-
     Skybox::Skybox(int scale)
     {
         for (int i = 0; i < 108; ++i)

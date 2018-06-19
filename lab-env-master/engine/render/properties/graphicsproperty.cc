@@ -9,7 +9,6 @@ namespace  Properties
     GraphicsProperty::GraphicsProperty()
     {
         mesh = std::make_shared<Resources::MeshResource>();
-        light = std::make_shared<Managers::LightManager>();
 
     }
 
