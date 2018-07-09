@@ -4,14 +4,17 @@
 
 namespace Managers
 {
-    LightManager::LightManager(float specularintensity, float speculatpower)
+    LightManager* LightManager::instance = 0;
+
+
+    LightManager::LightManager()
     {
         color = vector3D(0.1f, 0.1f, 0.1f);
         pos = vector3D(1.0, 1.0, 1.0);
         intens = 1.0f;
 
-        specIntensity = specularintensity;
-        specPower = speculatpower;
+        specIntensity = 0.5f;
+        specPower = 15.0f;
 
         m_dLights = std::vector<DirectionalLight>();
 
@@ -116,5 +119,14 @@ namespace Managers
     void LightManager::setIntensity(float i)
     {
         intens = i;
+    }
+
+    LightManager* LightManager::GetInstance()
+    {
+        if (instance == 0)
+        {
+            instance = new LightManager();
+        }
+        return instance;
     }
 }

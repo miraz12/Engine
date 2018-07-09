@@ -49,6 +49,8 @@ namespace Resources
 
         std::shared_ptr<ShaderObject> shader;
 
+        matrix4D model;
+
 
     private:
         bool InitFromScene(const aiScene* pScene, const std::string& Filename);
@@ -82,6 +84,7 @@ namespace Resources
         matrix4D modelMatrix;
         TextureResource* defaulNormal;
         TextureResource* defaultDiff;
+        TextureResource* defaulMask;
 
     };
 

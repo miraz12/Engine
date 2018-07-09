@@ -9,7 +9,6 @@
 #include "core/app.h"
 #include "render/window.h"
 #include "render/camera.h"
-#include "render/resources/graphicsnode.h"
 #include "render/input/keyhandler.h"
 #include "render/managers/entitymanager.h"
 #include "core/toolkit/userinterface.h"
@@ -18,46 +17,40 @@
 
 namespace Example
 {
-class Application : public Core::App
-{
-public:
-	/// constructor
-	Application();
-	/// destructor
-	~Application();
-
-    /// open app
-	bool Open();
-	/// run app
-	void Run();
-
-    int GetFPS() { return FPS; }
-
-    Managers::EntityManager* GetEntityManager() const
+    class Application : public Core::App
     {
-        return entityManager;
-    }
+    public:
+        /// constructor
+        Application();
+        /// destructor
+        ~Application();
 
-private:
+        /// open app
+        bool Open() override;
+        /// run app
+        void Run() override;
 
-	void LightSetup(); // Setup all the lights 
-	void ObjectSetup(); // Setup all the objects 
-	void UpdateLights(double time);	//Update all lights that should be updated
+        int GetFPS() { return FPS; }
 
-    void CalculateFPS(double& currentTime, double& lastTimeFPS, int& nbFrames);
+        Managers::EntityManager* GetEntityManager() const
+        {
+            return entityManager;
+        }
 
-    //skybox
-    Skybox::Skybox* skybox;
-    Display::Window* window;
-    Display::Camera* mainCamera;
-    Input::KeyHandler* keyHandler;
-    Managers::EntityManager* entityManager;
-    Toolkit::UserInterface* ui;
+    private:
 
-    std::shared_ptr<Managers::LightManager> lNode;
+        void ObjectSetup(); // Setup all the objects 
+        void CalculateFPS(double& currentTime, double& lastTimeFPS, int& nbFrames);
 
-	int FPS{ 0 };
-	double deltaTime{ 0 };
+        //skybox
+        Skybox::Skybox* skybox;
+        Display::Window* window;
+        Display::Camera* mainCamera;
+        Input::KeyHandler* keyHandler;
+        Managers::EntityManager* entityManager;
+        Toolkit::UserInterface* ui;
 
-};
+        int FPS{0};
+        double deltaTime{0};
+    };
 } // namespace Example

@@ -16,6 +16,13 @@ SET(files_resources
 	${resources_sources})
 SOURCE_GROUP("resources" FILES ${files_resources})
 
+FILE(GLOB properties_headers properties/*.h)
+FILE(GLOB properties_sources properties/*.cc)
+SET(files_properties 
+	${properties_headers}
+	${properties_sources})
+SOURCE_GROUP("properties" FILES ${files_properties})
+
 FILE(GLOB particles_headers particles/*.h)
 FILE(GLOB particles_sources particles/*.cc)
 SET(files_particles 
@@ -37,6 +44,13 @@ SET(files_managers
 	${managers_sources})
 SOURCE_GROUP("managers" FILES ${files_managers})
 
+FILE(GLOB base_headers base/*.h)
+FILE(GLOB base_sources base/*.cc)
+SET(files_base 
+	${base_headers}
+	${base_sources})
+SOURCE_GROUP("base" FILES ${files_base})
+
 FILE(GLOB skybox_headers skybox/*.h)
 FILE(GLOB skybox_sources skybox/*.cc)
 SET(files_skybox 
@@ -44,14 +58,15 @@ SET(files_skybox
 	${skybox_sources})
 SOURCE_GROUP("skybox" FILES ${files_skybox})
 
-
 SET(files_render
 	${files_render_display}
 	${files_render_pch}
 	${files_resources}
+	${files_properties}
 	${files_particles}
 	${files_input}
 	${files_managers}
+	${files_base}
 	${files_skybox})
 
 SET(files_pch ../config.h ../config.cc)
