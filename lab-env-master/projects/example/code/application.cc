@@ -44,8 +44,8 @@ namespace Example
 
 	void Application::ObjectSetup()
 	{
-        //this->entityManager->AddNewEntity("content/cat.obj");
-        this->entityManager->AddNewEntity("content/ocrytek_sponza/sponza.obj");
+        this->entityManager->AddNewEntity("content/cat.obj");
+        //this->entityManager->AddNewEntity("content/ocrytek_sponza/sponza.obj");
 	}
 
 	//------------------------------------------------------------------------------

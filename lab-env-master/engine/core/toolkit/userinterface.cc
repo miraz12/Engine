@@ -26,6 +26,13 @@ namespace Toolkit
             app->GetEntityManager()->ReloadShaders();
         }
 
+        //Camera
+        Display::Camera* cam = Display::Camera::GetInstance();
+        ImGui::Text("Position:");
+        ImGui::Text("x: %.2f y: %.2f z: %.2f", cam->position.x(), cam->position.y(), cam->position.z());
+        ImGui::Text("Front:");
+        ImGui::Text("x: %.2f y: %.2f z: %.2f", cam->camFront.x(), cam->camFront.y(), cam->camFront.z());
+
         ImGui::End();
     }
 
