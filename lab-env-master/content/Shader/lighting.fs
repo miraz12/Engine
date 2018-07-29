@@ -117,10 +117,12 @@ vec4 CalcSpotLight(SpotLight l, vec3 Normal, vec3 WorldPos0)
                 			
 void main()                                                                                 
 {   
-	
+
 	vec3 FragPos = texture(gPosition, TexCoord0).rgb;
     vec3 Normal = texture(gNormal, TexCoord0).rgb;
     vec3 Diffuse = texture(gAlbedoSpec, TexCoord0).rgb;
+	
+	if (Normal == vec3(0.0, 0.0, 0.0)){ discard; }
 	
     vec4 TotalLight = CalcDirectionalLight(Normal, FragPos);                                         
                                                                                             

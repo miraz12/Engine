@@ -12,7 +12,6 @@
 #include "render/input/keyhandler.h"
 #include "render/managers/entitymanager.h"
 #include "core/toolkit/userinterface.h"
-#include "render/skybox/skybox.h"
 #include "render/servers/renderserver.h"
 
 
@@ -44,7 +43,6 @@ namespace Example
         void CalculateFPS(double& currentTime, double& lastTimeFPS, int& nbFrames);
 
         //skybox
-        Skybox::Skybox* skybox;
         Display::Window* window;
         Display::Camera* mainCamera;
         Input::KeyHandler* keyHandler;

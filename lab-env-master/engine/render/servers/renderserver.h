@@ -3,6 +3,7 @@
 #include <vector>
 #include "render/passes/geometrypass.h"
 #include "render/passes/lightpass.h"
+#include "render/skybox/skybox.h"
 
 namespace Servers
 {
@@ -17,13 +18,17 @@ namespace Servers
         RenderServer(const RenderServer&) = delete;
         void operator=(const RenderServer) = delete;
 
+        void UpdateResolution();
+
         GLuint gBuffer;
-        Passes::LightPass* lPass;
 
     private:
 
         std::vector<Base::FramePass*> passes;
         Passes::GeometryPass* gPass;
+        Passes::LightPass* lPass;
+        Skybox::Skybox* skybox;
+
         static RenderServer* instance;
     };
 }

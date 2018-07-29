@@ -1,5 +1,6 @@
 #include "config.h"
 #include "lightmanager.h"
+#include "render/camera.h"
 
 
 namespace Managers
@@ -22,6 +23,8 @@ namespace Managers
 
     void LightManager::Setup(std::shared_ptr<Resources::ShaderObject> s)
     {
+        Display::Camera* cam = Display::Camera::GetInstance();
+        s->modVector3f("cameraPos", vector3D(cam->position.x(), cam->position.y(), cam->position.z()));
         s->mod1i("gNumPointLights", (m_pLights.size()));
         s->mod1i("gNumSpotLights", (m_sLights.size()));
 

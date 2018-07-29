@@ -9,7 +9,6 @@ namespace Servers
 
     RenderServer::RenderServer()
     {
-
     }
 
     void RenderServer::Render()
@@ -22,19 +21,23 @@ namespace Servers
         }
 
         glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 1); // write to default framebuffer
         glBlitFramebuffer(0, 0, cam->m_width, cam->m_height, 0, 0, cam->m_width, cam->m_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-        //glBlitNamedFramebuffer(gBuffer, 0, 0, 0, cam->m_width, cam->m_height, 0, 0, cam->m_width, cam->m_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+        glAlphaFunc(GL_ALWAYS, 0.0f);
+        glDepthFunc(GL_LESS);
+
+        skybox->Draw(cam->view, cam->projection);
     }
 
     void RenderServer::Setup()
     {
+        skybox = new Skybox::Skybox(1500);
         lPass = new Passes::LightPass();
-        lPass->Setup();
         gPass = new Passes::GeometryPass();
+        lPass->Setup();
         gPass->Setup();
  
         passes.push_back(gPass);
@@ -51,4 +54,8 @@ namespace Servers
         return instance;
     }
 
+    void RenderServer::UpdateResolution()
+    {
+        lPass->UpdateResolution();
+    }
 }

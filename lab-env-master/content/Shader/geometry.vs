@@ -16,10 +16,12 @@ layout(location=3) in vec3 tangents;
 
 void main()
 {
-	gl_Position = ( projection * view * model) * vec4(pos, 1.0);
-
+	//gl_Position = ( projection * view * model) * vec4(pos, 1.0);
+	vec4 worldPos = model * vec4(pos, 1.0);
 	TexCoord0 = TexCoord;
-	Normal0 = (model * vec4(normal, 0.0)).xyz;
-	Tangent0 = (model * vec4(tangents, 0.0)).xyz;
-	WorldPos0   = (model * vec4(pos, 1.0)).xyz;  
+	Normal0 = (mat3(model) * normal);
+	Tangent0 = (mat3(model) * tangents);
+	WorldPos0 = worldPos.xyz;
+	
+	gl_Position = ( projection * view * worldPos);	
 }

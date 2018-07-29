@@ -66,14 +66,10 @@ namespace Example
             //Setup everyting
             Managers::LightManager::GetInstance()->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f,
                                                                        vector3D(0.0f, -1.0, 0.0));
-
             renderServer->Setup();
             ObjectSetup();
             keyHandler->Init(window);
-            skybox = new Skybox::Skybox(1500);
 
-
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             // set ui rendering function
             this->window->SetUiRender([this]()
             {
@@ -83,6 +79,7 @@ namespace Example
             window->SetWindowResizeCallback([this](float w, float h)
             {
                 mainCamera->UpdatePerspective(w, h);
+                renderServer->GetInstance()->UpdateResolution();
             });
             return true;
         }
@@ -100,6 +97,7 @@ namespace Example
         double lastTimeFPS = glfwGetTime();
 
         glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
         //glDepthFunc(GL_LESS);
         //glEnable(GL_MULTISAMPLE);
         //Wireframe
@@ -120,7 +118,6 @@ namespace Example
 
             //Update things
             renderServer->Render();
-            //skybox->Draw(this->mainCamera->view, this->mainCamera->projection);
             lastTime = currentTime;
 
             this->window->SwapBuffers();
