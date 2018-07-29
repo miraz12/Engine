@@ -7,14 +7,12 @@ out vec2 TexCoord0;
 out vec3 Normal0;
 out vec3 WorldPos0;
 out vec3 Tangent0;
+out vec4 ColorIn;
 
 layout(location=0) in vec3 pos;
 layout(location=1) in vec2 TexCoord;
 layout(location=2) in vec3 normal;
 layout(location=3) in vec3 tangents;
-
-
-
 
 void main()
 {
