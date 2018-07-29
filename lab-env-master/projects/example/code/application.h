@@ -13,6 +13,7 @@
 #include "render/managers/entitymanager.h"
 #include "core/toolkit/userinterface.h"
 #include "render/skybox/skybox.h"
+#include "render/servers/renderserver.h"
 
 
 namespace Example
@@ -48,6 +49,7 @@ namespace Example
         Display::Camera* mainCamera;
         Input::KeyHandler* keyHandler;
         Managers::EntityManager* entityManager;
+        Servers::RenderServer* renderServer;
         Toolkit::UserInterface* ui;
 
         int FPS{0};

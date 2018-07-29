@@ -7,6 +7,7 @@
 #include <imgui.h>
 #include <algorithm>
 #include "render/properties/graphicsproperty.h"
+#include "render/servers/renderserver.h"
 
 
 using namespace Display;
@@ -55,7 +56,8 @@ namespace Example
         mainCamera->m_width = 1024;
         mainCamera->m_height = 768;
         this->keyHandler = new Input::KeyHandler();
-        this->entityManager = new Managers::EntityManager();
+        this->entityManager = Managers::EntityManager::GetInstance();
+        this->renderServer = Servers::RenderServer::GetInstance();
         this->ui = new Toolkit::UserInterface(this);
 
 
@@ -64,6 +66,8 @@ namespace Example
             //Setup everyting
             Managers::LightManager::GetInstance()->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f,
                                                                        vector3D(0.0f, -1.0, 0.0));
+
+            renderServer->Setup();
             ObjectSetup();
             keyHandler->Init(window);
             skybox = new Skybox::Skybox(1500);
@@ -115,7 +119,7 @@ namespace Example
             CalculateFPS(currentTime, lastTimeFPS, nbFrames);
 
             //Update things
-            entityManager->OnBeginFrame();
+            renderServer->Render();
             skybox->Draw(this->mainCamera->view, this->mainCamera->projection);
             lastTime = currentTime;
 

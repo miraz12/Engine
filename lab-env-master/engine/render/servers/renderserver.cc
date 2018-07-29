@@ -1,5 +1,6 @@
 #include "config.h"
 #include "renderserver.h"
+#include "render/passes/geometrypass.h"
 
 namespace Servers
 {
@@ -9,6 +10,22 @@ namespace Servers
     {
 
     }
+
+    void RenderServer::Render()
+    {
+        for (int i = 0; i < passes.size(); ++i)
+        {
+            passes[i]->Execute();
+        }
+    }
+
+    void RenderServer::Setup()
+    {
+        gPass = new Passes::GeometryPass();
+        gPass->Setup();
+        passes.push_back(gPass);
+    }
+
 
     RenderServer* RenderServer::GetInstance()
     {

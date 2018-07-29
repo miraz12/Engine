@@ -1,6 +1,7 @@
 #pragma once
 #include "render/base/framepass.h"
 #include "core/toolkit/userinterface.h"
+#include "render/managers/entitymanager.h"
 
 namespace Passes
 {
@@ -15,6 +16,7 @@ namespace Passes
 
     private:
         GLuint normalBuffer;
+        Managers::EntityManager* eManager;
     };
 
 }
