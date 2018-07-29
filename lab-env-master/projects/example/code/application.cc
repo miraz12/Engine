@@ -100,7 +100,7 @@ namespace Example
         double lastTimeFPS = glfwGetTime();
 
         glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LESS);
+        //glDepthFunc(GL_LESS);
         //glEnable(GL_MULTISAMPLE);
         //Wireframe
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -120,7 +120,7 @@ namespace Example
 
             //Update things
             renderServer->Render();
-            skybox->Draw(this->mainCamera->view, this->mainCamera->projection);
+            //skybox->Draw(this->mainCamera->view, this->mainCamera->projection);
             lastTime = currentTime;
 
             this->window->SwapBuffers();

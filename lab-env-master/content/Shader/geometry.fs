@@ -1,15 +1,16 @@
 #version 330                                                                        
                 			
+layout (location = 0) out vec3 gPosition;
+layout (location = 1) out vec3 gNormal;
+layout (location = 2) out vec4 gAlbedoSpec;
+							
 uniform sampler2D DiffuseTextureSampler;
-uniform sampler2D NormalTextureSampler;    
-uniform sampler2D MaskTextureSampler;    
+uniform sampler2D NormalTextureSampler;     
 				
 in vec2 TexCoord0;                                                                 
 in vec3 Normal0;                                                                 
 in vec3 WorldPos0;                                                                
-in vec3 Tangent0;                                                                          
-
-out vec4 FragColor;                                                                 
+in vec3 Tangent0;                                                                                                                                        
   
 vec3 CalcBumpedNormal()
 {
@@ -28,8 +29,7 @@ vec3 CalcBumpedNormal()
 				
 void main()                                                                                 
 {   
- 
-	vec3 Normal = CalcBumpedNormal();                                                                                           
-                                                                                  
-    FragColor = texture(DiffuseTextureSampler, TexCoord0);                             
+	gPosition = WorldPos0;
+	gNormal = CalcBumpedNormal();
+	gAlbedoSpec = texture(DiffuseTextureSampler, TexCoord0);
 }

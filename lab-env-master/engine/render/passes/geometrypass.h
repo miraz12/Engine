@@ -9,14 +9,16 @@ namespace Passes
     {
     public:
         GeometryPass();
-
         ~GeometryPass();
+
         void Setup();
         void Execute();
 
+        unsigned int gPosition, gNormal, gAlbedoSpec;
     private:
-        GLuint normalBuffer;
+
         Managers::EntityManager* eManager;
+
     };
 
 }

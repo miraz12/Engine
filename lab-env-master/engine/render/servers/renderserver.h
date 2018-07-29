@@ -2,6 +2,7 @@
 #include "render/base/framepass.h"
 #include <vector>
 #include "render/passes/geometrypass.h"
+#include "render/passes/lightpass.h"
 
 namespace Servers
 {
@@ -16,11 +17,13 @@ namespace Servers
         RenderServer(const RenderServer&) = delete;
         void operator=(const RenderServer) = delete;
 
+        GLuint gBuffer;
+        Passes::LightPass* lPass;
 
     private:
+
         std::vector<Base::FramePass*> passes;
         Passes::GeometryPass* gPass;
-        //Passes::LightPass* lPass;
         static RenderServer* instance;
     };
 }

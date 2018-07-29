@@ -330,8 +330,9 @@ namespace Resources
 
             }*/
             glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         }
-
+        glActiveTexture(GL_TEXTURE0);
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(2);

@@ -20,7 +20,7 @@ namespace  Properties
     {
         mesh->shader->bind();
 
-        Managers::LightManager::GetInstance()->Setup(mesh->shader);
+        //Managers::LightManager::GetInstance()->Setup(mesh->shader);
 
         Display::Camera* cam = Display::Camera::GetInstance();
         cam->view = cam->view.LookAtRH(cam->position, cam->position + cam->camFront, cam->headUp);
