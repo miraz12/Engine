@@ -42,7 +42,7 @@ namespace Resources
 
     MeshResource::MeshResource()
     {
-        shader = std::make_shared<ShaderObject>("content/Shader/lighting.vs", "content/Shader/lighting.fs");
+        shader = std::make_shared<ShaderObject>("content/Shader/geometry.vs", "content/Shader/geometry.fs");
 
         defaultDiff = new TextureResource("content/DefaultDiffuse.png");
         defaultDiff->Load();
@@ -52,7 +52,6 @@ namespace Resources
 
         defaulMask = new TextureResource("content/DefaultMask.png");
         defaulMask->Load();
-
     }
 
 
@@ -331,8 +330,9 @@ namespace Resources
 
             }*/
             glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            glActiveTexture(GL_TEXTURE0);
         }
-
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(2);

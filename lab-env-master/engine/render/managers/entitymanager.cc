@@ -3,6 +3,8 @@
 
 namespace Managers
 {
+    EntityManager* EntityManager::instance = 0;
+
     EntityManager::EntityManager()
     {
     }
@@ -77,4 +79,15 @@ namespace Managers
     {
         return this->activeEntities;
     }
+
+
+    EntityManager* EntityManager::GetInstance()
+    {
+        if (instance == 0)
+        {
+            instance = new EntityManager();
+        }
+        return instance;
+    }
+
 }

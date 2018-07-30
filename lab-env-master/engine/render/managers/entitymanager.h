@@ -10,7 +10,9 @@ namespace Managers
     public:
         EntityManager();
         ~EntityManager();
-
+        static EntityManager* GetInstance();
+        EntityManager(const EntityManager&) = delete;
+        void operator=(const EntityManager) = delete;
 
         /// immediately attach an entity to the world
         void AttachEntity(Base::Entity* entity);
@@ -40,9 +42,10 @@ namespace Managers
         /// get currently active entities
         const std::vector<Base::Entity*>& GetEntities() const;
 
-
     private:
 
+
+        static EntityManager* instance;
 
         std::unordered_map<Base::Entity::EntityId, Base::Entity*> entityRegistry;  // map unique ids to entities
         std::vector<Base::Entity*> activeEntities;                                  // currently active entities

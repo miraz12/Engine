@@ -20,12 +20,12 @@ namespace  Properties
     {
         mesh->shader->bind();
 
-        Managers::LightManager::GetInstance()->Setup(mesh->shader);
+        //Managers::LightManager::GetInstance()->Setup(mesh->shader);
 
         Display::Camera* cam = Display::Camera::GetInstance();
         cam->view = cam->view.LookAtRH(cam->position, cam->position + cam->camFront, cam->headUp);
 
-        mesh->shader->modVector3f("cameraPos", vector3D(cam->position.x(), cam->position.y(), cam->position.z()));
+        
         mesh->shader->modVector3f("worldPos", vector3D(mesh->model.getPosition()));
         mesh->shader->modMatrix4fv("projection", cam->projection);
         mesh->shader->modMatrix4fv("view", cam->view);

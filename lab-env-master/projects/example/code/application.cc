@@ -7,6 +7,7 @@
 #include <imgui.h>
 #include <algorithm>
 #include "render/properties/graphicsproperty.h"
+#include "render/servers/renderserver.h"
 
 
 using namespace Display;
@@ -55,7 +56,8 @@ namespace Example
         mainCamera->m_width = 1024;
         mainCamera->m_height = 768;
         this->keyHandler = new Input::KeyHandler();
-        this->entityManager = new Managers::EntityManager();
+        this->entityManager = Managers::EntityManager::GetInstance();
+        this->renderServer = Servers::RenderServer::GetInstance();
         this->ui = new Toolkit::UserInterface(this);
 
 
@@ -65,11 +67,9 @@ namespace Example
             Managers::LightManager::GetInstance()->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f,
                                                                        vector3D(0.0f, -1.0, 0.0));
             ObjectSetup();
+            renderServer->Init(this->window);
             keyHandler->Init(window);
-            skybox = new Skybox::Skybox(1500);
 
-
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             // set ui rendering function
             this->window->SetUiRender([this]()
             {
@@ -79,6 +79,7 @@ namespace Example
             window->SetWindowResizeCallback([this](float w, float h)
             {
                 mainCamera->UpdatePerspective(w, h);
+                renderServer->GetInstance()->UpdateResolution();
             });
             return true;
         }
@@ -95,16 +96,9 @@ namespace Example
         double lastTime = glfwGetTime();
         double lastTimeFPS = glfwGetTime();
 
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LESS);
-        //glEnable(GL_MULTISAMPLE);
-        //Wireframe
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
         int nbFrames = 0;
         while (!glfwWindowShouldClose(this->window->window))
         {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             this->window->Update();
             //Calculate deltaTime
             double currentTime = glfwGetTime();
@@ -114,12 +108,9 @@ namespace Example
             nbFrames++;
             CalculateFPS(currentTime, lastTimeFPS, nbFrames);
 
-            //Update things
-            entityManager->OnBeginFrame();
-            skybox->Draw(this->mainCamera->view, this->mainCamera->projection);
+            //Render
+            renderServer->Render();
             lastTime = currentTime;
-
-            this->window->SwapBuffers();
         }
     }
 

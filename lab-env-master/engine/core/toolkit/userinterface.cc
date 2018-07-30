@@ -19,8 +19,6 @@ namespace Toolkit
         bool show = true;
         ImGui::Begin("Debug", &show);
         ImGui::Text("FPS: %i", app->GetFPS());
-
-
         //Camera
         Display::Camera* cam = Display::Camera::GetInstance();
         ImGui::Text("Position:");
