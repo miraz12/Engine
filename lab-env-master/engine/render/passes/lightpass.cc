@@ -69,7 +69,7 @@ namespace Passes
     {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT);
         this->shader->bind();
 
         glActiveTexture(GL_TEXTURE0);
@@ -85,6 +85,7 @@ namespace Passes
 
     void LightPass::renderQuad()
     {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         unsigned int quadVAO = 0;
         unsigned int quadVBO;
         if (quadVAO == 0)

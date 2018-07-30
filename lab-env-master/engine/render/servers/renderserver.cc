@@ -2,6 +2,9 @@
 #include "renderserver.h"
 #include "render/passes/geometrypass.h"
 #include "render/camera.h"
+#include "render/window.h"
+
+#define G_WIREFRAME false
 
 namespace Servers
 {
@@ -13,10 +16,18 @@ namespace Servers
 
     void RenderServer::Render()
     {
+        if (!G_WIREFRAME)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+        else
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glDisable(GL_TEXTURE_2D);
+        }
         Display::Camera* cam = Display::Camera::GetInstance();
         for (int i = 0; i < passes.size(); ++i)
         {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             passes[i]->Execute();
         }
 
@@ -30,10 +41,13 @@ namespace Servers
         glDepthFunc(GL_LESS);
 
         skybox->Draw(cam->view, cam->projection);
+
+        this->window->SwapBuffers();
     }
 
-    void RenderServer::Setup()
+    void RenderServer::Init(Display::Window* window )
     {
+        this->window = window;
         skybox = new Skybox::Skybox(1500);
         lPass = new Passes::LightPass();
         gPass = new Passes::GeometryPass();
