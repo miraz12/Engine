@@ -23,9 +23,9 @@ namespace Passes
     {
         glClearColor(0.f, 0.f, 0.f, 0.0f);
         //Could possably be moved out into renderserver..
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, Servers::RenderServer::GetInstance()->gBuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, Servers::RenderServer::GetInstance()->gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         eManager->OnBeginFrame();
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 }
