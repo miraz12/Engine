@@ -48,6 +48,8 @@ namespace Servers
     void RenderServer::Init(Display::Window* window )
     {
         this->window = window;
+
+        glGenFramebuffers(1, &gBuffer);
         skybox = new Skybox::Skybox(1500);
         lPass = new Passes::LightPass();
         gPass = new Passes::GeometryPass();
@@ -71,5 +73,10 @@ namespace Servers
     void RenderServer::UpdateResolution()
     {
         lPass->UpdateResolution();
+    }
+
+    void RenderServer::BindGBuffer()
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
     }
 }

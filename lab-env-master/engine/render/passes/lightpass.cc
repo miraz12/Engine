@@ -27,7 +27,7 @@ namespace Passes
         shader->mod1i("gPosition", 0);
         shader->mod1i("gNormal", 1);
         shader->mod1i("gAlbedoSpec", 2);
-        glGenFramebuffers(1, &Servers::RenderServer::GetInstance()->gBuffer);
+        Servers::RenderServer::GetInstance()->BindGBuffer();
         glBindFramebuffer(GL_FRAMEBUFFER, Servers::RenderServer::GetInstance()->gBuffer);
         // position color buffer
         glGenTextures(1, &gPosition);

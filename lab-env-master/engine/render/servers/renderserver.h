@@ -23,11 +23,21 @@ namespace Servers
         void operator=(const RenderServer) = delete;
 
         void UpdateResolution();
+        void BindGBuffer();
 
         GLuint gBuffer;
 
-    private:
+        Passes::GeometryPass* getgPass() const
+        {
+            return gPass;
+        }
 
+        Passes::LightPass* getlPass() const
+        {
+            return lPass;
+        }
+
+    private:
         std::vector<Base::FramePass*> passes;
         Passes::GeometryPass* gPass;
         Passes::LightPass* lPass;

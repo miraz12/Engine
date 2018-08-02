@@ -20,5 +20,6 @@ namespace Toolkit
 
     private:
         Example::Application* app;
+        bool gBufferWindow = false;
     };
 }

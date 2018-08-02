@@ -23,7 +23,7 @@ namespace Passes
     {
         glClearColor(0.f, 0.f, 0.f, 0.0f);
         //Could possably be moved out into renderserver..
-        glBindFramebuffer(GL_FRAMEBUFFER, Servers::RenderServer::GetInstance()->gBuffer);
+        Servers::RenderServer::GetInstance()->BindGBuffer();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         eManager->OnBeginFrame();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

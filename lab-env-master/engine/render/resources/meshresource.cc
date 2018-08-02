@@ -15,6 +15,9 @@ namespace Resources
 
     MeshResource::MeshEntry::~MeshEntry()
     {
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
         if (VB != INVALID_OGL_VALUE)
         {
             glDeleteBuffers(1, &VB);
@@ -37,7 +40,9 @@ namespace Resources
         glGenBuffers(1, &IB);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)* NumIndices, &Indices[0], GL_STATIC_DRAW);
-
+        
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
     MeshResource::MeshResource()
@@ -116,7 +121,6 @@ namespace Resources
         else {
             printf("Error parsing '%s': '%s'\n", Filename.c_str(), Importer.GetErrorString());
         }
-
         return Ret;
     }
 
