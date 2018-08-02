@@ -16,7 +16,7 @@ namespace Toolkit
     void UserInterface::Run()
     {
         bool show = true;
-        ImGui::SetNextWindowSizeConstraints(ImVec2(200, 120), ImVec2(FLT_MAX, FLT_MAX)); // Width > 100, Height > 100
+        ImGui::SetNextWindowSizeConstraints(ImVec2(200, 100), ImVec2(FLT_MAX, FLT_MAX)); // Width > 100, Height > 100
         ImGui::Begin("Debug", &show, ImGuiWindowFlags_AlwaysAutoResize);
 
         ImGui::Text("FPS: (%.1f FPS)", ImGui::GetIO().Framerate);
@@ -30,7 +30,7 @@ namespace Toolkit
             ImGui::Text("x: %.2f y: %.2f z: %.2f", cam->camFront.x(), cam->camFront.y(), cam->camFront.z());
         }
 
-        if (ImGui::CollapsingHeader("Help"))
+        if (ImGui::CollapsingHeader("G-Buffer"))
         {
             int imageSize = 180;
             ImTextureID my_tex_id = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gAlbedoSpec;
