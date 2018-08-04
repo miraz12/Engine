@@ -38,6 +38,7 @@ namespace Example
         Base::Entity* temp = new Base::Entity();
         Properties::GraphicsProperty* prop = new Properties::GraphicsProperty();
         //prop->mesh->LoadMesh("content/ocrytek_sponza/sponza.obj");
+        //prop->mesh->LoadMesh("content/sponzafixed/sponza.obj");
         prop->mesh->LoadMesh("content/cat.obj");
         temp->AttachProperty(prop);
         this->entityManager->AttachEntity(temp);
@@ -92,43 +93,14 @@ namespace Example
     void
     Application::Run()
     {
-        //Time variables for calculationg alg time
-        double lastTime = glfwGetTime();
-        double lastTimeFPS = glfwGetTime();
-
-        int nbFrames = 0;
         while (!glfwWindowShouldClose(this->window->window))
         {
             this->window->Update();
-            //Calculate deltaTime
-            double currentTime = glfwGetTime();
-            deltaTime = fabs(currentTime - lastTime);
-
-            // Measure fps
-            nbFrames++;
-            CalculateFPS(currentTime, lastTimeFPS, nbFrames);
 
             //Render
             renderServer->Render();
-            lastTime = currentTime;
         }
     }
 
-    //------------------------------------------------------------------------------
-    /**
-    */
-    void Application::CalculateFPS(double& currentTime, double& lastTimeFPS, int& nbFrames)
-    {
-        if (currentTime - lastTimeFPS >= 1.0)
-        {
-            // If last prinf() was more than 1 sec ago
-            FPS = nbFrames;
-            nbFrames = 0;
-            lastTimeFPS += 1.0;
-        }
-    }
 
-    //------------------------------------------------------------------------------
-    /**
-    */
 } // namespace Example

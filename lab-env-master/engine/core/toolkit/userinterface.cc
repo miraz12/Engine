@@ -33,12 +33,12 @@ namespace Toolkit
         if (ImGui::CollapsingHeader("G-Buffer"))
         {
             int imageSize = 180;
-            ImTextureID my_tex_id = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gAlbedoSpec;
-            ImGui::Image(my_tex_id, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
-            ImTextureID my_tex_id2 = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gNormal;
-            ImGui::Image(my_tex_id2, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
-            ImTextureID my_tex_id3 = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gPosition;
-            ImGui::Image(my_tex_id3, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+            ImTextureID albedo = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gAlbedoSpec;
+            ImGui::Image(albedo, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+            ImTextureID normal = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gNormal;
+            ImGui::Image(normal, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+            ImTextureID pos = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gPosition;
+            ImGui::Image(pos, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
         }
         ImGui::End();
     }

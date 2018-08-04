@@ -16,6 +16,7 @@ namespace Servers
 
     void RenderServer::Render()
     {
+        //Render as wireframe
         if (!G_WIREFRAME)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -32,15 +33,16 @@ namespace Servers
         }
 
         glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer (screen)
         glBlitFramebuffer(0, 0, cam->m_width, cam->m_height, 0, 0, cam->m_width, cam->m_height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+        skybox->Draw(cam->view, cam->projection);
+
         glAlphaFunc(GL_ALWAYS, 0.0f);
         glDepthFunc(GL_LESS);
 
-        skybox->Draw(cam->view, cam->projection);
 
         this->window->SwapBuffers();
     }

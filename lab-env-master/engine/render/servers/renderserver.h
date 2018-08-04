@@ -24,6 +24,8 @@ namespace Servers
 
         void UpdateResolution();
         void BindGBuffer();
+        void ReadGBuffer();
+        void WriteGBuffer();
 
         GLuint gBuffer;
 

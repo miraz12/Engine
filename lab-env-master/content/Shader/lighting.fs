@@ -120,7 +120,7 @@ void main()
 
 	vec3 FragPos = texture(gPosition, TexCoord0).rgb;
     vec3 Normal = texture(gNormal, TexCoord0).rgb;
-    vec3 Diffuse = texture(gAlbedoSpec, TexCoord0).rgb;
+    vec4 Diffuse = texture(gAlbedoSpec, TexCoord0).rgba;
 	
 	if (Normal == vec3(0.0, 0.0, 0.0)){ discard; }
 	
@@ -134,5 +134,7 @@ void main()
         TotalLight += CalcSpotLight(gSpotLights[i], Normal, FragPos);                                
     }                   
 
-    FragColor = vec4(Diffuse, 1.0) * TotalLight;                             
+    FragColor = vec4(Diffuse.rgb, 1.0) * TotalLight;        
+    FragColor.a = Diffuse.a;  
+	
 }

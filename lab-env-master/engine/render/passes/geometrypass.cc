@@ -22,10 +22,17 @@ namespace Passes
     void GeometryPass::Execute()
     {
         glClearColor(0.f, 0.f, 0.f, 0.0f);
-        //Could possably be moved out into renderserver..
         Servers::RenderServer::GetInstance()->BindGBuffer();
+        glDepthMask(GL_TRUE);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_DEPTH_TEST);
+
+        glDisable(GL_BLEND);
+
+        //Render all graphicsproperties
         eManager->OnBeginFrame();
+        glDepthMask(GL_FALSE);
+        glDisable(GL_DEPTH_TEST);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 }

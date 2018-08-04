@@ -13,7 +13,6 @@ namespace Skybox
             skyboxVertices[i] *= scale;
         }
 
-        glEnable(GL_DEPTH_TEST);
         shaderSkybox = std::make_shared<Resources::ShaderObject>("content/Shader/skybox.vs", "content/Shader/skybox.fs");
 
         // skybox VAO
@@ -44,6 +43,9 @@ namespace Skybox
 
     void Skybox::Draw(matrix4D view, matrix4D projection)
     {
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(GL_TRUE);
+
         glBindVertexArray(skyboxVAO);
         glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
         glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
@@ -61,6 +63,9 @@ namespace Skybox
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
         glDepthFunc(GL_LESS); // set depth function back to default
+
+        glDepthMask(GL_FALSE);
+        glDisable(GL_DEPTH_TEST);
     }
 
     unsigned int Skybox::loadCubemap(std::vector<std::string> faces)

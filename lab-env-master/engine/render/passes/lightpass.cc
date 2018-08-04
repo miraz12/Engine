@@ -67,11 +67,11 @@ namespace Passes
 
     void LightPass::Execute()
     {
+
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
         glClear(GL_COLOR_BUFFER_BIT);
+        //Bind lighting shader
         this->shader->bind();
-
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, gPosition);
         glActiveTexture(GL_TEXTURE1);
@@ -80,6 +80,7 @@ namespace Passes
         glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
 
         Managers::LightManager::GetInstance()->Setup(this->shader);
+        //Render quad that cover the whole screen
         renderQuad();
     }
 

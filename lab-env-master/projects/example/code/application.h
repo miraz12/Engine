@@ -24,25 +24,16 @@ namespace Example
         Application();
         /// destructor
         ~Application();
-
         /// open app
         bool Open() override;
         /// run app
         void Run() override;
 
-        int GetFPS() { return FPS; }
-
-        Managers::EntityManager* GetEntityManager() const
-        {
-            return entityManager;
-        }
-
     private:
 
-        void ObjectSetup(); // Setup all the objects 
-        void CalculateFPS(double& currentTime, double& lastTimeFPS, int& nbFrames);
+        /// Setup all the objects 
+        void ObjectSetup(); 
 
-        //skybox
         Display::Window* window;
         Display::Camera* mainCamera;
         Input::KeyHandler* keyHandler;
@@ -50,7 +41,5 @@ namespace Example
         Servers::RenderServer* renderServer;
         Toolkit::UserInterface* ui;
 
-        int FPS{0};
-        double deltaTime{0};
     };
 } // namespace Example
