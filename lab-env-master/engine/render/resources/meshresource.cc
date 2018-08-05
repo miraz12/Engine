@@ -41,8 +41,15 @@ namespace Resources
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)* NumIndices, &Indices[0], GL_STATIC_DRAW);
         
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(3);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);	//Indices
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12); //UVs
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20); //Normals
+        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)32);	//Tangents
     }
 
     MeshResource::MeshResource()
@@ -79,6 +86,7 @@ namespace Resources
             delete(m_Spec[i]);
         }
 
+        glDeleteVertexArrays(1, &VAO);
         delete(defaulNormal);
         delete(defaultDiff);
     }
@@ -105,8 +113,8 @@ namespace Resources
 
     bool MeshResource::LoadMesh(const std::string& Filename)
     {
-        // Release the previously loaded mesh (if it exists)
-        //Clear();
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
 
         printf("Loading: '%s'\n", Filename.c_str());
 
@@ -121,6 +129,7 @@ namespace Resources
         else {
             printf("Error parsing '%s': '%s'\n", Filename.c_str(), Importer.GetErrorString());
         }
+        glBindVertexArray(0);
         return Ret;
     }
 
@@ -286,19 +295,11 @@ namespace Resources
 
     void MeshResource::Render()
     {
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-        glEnableVertexAttribArray(3);
+        glBindVertexArray(VAO);
 
         for (unsigned int i = 0; i < m_Entries.size(); i++) {
-            glBindBuffer(GL_ARRAY_BUFFER, m_Entries[i].VB);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);	//Indices
-            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12); //UVs
-            glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20); //Normals
-            glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)32);	//Tangents
-
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entries[i].IB);
+        
+            //glBindVertexArray(m_Entries[i].VAO);
 
             const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
 
@@ -334,13 +335,9 @@ namespace Resources
 
             }*/
             glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             glActiveTexture(GL_TEXTURE0);
         }
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
-        glDisableVertexAttribArray(3);
+        glBindVertexArray(0);
     }
 
     void MeshResource::computeTangentBasis(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices)

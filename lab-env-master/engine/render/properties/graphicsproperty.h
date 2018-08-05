@@ -33,6 +33,9 @@ namespace Properties
             float rad = (PI / 180.f) * d;
             return rad;
         }
+
+    private:
+        matrix4D model;
     };
 }
 

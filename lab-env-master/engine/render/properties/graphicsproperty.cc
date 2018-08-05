@@ -18,18 +18,15 @@ namespace  Properties
 
     void GraphicsProperty::OnBeginFrame()
     {
-        mesh->shader->bind();
 
-        //Managers::LightManager::GetInstance()->Setup(mesh->shader);
+        mesh->getShader()->bind();
 
         Display::Camera* cam = Display::Camera::GetInstance();
         cam->view = cam->view.LookAtRH(cam->position, cam->position + cam->camFront, cam->headUp);
-
-        
-        mesh->shader->modVector3f("worldPos", vector3D(mesh->model.getPosition()));
-        mesh->shader->modMatrix4fv("projection", cam->projection);
-        mesh->shader->modMatrix4fv("view", cam->view);
-        mesh->shader->modMatrix4fv("model", mesh->model);
+        mesh->getShader()->modVector3f("worldPos", vector3D(model.getPosition()));
+        mesh->getShader()->modMatrix4fv("projection", cam->projection);
+        mesh->getShader()->modMatrix4fv("view", cam->view);
+        mesh->getShader()->modMatrix4fv("model", model);
         mesh->Render();
     }
 

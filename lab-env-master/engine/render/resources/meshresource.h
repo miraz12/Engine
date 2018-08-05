@@ -41,16 +41,15 @@ namespace Resources
         MeshResource();
         /// destructor
         ~MeshResource();
-
+        ///Load model
         bool LoadMesh(const std::string& Filename);
+        ///Render mesh
         void Render();
-        matrix4D getMM() { return modelMatrix; };
-        void setMM(matrix4D m) { modelMatrix = m; };
 
-        std::shared_ptr<ShaderObject> shader;
-
-        matrix4D model;
-
+        std::shared_ptr<ShaderObject> getShader() const
+        {
+            return shader;
+        }
 
     private:
         bool InitFromScene(const aiScene* pScene, const std::string& Filename);
@@ -62,30 +61,29 @@ namespace Resources
 
         struct MeshEntry {
             MeshEntry();
-
             ~MeshEntry();
 
             void Init(const std::vector<Vertex>& Vertices,
                 const std::vector<unsigned int>& Indices);
 
+            GLuint VAO;
             GLuint VB;
             GLuint IB;
-            //GLuint TB;
-            //GLuint BTB;
             unsigned int NumIndices;
             unsigned int MaterialIndex;
         };
-
+        
+        std::shared_ptr<ShaderObject> shader;
         std::vector<MeshEntry> m_Entries;
         std::vector<TextureResource*> m_Textures;
         std::vector<TextureResource*> m_Normals;
         std::vector<TextureResource*> m_Masks;
         std::vector<TextureResource*> m_Spec;
-        matrix4D modelMatrix;
         TextureResource* defaulNormal;
         TextureResource* defaultDiff;
         TextureResource* defaulMask;
 
+        GLuint VAO;
     };
 
 }
