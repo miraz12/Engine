@@ -7,67 +7,75 @@
 namespace Input
 {
     
+    KeyHandler* KeyHandler::instance = 0;
 
-KeyHandler::KeyHandler()
-{
-
-}
-
-
-void KeyHandler::Init(Display::Window* window)
-{
-    Display::Camera* cam = Display::Camera::GetInstance();
-
-    window->SetKeyPressFunction([this, window, cam](int32 key, int32, int32 action, int32)
+    KeyHandler::KeyHandler()
     {
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        {
-            window->Close();
-        }
-        if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS)
-        {
-            cam->camSpeed = 100.f;
-        }
-        if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE)
-        {
-            cam->camSpeed = 2.5f;
-        }
-        if (GLFW_KEY_1 == key && action == GLFW_RELEASE)
-        {
-        }
-        if (GLFW_KEY_G == key)
-        {
 
-        }
-        if (GLFW_KEY_R == key)
+    }
+
+    KeyHandler* KeyHandler::GetInstance()
+    {
+        if (instance == 0)
         {
-            //glfwSetInputMode(this->window->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            //mouseLocked = false;
+            instance = new KeyHandler();
         }
-        if (GLFW_KEY_W == key)
+        return instance;
+    }
+
+
+    void KeyHandler::Init(Display::Window* window)
+    {
+        Display::Camera* cam = Display::Camera::GetInstance();
+
+        window->SetKeyPressFunction([this, window, cam](int32 key, int32, int32 action, int32)
         {
-            cam->position[0] -= (cam->camFront * cam->camSpeed * cam->timeStep)[0];
-            cam->position[1] -= (cam->camFront * cam->camSpeed * cam->timeStep)[1];
-            cam->position[2] -= (cam->camFront * cam->camSpeed * cam->timeStep)[2];
-        }
-        if (GLFW_KEY_A == key)
-        {
-            cam->position[0] -= (cam->camFront.cross(cam->headUp).normalizeRe() * cam->camSpeed * cam->timeStep)[0];
-            cam->position[1] -= (cam->camFront.cross(cam->headUp).normalizeRe() * cam->camSpeed * cam->timeStep)[1];
-            cam->position[2] -= ((cam->camFront.cross(cam->headUp).normalizeRe()) * cam->camSpeed * cam->timeStep)[2];
-        }
-        if (GLFW_KEY_S == key)
-        {
-            cam->position[0] += (cam->camFront * cam->camSpeed * cam->timeStep)[0];
-            cam->position[1] += (cam->camFront * cam->camSpeed * cam->timeStep)[1];
-            cam->position[2] += (cam->camFront * cam->camSpeed * cam->timeStep)[2];
-        }
-        if (GLFW_KEY_D == key)
-        {
-            cam->position[0] += (cam->camFront.cross(cam->headUp).normalizeRe() * cam->camSpeed * cam->timeStep)[0];
-            cam->position[1] += (cam->camFront.cross(cam->headUp).normalizeRe() * cam->camSpeed * cam->timeStep)[1];
-            cam->position[2] += ((cam->camFront.cross(cam->headUp).normalizeRe()) * cam->camSpeed * cam->timeStep)[2];
-        }
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+            {
+                window->Close();
+            }
+            if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS)
+            {
+                leftShift = true;
+                cam->camSpeed = 100.f;
+            }
+            if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE)
+            {
+                leftShift = false;
+                cam->camSpeed = 2.5f;
+            }
+            if (GLFW_KEY_W == key && action == GLFW_PRESS)
+            {
+                W = true;
+            }
+            if (GLFW_KEY_W == key && action == GLFW_RELEASE)
+            {
+                W = false;
+            }
+            if (GLFW_KEY_A == key && action == GLFW_PRESS)
+            {
+                A = true;
+            }
+            if (GLFW_KEY_A == key && action == GLFW_RELEASE)
+            {
+                A = false;
+            }
+            if (GLFW_KEY_S == key && action == GLFW_PRESS)
+            {
+                S = true;
+            }
+            if (GLFW_KEY_S == key && action == GLFW_RELEASE)
+            {
+                S = false;
+            }
+            if (GLFW_KEY_D == key && action == GLFW_PRESS)
+            {
+                D = true;
+            }
+            if (GLFW_KEY_D == key && action == GLFW_RELEASE)
+            {
+                D = false;
+            }
 
     });
     window->SetMousePressFunction([this, cam](int32 key, int32 state, int32)
@@ -130,12 +138,12 @@ void KeyHandler::Init(Display::Window* window)
     });
 
 
-}
+    }
 
-float KeyHandler::rad(float d)  //Degrees to rad
-{
+    float KeyHandler::rad(float d)  //Degrees to rad
+    {
     float rad = (PI / 180.f) * d;
     return rad;
-}
+    }
 
 }

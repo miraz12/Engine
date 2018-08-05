@@ -12,6 +12,8 @@ namespace Servers
 
     RenderServer::RenderServer()
     {
+        width = 1024;
+        height = 768;
     }
 
     void RenderServer::Render()
@@ -26,7 +28,10 @@ namespace Servers
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             glDisable(GL_TEXTURE_2D);
         }
+
         Display::Camera* cam = Display::Camera::GetInstance();
+        cam->UpdateCamera(width, height);
+
         for (int i = 0; i < passes.size(); ++i)
         {
             passes[i]->Execute();
@@ -34,7 +39,7 @@ namespace Servers
 
         glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer (screen)
-        glBlitFramebuffer(0, 0, cam->m_width, cam->m_height, 0, 0, cam->m_width, cam->m_height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+        glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -72,8 +77,10 @@ namespace Servers
         return instance;
     }
 
-    void RenderServer::UpdateResolution()
+    void RenderServer::UpdateResolution(int w, int h)
     {
+        width = w;
+        height = h;
         lPass->UpdateResolution();
     }
 

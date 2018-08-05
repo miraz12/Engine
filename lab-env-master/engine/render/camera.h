@@ -12,12 +12,11 @@ namespace Display
     public:
 
         Camera();
-        void UpdatePerspective(float w, float h);
+        void UpdateCamera(float w, float h);
         static Camera* GetInstance();
         Camera(const Camera&) = delete; 
         void operator=(const Camera) = delete; 
 
-        float m_width, m_height;
 
         float camSpeed = 1.0f;//100.f;
 
@@ -51,9 +50,7 @@ namespace Display
     private:
 
         static Camera* instance;
-
-
-
+        float m_width, m_height;
 
     };
 }

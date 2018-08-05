@@ -22,7 +22,7 @@ namespace  Properties
         mesh->getShader()->bind();
 
         Display::Camera* cam = Display::Camera::GetInstance();
-        cam->view = cam->view.LookAtRH(cam->position, cam->position + cam->camFront, cam->headUp);
+        //cam->view = cam->view.LookAtRH(cam->position, cam->position + cam->camFront, cam->headUp);
         mesh->getShader()->modVector3f("worldPos", vector3D(model.getPosition()));
         mesh->getShader()->modMatrix4fv("projection", cam->projection);
         mesh->getShader()->modMatrix4fv("view", cam->view);

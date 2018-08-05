@@ -9,7 +9,6 @@
 #include "render/properties/graphicsproperty.h"
 #include "render/servers/renderserver.h"
 
-
 using namespace Display;
 
 namespace Example
@@ -53,10 +52,7 @@ namespace Example
         App::Open();
         this->window = new Window;
         this->window->SetSize(int32(1024), int32(768));
-        this->mainCamera = Camera::GetInstance();
-        mainCamera->m_width = 1024;
-        mainCamera->m_height = 768;
-        this->keyHandler = new Input::KeyHandler();
+        this->keyHandler = Input::KeyHandler::GetInstance();
         this->entityManager = Managers::EntityManager::GetInstance();
         this->renderServer = Servers::RenderServer::GetInstance();
         this->ui = new Toolkit::UserInterface(this);
@@ -79,8 +75,7 @@ namespace Example
             // Set window resize function
             window->SetWindowResizeCallback([this](float w, float h)
             {
-                mainCamera->UpdatePerspective(w, h);
-                renderServer->GetInstance()->UpdateResolution();
+                renderServer->GetInstance()->UpdateResolution(w, h);
             });
             return true;
         }

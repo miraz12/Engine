@@ -19,16 +19,16 @@ namespace Passes
 
     void LightPass::Setup()
     {
-        Display::Camera* cam = Display::Camera::GetInstance();
-        float width = cam->m_width;
-        float height = cam->m_height;
+        Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
+        float width = svr->width;
+        float height = svr->height;
 
         shader->bind();
         shader->mod1i("gPosition", 0);
         shader->mod1i("gNormal", 1);
         shader->mod1i("gAlbedoSpec", 2);
-        Servers::RenderServer::GetInstance()->BindGBuffer();
-        glBindFramebuffer(GL_FRAMEBUFFER, Servers::RenderServer::GetInstance()->gBuffer);
+        svr->BindGBuffer();
+        glBindFramebuffer(GL_FRAMEBUFFER, svr->gBuffer);
         // position color buffer
         glGenTextures(1, &gPosition);
         glBindTexture(GL_TEXTURE_2D, gPosition);
@@ -116,9 +116,9 @@ namespace Passes
 
     void LightPass::UpdateResolution()
     {
-        Display::Camera* cam = Display::Camera::GetInstance();
-        float width = cam->m_width;
-        float height = cam->m_height;
+        Servers::RenderServer* srv = Servers::RenderServer::GetInstance();
+        float width = srv->width;
+        float height = srv->height;
         glBindTexture(GL_TEXTURE_2D, gPosition);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 

@@ -1,5 +1,7 @@
 #include "config.h"
 #include "camera.h"
+#include "servers/renderserver.h"
+#include "input/keyhandler.h"
 
 
 namespace Display
@@ -9,11 +11,9 @@ namespace Display
 
     Camera::Camera()
     {
-        m_width = 1024;
-        m_height = 768;
-
-        projection = projection.setPerspective(45.0f, (m_width / m_height), 1.0f, 100.0f);
-
+        Servers::RenderServer* srv = Servers::RenderServer::GetInstance();
+        m_width = srv->width;
+        m_height = srv->height;
         position.setValues(0, 0, 2);
         origin.setValues(0, 0, 0);
         headUp.setValues(0, 1, 0);
@@ -35,11 +35,45 @@ namespace Display
         return instance;
     }
 
-
-    void Camera::UpdatePerspective(float w, float h)
+    void Camera::UpdateCamera(float w, float h)
     {
+        Input::KeyHandler* key = Input::KeyHandler::GetInstance();
         m_width = w;
         m_height = h;
         projection = projection.setPerspective(45.0f, (m_width / m_height), 1.0f, 100.0f);
+        view = view.LookAtRH(position, position + camFront, headUp);
+
+        if (key->leftShift)
+        {
+            camSpeed = 50.f;
+        }
+        else
+        {
+            camSpeed = .5f;
+        }
+        if (key->W)
+        {
+            position[0] -= (camFront * camSpeed * timeStep)[0];
+            position[1] -= (camFront * camSpeed * timeStep)[1];
+            position[2] -= (camFront * camSpeed * timeStep)[2];
+        }
+        if (key->A)
+        {
+            position[0] -= (camFront.cross(headUp).normalizeRe() * camSpeed * timeStep)[0];
+            position[1] -= (camFront.cross(headUp).normalizeRe() * camSpeed * timeStep)[1];
+            position[2] -= ((camFront.cross(headUp).normalizeRe()) * camSpeed * timeStep)[2];
+        }
+        if (key->S)
+        {
+            position[0] += (camFront * camSpeed * timeStep)[0];
+            position[1] += (camFront * camSpeed * timeStep)[1];
+            position[2] += (camFront * camSpeed * timeStep)[2];
+        }
+        if (key->D)
+        {
+            position[0] += (camFront.cross(headUp).normalizeRe() * camSpeed * timeStep)[0];
+            position[1] += (camFront.cross(headUp).normalizeRe() * camSpeed * timeStep)[1];
+            position[2] += ((camFront.cross(headUp).normalizeRe()) * camSpeed * timeStep)[2];
+        }
     }
 }
