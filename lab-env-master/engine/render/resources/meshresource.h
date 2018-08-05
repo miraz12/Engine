@@ -83,7 +83,6 @@ namespace Resources
         TextureResource* defaultDiff;
         TextureResource* defaulMask;
 
-        GLuint VAO;
     };
 
 }

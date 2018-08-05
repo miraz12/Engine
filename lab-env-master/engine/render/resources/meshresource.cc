@@ -27,11 +27,15 @@ namespace Resources
         {
             glDeleteBuffers(1, &IB);
         }
+        glDeleteVertexArrays(1, &VAO);
     }
 
     void MeshResource::MeshEntry::Init(const std::vector<Vertex>& Vertices, const std::vector<unsigned int>& Indices)
     {
         NumIndices = Indices.size();
+
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
 
         glGenBuffers(1, &VB);
         glBindBuffer(GL_ARRAY_BUFFER, VB);
@@ -86,7 +90,6 @@ namespace Resources
             delete(m_Spec[i]);
         }
 
-        glDeleteVertexArrays(1, &VAO);
         delete(defaulNormal);
         delete(defaultDiff);
     }
@@ -113,9 +116,6 @@ namespace Resources
 
     bool MeshResource::LoadMesh(const std::string& Filename)
     {
-        glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
-
         printf("Loading: '%s'\n", Filename.c_str());
 
         bool Ret = false;
@@ -295,11 +295,10 @@ namespace Resources
 
     void MeshResource::Render()
     {
-        glBindVertexArray(VAO);
 
         for (unsigned int i = 0; i < m_Entries.size(); i++) {
         
-            //glBindVertexArray(m_Entries[i].VAO);
+            glBindVertexArray(m_Entries[i].VAO);
 
             const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
 
