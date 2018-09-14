@@ -4,6 +4,7 @@
 #include "core/math/matrix3D.h"
 #include "render/managers/lightmanager.h"
 #include "render/resources/meshresource.h"
+#include "render/camera.h"
 
 class matrix4D;
 
@@ -36,6 +37,7 @@ namespace Properties
 
     private:
         matrix4D model;
+        Display::Camera* cam;
     };
 }
 

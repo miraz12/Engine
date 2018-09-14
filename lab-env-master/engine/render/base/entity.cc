@@ -101,8 +101,7 @@ namespace Base
 
     void Entity::ActivateProperties()
     {
-        int num = this->properties.size();
-        for (int i = 0; i < num; i++)
+        for (int i = 0; i < this->properties.size(); i++)
         {
             Property* prop = this->properties[i];
         

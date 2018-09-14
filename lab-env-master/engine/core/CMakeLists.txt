@@ -4,10 +4,9 @@
 
 SET(files_core
 	app.h
-	app.cc)
+	app.cc
+	ptr.h)
 SOURCE_GROUP("core" FILES ${files_core})
-
-
 
 FILE(GLOB math_headers math/*.h)
 FILE(GLOB math_sources math/*.cc)

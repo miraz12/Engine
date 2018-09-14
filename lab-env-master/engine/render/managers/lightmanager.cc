@@ -25,8 +25,8 @@ namespace Managers
     {
         Display::Camera* cam = Display::Camera::GetInstance();
         s->modVector3f("cameraPos", vector3D(cam->position.x(), cam->position.y(), cam->position.z()));
-        s->mod1i("gNumPointLights", (m_pLights.size()));
-        s->mod1i("gNumSpotLights", (m_sLights.size()));
+        s->mod1i("gNumPointLights", (int(m_pLights.size())));
+        s->mod1i("gNumSpotLights", (int(m_sLights.size())));
 
         for (unsigned int i = 0; i < m_dLights.size(); i++)
         {
