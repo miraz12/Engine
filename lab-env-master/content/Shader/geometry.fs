@@ -29,7 +29,12 @@ vec3 CalcBumpedNormal()
 				
 void main()                                                                                 
 {   
+	
 	gPosition = WorldPos0;
 	gNormal = CalcBumpedNormal();
 	gAlbedoSpec = texture(DiffuseTextureSampler, TexCoord0);
+	if(gAlbedoSpec.a < 0.5) 
+	{
+		discard;
+	}
 }
