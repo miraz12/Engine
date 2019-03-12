@@ -1,5 +1,6 @@
 #pragma once 
 #include "core/app.h"
+#include "render/resources/lighttypes.h"
 
 namespace Example
 {
@@ -21,5 +22,14 @@ namespace Toolkit
     private:
         Example::Application* app;
         bool gBufferWindow = false;
+
+        bool show = true;
+        bool showNewDir = false;
+        bool showNewPoint = false;
+        bool showNewSpot = false;
+
+        DirectionalLight* dirLight;
+        PointLight* pointLight;
+        SpotLight* spotLight;
     };
 }

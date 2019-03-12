@@ -17,7 +17,7 @@ namespace Managers
         specIntensity = 0.5f;
         specPower = 15.0f;
 
-        m_dLights = std::vector<DirectionalLight>();
+        m_dLights = std::vector<DirectionalLight*>();
 
     }
 
@@ -30,17 +30,17 @@ namespace Managers
 
         for (unsigned int i = 0; i < m_dLights.size(); i++)
         {
-            m_dLights[i].Setup(s, i);
+            m_dLights[i]->Setup(s, i);
         }
 
         for (unsigned int i = 0; i < m_pLights.size(); ++i)
         {
-            m_pLights[i].Setup(s, i);
+            m_pLights[i]->Setup(s, i);
         }
 
         for (unsigned int i = 0; i < m_sLights.size(); ++i)
         {
-            m_sLights[i].Setup(s, i);
+            m_sLights[i]->Setup(s, i);
         }
 
         s->mod1f("gMatSpecularIntensity", specIntensity);
@@ -54,39 +54,55 @@ namespace Managers
     void LightManager::AddDirectionalLight(vector3D color, float ambientintensity, float diffuseintensity,
         vector3D direction)
     {
-        DirectionalLight dirLight = DirectionalLight();
-        dirLight.Color = color;
-        dirLight.AmbientIntensity = ambientintensity;
-        dirLight.DiffuseIntensity = diffuseintensity;
-        dirLight.Direction = direction;
+        DirectionalLight* dirLight = new DirectionalLight();
+        dirLight->Color = color;
+        dirLight->AmbientIntensity = ambientintensity;
+        dirLight->DiffuseIntensity = diffuseintensity;
+        dirLight->Direction = direction;
         this->m_dLights.push_back(dirLight);
     }
 
     void LightManager::AddPointLight(vector3D color, float diffuseintensity, vector3D position, float attenuationConst,
         float attenuationLin, float attenuationExp)
     {
-        PointLight pLight = PointLight();
-        pLight.DiffuseIntensity = diffuseintensity; // 0.25f;
-        pLight.Color = color;
-        pLight.Position = position;
-        pLight.Attenuation.Constant = attenuationConst;
-        pLight.Attenuation.Linear = attenuationLin;
-        pLight.Attenuation.Exp = attenuationExp;
+        PointLight* pLight = new PointLight();
+        pLight->DiffuseIntensity = diffuseintensity; // 0.25f;
+        pLight->Color = color;
+        pLight->Position = position;
+        pLight->Attenuation.Constant = attenuationConst;
+        pLight->Attenuation.Linear = attenuationLin;
+        pLight->Attenuation.Exp = attenuationExp;
         this->m_pLights.push_back(pLight);
     }
 
     void LightManager::AddSpotLight(vector3D color, float diffuseintensity, vector3D position, vector3D direction, float attenuationConst,
         float attenuationLin, float attenuationExp, float cutoff)
     {
-        SpotLight sLight = SpotLight();
-        sLight.DiffuseIntensity = diffuseintensity;
-        sLight.Color = color;
-        sLight.Position = position;
-        sLight.Direction = direction;
-        sLight.Attenuation.Constant = attenuationConst;
-        sLight.Attenuation.Linear = attenuationLin;
-        sLight.Attenuation.Exp = attenuationExp;
-        sLight.Cutoff = cutoff;
+        SpotLight* sLight = new SpotLight();
+        sLight->DiffuseIntensity = diffuseintensity;
+        sLight->Color = color;
+        sLight->Position = position;
+        sLight->Direction = direction;
+        sLight->Attenuation.Constant = attenuationConst;
+        sLight->Attenuation.Linear = attenuationLin;
+        sLight->Attenuation.Exp = attenuationExp;
+        sLight->Cutoff = cutoff;
+        this->m_sLights.push_back(sLight);
+    }
+
+    void LightManager::AddDirectionalLight(DirectionalLight* dirLight)
+    {
+        this->m_dLights.push_back(dirLight);
+    }
+
+    void LightManager::AddPointLight(PointLight* pLight)
+    {
+        this->m_pLights.push_back(pLight);
+    }
+
+    void LightManager::AddSpotLight(SpotLight* sLight)
+    {
+        this->m_sLights.push_back(sLight);
     }
 
 

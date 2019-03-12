@@ -14,7 +14,6 @@ namespace Passes
         void Setup();
         void Execute();
 
-        unsigned int gPosition, gNormal, gAlbedoSpec;
     private:
 
         Managers::EntityManager* eManager;

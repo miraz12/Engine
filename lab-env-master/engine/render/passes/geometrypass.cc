@@ -21,7 +21,7 @@ namespace Passes
 
     void GeometryPass::Execute()
     {
-        glClearColor(0.f, 0.f, 0.f, 0.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         Servers::RenderServer::GetInstance()->BindGBuffer();
         glDepthMask(GL_TRUE);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

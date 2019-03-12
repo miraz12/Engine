@@ -50,9 +50,9 @@ namespace Resources
 
     TextureResource::~TextureResource()
     {
+        glBindTexture(m_textureTarget, 0);
         if (glIsTexture(this->m_texture))
             glDeleteTextures(1, &m_texture);
-        glBindTexture(m_textureTarget, 0);
     }
 
     void TextureResource::bind()
@@ -66,4 +66,10 @@ namespace Resources
         glBindTexture(m_textureTarget, m_texture);
         glUniform1i(textureID, unit);
     }
+
+    void TextureResource::Unbind()
+    {
+        glBindTexture(m_textureTarget, 0);
+    }
+
 }

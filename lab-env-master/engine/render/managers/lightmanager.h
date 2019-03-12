@@ -27,6 +27,10 @@ namespace Managers
         void AddSpotLight(vector3D color, float diffuseintensity, vector3D position, vector3D direction,
             float attenuationConst, float attenuationLin, float attenuationExp, float cutoff);
 
+        void AddDirectionalLight(DirectionalLight* dirLight);
+        void AddPointLight(PointLight* pLight);
+        void AddSpotLight(SpotLight* sLight);
+
 
         ~LightManager();
 
@@ -44,9 +48,9 @@ namespace Managers
         int m_numPointLightsLocation;
         int m_numSpotLightsLocation;
 
-        std::vector<DirectionalLight> m_dLights;
-        std::vector<SpotLight> m_sLights;
-        std::vector<PointLight> m_pLights;
+        std::vector<DirectionalLight*> m_dLights;
+        std::vector<SpotLight*> m_sLights;
+        std::vector<PointLight*> m_pLights;
 
 
         float specIntensity = 0.0f;

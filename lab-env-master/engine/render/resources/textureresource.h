@@ -19,6 +19,7 @@ namespace Resources
 
         void bind();
         void bind(GLenum textureUnit, GLuint textureID, int unit);
+        void Unbind();
 
     private:
         const char* m_fileName;
