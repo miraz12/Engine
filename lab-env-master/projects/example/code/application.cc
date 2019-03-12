@@ -57,7 +57,6 @@ namespace Example
         this->renderServer = Servers::RenderServer::GetInstance();
         this->ui = new Toolkit::UserInterface(this);
 
-
         if (this->window->Open())
         {
             //Setup everyting

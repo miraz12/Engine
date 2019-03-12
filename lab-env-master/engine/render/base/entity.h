@@ -45,7 +45,8 @@ namespace Base
         //bool HasProperty(const Core::Rtti& rtti) const;
         /// Returns the entity's property list.
         //const Util::Array<Ptr<Property>>& GetAllProperties() const { return properties; }
-
+        /// Returns the entity's property list.
+        std::vector<Property*> GetProperties() { return properties; }
 
 
         //=== callbacks ===

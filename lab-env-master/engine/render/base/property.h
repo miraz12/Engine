@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 namespace Base
 {
@@ -59,7 +60,10 @@ namespace Base
         /// Remove entity.
         void ClearEntity();
 
+        std::string GetRTTI() { return RTTI; };
+        
         Entity* entity;
         bool active;
+        std::string RTTI;
     };
 }

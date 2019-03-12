@@ -8,7 +8,7 @@ namespace Particles
 
     Particlesystem::Particlesystem()
     {
-        colors = vector4D(0.055, 0.055f, 0.055f, 1.0f);
+        colors = vector4D(0.055f, 0.055f, 0.055f, 1.0f);
         direction = vector3D(0, 10, 0);
         position = vector3D(0, 0, -10);
         spread = 2.0f;
@@ -172,12 +172,12 @@ namespace Particles
         ParticlesContainer[particleIndex].vel = direction + randomdir * spread;
 
 
-        ParticlesContainer[particleIndex].r = colors.x() * 255;
-        ParticlesContainer[particleIndex].g = colors.y() * 255;
-        ParticlesContainer[particleIndex].b = colors.z() * 255;
-        ParticlesContainer[particleIndex].a = colors.w() * 255;
+        ParticlesContainer[particleIndex].r = unsigned char(colors.x() * 255);
+        ParticlesContainer[particleIndex].g = unsigned char(colors.y() * 255);
+        ParticlesContainer[particleIndex].b = unsigned char(colors.z() * 255);
+        ParticlesContainer[particleIndex].a = unsigned char(colors.w() * 255);
 
-        ParticlesContainer[particleIndex].size = (rand() % 1000) * 0.0005 + 0.1f;
+        ParticlesContainer[particleIndex].size = (rand() % 1000) * 0.0005f + 0.1f;
     }
 
     void Particlesystem::UpdateParticle(Particle *p, double t, float dt, vector3D campos)
@@ -188,16 +188,16 @@ namespace Particles
             p->life -= dt;
             if (p->life > 0.0f)
             {
-                double x_acc = 10.0 * ((rand() % 3) - 1);
-                double y_acc = 1.0 * ((rand() % 3) - 1);
-                double z_acc = 1.0;//0.0001*random();
+                float x_acc = 10.0f * ((rand() % 3) - 1);
+                float y_acc = 1.0f * ((rand() % 3) - 1);
+                float z_acc = 1.0f;//0.0001*random();
                 vector3D acc = vector3D(x_acc, y_acc, z_acc);
                 p->vel = p->vel + acc * dt;
                 p->pos += p->vel * dt * 0.3f;
-                p->size += 0.001;
+                p->size += 0.001f;
 
                 //Make more transparent the older the particle
-                p->a = 155 / LIFE_SPAN * p->life;
+                p->a = unsigned char(155 / LIFE_SPAN * p->life);
 
 
                 // Fill the GPU buffer

@@ -20,8 +20,8 @@ namespace Passes
     void LightPass::Setup()
     {
         Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
-        float width = svr->width;
-        float height = svr->height;
+        int width = svr->width;
+        int height = svr->height;
 
         shader->bind();
         shader->mod1i("gPosition", 0);
@@ -126,8 +126,8 @@ namespace Passes
     void LightPass::UpdateResolution()
     {
         Servers::RenderServer* srv = Servers::RenderServer::GetInstance();
-        float width = srv->width;
-        float height = srv->height;
+        int width = srv->width;
+        int height = srv->height;
         glBindTexture(GL_TEXTURE_2D, gPosition);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 
