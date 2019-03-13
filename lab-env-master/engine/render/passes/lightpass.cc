@@ -70,6 +70,7 @@ namespace Passes
             std::cout << "Framebuffer not complete!" << std::endl;
         
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glUseProgram(0);
     }
 
     void LightPass::Execute()
@@ -91,6 +92,9 @@ namespace Passes
         Managers::LightManager::GetInstance()->Setup(this->shader);
         //Render quad that cover the whole screen
         renderQuad();
+
+        glUseProgram(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     void LightPass::renderQuad()
@@ -141,6 +145,5 @@ namespace Passes
         glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 
         glBindTexture(GL_TEXTURE_2D, 0);
-
     }
 }

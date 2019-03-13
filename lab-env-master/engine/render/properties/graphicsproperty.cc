@@ -25,6 +25,7 @@ namespace  Properties
         mesh->getShader()->modMatrix4fv("view", cam->view);
         mesh->getShader()->modMatrix4fv("model", model);
         mesh->Render();
+        glUseProgram(0);
     }
 
     void GraphicsProperty::OnActivate()

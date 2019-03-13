@@ -38,6 +38,7 @@ namespace Skybox
 
         shaderSkybox->bind();
         shaderSkybox->mod1i("skybox", 0);
+        glUseProgram(0);
 
     }
 
@@ -66,6 +67,7 @@ namespace Skybox
 
         glDepthMask(GL_FALSE);
         glDisable(GL_DEPTH_TEST);
+        glUseProgram(0);
     }
 
     unsigned int Skybox::loadCubemap(std::vector<std::string> faces)

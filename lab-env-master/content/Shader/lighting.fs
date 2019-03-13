@@ -10,7 +10,7 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;                                                                       
 
-out vec4 FragColor;                                                                 
+layout(location = 0) out vec4 FragColor;    
                                                                                     
 struct BaseLight                                                                    
 {                                                                                   

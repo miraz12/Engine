@@ -103,7 +103,7 @@ namespace Resources
         glAttachShader(this->program, this->shaders[1]);
         glLinkProgram(this->program);
 
-        bind();
+        //bind();
     }
 
 
