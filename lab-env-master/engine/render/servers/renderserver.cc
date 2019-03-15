@@ -41,7 +41,7 @@ namespace Servers
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        //skybox->Draw(cam->view, cam->projection);
+        skybox->Draw(cam->view, cam->projection);
 
         glAlphaFunc(GL_ALWAYS, 0.0f);
         glDepthFunc(GL_LESS);

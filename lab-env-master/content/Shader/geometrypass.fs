@@ -43,7 +43,7 @@ void main()
 	gNormal = CalcBumpedNormal();
 	gDepth = vec3(-Depth0)/100.0f;
 
-	if(gAlbedoSpec.a < 0.5) 
+	if(gAlbedoSpec.a < 0.1) 
 	{
 		discard;
 	}
