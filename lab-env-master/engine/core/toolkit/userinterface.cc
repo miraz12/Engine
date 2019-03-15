@@ -20,15 +20,21 @@ namespace Toolkit
         ImGui::Begin("Debug", &show, ImGuiWindowFlags_AlwaysAutoResize);
 
         ImGui::Text("FPS: (%.1f FPS)", ceilf(ImGui::GetIO().Framerate));
+        Display::Camera* cam = Display::Camera::GetInstance();
 
         if (ImGui::CollapsingHeader("Camera"))
         {
-            Display::Camera* cam = Display::Camera::GetInstance();
             ImGui::Text("Position:");
             ImGui::Text("x: %.2f y: %.2f z: %.2f", cam->position.x(), cam->position.y(), cam->position.z());
             ImGui::Text("Front:");
             ImGui::Text("x: %.2f y: %.2f z: %.2f", cam->camFront.x(), cam->camFront.y(), cam->camFront.z());
         }
+
+        /*ImGui::SliderFloat("focal point", &cam->depth , 0.0f, 100.0f, "ratio = %.4f");
+        ImGui::SliderFloat("focal scale", &cam->depthScale, -1000.00f, 1000.0f, "ratio = %.4f");
+
+        ImGui::SliderFloat("Near", &cam->zNear, 0.0f, 5.0f, "ratio = %.4f");
+        ImGui::SliderFloat("Far", &cam->zFar, 0.00f, 1000.0f, "ratio = %.4f");*/
 
         if (ImGui::CollapsingHeader("G-Buffer"))
         {
@@ -45,6 +51,7 @@ namespace Toolkit
             ImGui::SameLine(200);
             ImTextureID depth = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gDepth;
             ImGui::Image(depth, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+
         }
         ImGui::End();
 

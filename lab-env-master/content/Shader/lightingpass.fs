@@ -5,12 +5,17 @@ const int MAX_SPOT_LIGHTS = 2;
                                                                                     
 in vec2 TexCoord0;                                                                 
 
-
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;                                                                       
+uniform sampler2D gDepth;                                                                       
 
-layout(location = 0) out vec4 FragColor;    
+uniform float focalPoint;                                                        
+uniform float focalScale; 
+uniform float zNear; 
+uniform float zFar; 
+
+layout (location = 4) out vec4 gColor;
                                                                                     
 struct BaseLight                                                                    
 {                                                                                   
@@ -113,14 +118,32 @@ vec4 CalcSpotLight(SpotLight l, vec3 Normal, vec3 WorldPos0)
     else {                                                                                  
         return vec4(0,0,0,0);                                                               
     }                                                                                           
-}                                                                                           
+}               
+
+float near = 1.0; 
+float far  = 1000.0; 
+  
+const float GOLDEN_ANGLE = 2.39996323;
+const float MAX_BLUR_SIZE = 20.0;
+const float RAD_SCALE = 0.5; // Smaller = nicer blur, larger = faster
+
+float getBlurSize(float depth, float focusPoint, float focusScale)
+{
+ float coc = clamp((1.0 / focusPoint - 1.0 / depth)*focusScale, -1.0, 1.0);
+ return abs(coc) * MAX_BLUR_SIZE;
+}
                 			
 void main()                                                                                 
 {   
 
+	float focusPoint = focalPoint;
+	float focusScale = focalScale;
+
 	vec3 FragPos = texture(gPosition, TexCoord0).rgb;
     vec3 Normal = texture(gNormal, TexCoord0).rgb;
     vec4 Diffuse = texture(gAlbedoSpec, TexCoord0).rgba;
+    vec3 Depth = texture(gDepth, TexCoord0).rgb;
+	//float LDepth = LinearizeDepth(Depth.x) / far;
 	
 	if (Normal == vec3(0.0, 0.0, 0.0)){ discard; }
 	
@@ -134,7 +157,40 @@ void main()
         TotalLight += CalcSpotLight(gSpotLights[i], Normal, FragPos);                                
     }                   
 
-    FragColor = vec4(Diffuse.rgb, 1.0) * TotalLight;        
-    FragColor.a = Diffuse.a;  
+    gColor = vec4(Diffuse.rgb, 1.0) * TotalLight;        
+    gColor.a = Diffuse.a;  
+	
+	/*float centerDepth = Depth.r * far;
+	float centerSize = getBlurSize(centerDepth, focusPoint, 1);
+	vec3 color = gColor.rgb;
+	float tot = 1.0;
+	
+	vec2 uPixelSize = vec2(1.0/1024.0, 1.0/768.0);
+	
+
+	float radius = RAD_SCALE;
+	for (float ang = 0.0; radius<MAX_BLUR_SIZE; ang += GOLDEN_ANGLE)
+	{
+		vec2 tc = TexCoord0 + vec2(cos(ang), sin(ang)) * uPixelSize * radius;
+
+		vec3 sampleColor = texture(gAlbedoSpec, tc).rgb;
+		vec3 sampleDepthTex = texture(gDepth, tc).rgb;
+		float sampleDepth = sampleDepthTex.r * far;
+		float sampleSize = getBlurSize(sampleDepth, focusPoint, 1);
+		if (sampleDepth > centerDepth)
+		{
+			sampleSize = clamp(sampleSize, 0.0, centerSize*2.0);
+		}
+
+
+		float m = smoothstep(radius-0.5, radius+0.5, sampleSize);
+		color += mix(color/tot, sampleColor, m);
+		tot += 1.0;
+
+		radius += RAD_SCALE/radius;
+		
+	}*/
+	//FragColor.rgb = color / tot;
+	//FragColor.a = Diffuse.a;
 	
 }

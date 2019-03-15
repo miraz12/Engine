@@ -56,11 +56,12 @@ namespace Example
         this->entityManager = Managers::EntityManager::GetInstance();
         this->renderServer = Servers::RenderServer::GetInstance();
         this->ui = new Toolkit::UserInterface(this);
+        this->lightManager = Managers::LightManager::GetInstance();
 
         if (this->window->Open())
         {
             //Setup everyting
-            Managers::LightManager::GetInstance()->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f,
+            this->lightManager->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f,
                                                                        vector3D(0.0f, -1.0, 0.0));
             ObjectSetup();
             renderServer->Init(this->window);

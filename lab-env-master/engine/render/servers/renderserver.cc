@@ -18,6 +18,7 @@ namespace Servers
 
     void RenderServer::Render()
     {
+
         //Render as wireframe
         if (!G_WIREFRAME)
         {
@@ -32,18 +33,15 @@ namespace Servers
         Display::Camera* cam = Display::Camera::GetInstance();
         cam->UpdateCamera(width, height);
 
+
         for (int i = 0; i < passes.size(); ++i)
         {
             passes[i]->Execute();
         }
 
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer (screen)
-        glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        skybox->Draw(cam->view, cam->projection);
+        //skybox->Draw(cam->view, cam->projection);
 
         glAlphaFunc(GL_ALWAYS, 0.0f);
         glDepthFunc(GL_LESS);
@@ -60,11 +58,14 @@ namespace Servers
         skybox = new Skybox::Skybox(1500);
         lPass = new Passes::LightPass();
         gPass = new Passes::GeometryPass();
+        dPass = new Passes::DrawPass();
         lPass->Setup();
         gPass->Setup();
+        dPass->Setup();
  
         passes.push_back(gPass);
         passes.push_back(lPass);
+        passes.push_back(dPass);
     }
 
 
@@ -87,5 +88,14 @@ namespace Servers
     void RenderServer::BindGBuffer()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+    }
+
+    void RenderServer::ReadGBuffer()
+    {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
+    }
+    void RenderServer::DrawGBuffer()
+    {
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, gBuffer);
     }
 }

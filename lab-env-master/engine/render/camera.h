@@ -28,6 +28,8 @@ namespace Display
         float64 y;
         float64 z = 0.0f;
         float64 scrollX = 0.0f;
+        float zNear = 1.0f;
+        float zFar = 100.0f;
 
         //Move cam
         vector3D position;
@@ -46,6 +48,9 @@ namespace Display
 
         matrix4D projection;
         matrix4D view;
+
+        float depth = 1.0f;
+        float depthScale = 1.0f;
 
     private:
 

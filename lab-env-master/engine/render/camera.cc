@@ -4,6 +4,7 @@
 #include "input/keyhandler.h"
 
 
+
 namespace Display
 {
 
@@ -17,7 +18,7 @@ namespace Display
         position.setValues(0, 0, 2);
         origin.setValues(0, 0, 0);
         headUp.setValues(0, 1, 0);
-        camFront.setValues(0.0f, 0.0f, 1.0f);
+        camFront.setValues(0.0f, 0.0f, -1.0f);
         yaw = -90.0f;    // Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
         pitch = 0.0f;
 
@@ -40,7 +41,7 @@ namespace Display
         Input::KeyHandler* key = Input::KeyHandler::GetInstance();
         m_width = w;
         m_height = h;
-        projection = projection.setPerspective(45.0f, (m_width / m_height), 1.0f, 100.0f);
+        projection = projection.setPerspective(45.0f, (m_width / m_height), zNear, zFar);
         view = view.LookAtRH(position, position + camFront, headUp);
 
         if (key->leftShift)
@@ -53,9 +54,9 @@ namespace Display
         }
         if (key->W)
         {
-            position[0] -= (camFront * camSpeed * timeStep)[0];
-            position[1] -= (camFront * camSpeed * timeStep)[1];
-            position[2] -= (camFront * camSpeed * timeStep)[2];
+            position[0] += (camFront * camSpeed * timeStep)[0];
+            position[1] += (camFront * camSpeed * timeStep)[1];
+            position[2] += (camFront * camSpeed * timeStep)[2];
         }
         if (key->A)
         {
@@ -65,9 +66,9 @@ namespace Display
         }
         if (key->S)
         {
-            position[0] += (camFront * camSpeed * timeStep)[0];
-            position[1] += (camFront * camSpeed * timeStep)[1];
-            position[2] += (camFront * camSpeed * timeStep)[2];
+            position[0] -= (camFront * camSpeed * timeStep)[0];
+            position[1] -= (camFront * camSpeed * timeStep)[1];
+            position[2] -= (camFront * camSpeed * timeStep)[2];
         }
         if (key->D)
         {

@@ -254,10 +254,11 @@ matrix4D LookAtRH(vector3D eye, vector3D target, vector3D up)
     ~viewMatrix;
     return  viewMatrix;*/
 
-
+    
 	vector3D zaxis = (eye - target);
 	zaxis.normalize();
-	vector3D xaxis = (up.cross(zaxis));// The "right" vector.
+    vector3D normUp = up.normalizeRe();
+	vector3D xaxis = (normUp.cross(zaxis));// The "right" vector.
 	xaxis.normalize();
 	vector3D yaxis = zaxis.cross(xaxis);    // The "forward" vector.
 
@@ -265,6 +266,28 @@ matrix4D LookAtRH(vector3D eye, vector3D target, vector3D up)
 
 	// Create a 4x4 view matrix from the right, up, forward and eye position vectors
 	matrix4D viewMatrix;
+
+    /*
+    viewMatrix[0][0] = 
+    viewMatrix[0][1] = 
+    viewMatrix[0][2] = 
+    viewMatrix[0][3] = 
+    
+    viewMatrix[1][0] = 
+    viewMatrix[1][1] = 
+    viewMatrix[1][2] = 
+    viewMatrix[1][3] = 
+    
+    viewMatrix[2][0] = 
+    viewMatrix[2][1] = 
+    viewMatrix[2][2] = 
+    viewMatrix[2][3] = 
+    
+    viewMatrix[3][0] = 
+    viewMatrix[3][1] = 
+    viewMatrix[3][2] = 
+    viewMatrix[3][3] = */
+
 	viewMatrix[0][0] = xaxis[0];
 	viewMatrix[1][0] = xaxis[1];
 	viewMatrix[2][0] = xaxis[2];
@@ -315,8 +338,8 @@ matrix4D setPerspective(float fovY, float aspect, float zNear, float zFar)
 
 	temp[2][0] = 0.0f;
 	temp[2][1] = 0.0f;
-	temp[2][2] = - dist;
-	temp[2][3] = 1.0f;
+	temp[2][2] = dist;
+	temp[2][3] = -1.0f;
 
 	temp[3][0] = 0.0f;
 	temp[3][1] = 0.0f;

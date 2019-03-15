@@ -13,6 +13,7 @@
 #include "render/managers/entitymanager.h"
 #include "core/toolkit/userinterface.h"
 #include "render/servers/renderserver.h"
+#include "render/managers/lightmanager.h"
 
 
 namespace Example
@@ -40,6 +41,7 @@ namespace Example
         Managers::EntityManager* entityManager;
         Servers::RenderServer* renderServer;
         Toolkit::UserInterface* ui;
+        Managers::LightManager* lightManager;
 
     };
 } // namespace Example

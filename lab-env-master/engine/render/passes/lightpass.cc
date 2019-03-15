@@ -10,7 +10,7 @@ namespace Passes
 
     LightPass::LightPass() 
     {
-        shader = std::make_shared<Resources::ShaderObject>("content/Shader/lighting.vs", "content/Shader/lighting.fs");
+        shader = std::make_shared<Resources::ShaderObject>("content/Shader/lightingpass.vs", "content/Shader/lightingpass.fs");
     }
 
     LightPass::~LightPass()
@@ -28,6 +28,7 @@ namespace Passes
         shader->mod1i("gNormal", 1);
         shader->mod1i("gAlbedoSpec", 2);
         shader->mod1i("gDepth", 3);
+        shader->mod1i("gColor", 4);
 
         svr->BindGBuffer();
         // position buffer
@@ -54,16 +55,29 @@ namespace Passes
         // depth buffer
         glGenTextures(1, &gDepth);
         glBindTexture(GL_TEXTURE_2D, gDepth);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, gDepth, 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gDepth, 0);
+        // Out lighting buffer
+        glGenTextures(1, &gColor);
+        glBindTexture(GL_TEXTURE_2D, gColor);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, gColor, 0);
+
+        // create and attach depth buffer (renderbufferobject)
+        glGenRenderbuffers(1, &rboDepth);
+        glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
 
         // tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
-        unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
-        glDrawBuffers(3, attachments);
+        unsigned int attachments[5] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4};
+        glDrawBuffers(5, attachments);
         
         // finally check if framebuffer is complete
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -75,9 +89,7 @@ namespace Passes
 
     void LightPass::Execute()
     {
-
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        Servers::RenderServer::GetInstance()->DrawGBuffer();
         //Bind lighting shader
         this->shader->bind();
         glActiveTexture(GL_TEXTURE0);
@@ -89,11 +101,24 @@ namespace Passes
         glActiveTexture(GL_TEXTURE3);
         glBindTexture(GL_TEXTURE_2D, gDepth);
 
+
+
         Managers::LightManager::GetInstance()->Setup(this->shader);
+
+        Display::Camera* cam = Display::Camera::GetInstance();
+
+        shader->mod1f("focalPoint", cam->depth);
+        shader->mod1f("focalScale", cam->depthScale);
+
+        shader->mod1f("zNear", cam->zNear);
+        shader->mod1f("zFar", cam->zFar);
+
+
         //Render quad that cover the whole screen
         renderQuad();
 
         glUseProgram(0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
@@ -142,7 +167,13 @@ namespace Passes
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
         glBindTexture(GL_TEXTURE_2D, gDepth);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+
+        glBindTexture(GL_TEXTURE_2D, gColor);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+
+        glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
 
         glBindTexture(GL_TEXTURE_2D, 0);
     }

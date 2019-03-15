@@ -58,7 +58,7 @@ namespace Resources
 
     MeshResource::MeshResource()
     {
-        shader = std::make_shared<ShaderObject>("content/Shader/geometry.vs", "content/Shader/geometry.fs");
+        shader = std::make_shared<ShaderObject>("content/Shader/geometrypass.vs", "content/Shader/geometrypass.fs");
 
         defaultDiff = new TextureResource("content/DefaultDiffuse.png");
         defaultDiff->Load();
@@ -302,6 +302,8 @@ namespace Resources
 
             const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
 
+
+            //TODO:This needs fixing, move binding of textures outside of this class so that its only responsible for rendering geometry
             if (MaterialIndex < m_Textures.size()) {
                 if (m_Textures[MaterialIndex])
                 {

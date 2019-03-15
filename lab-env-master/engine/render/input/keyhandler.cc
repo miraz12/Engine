@@ -120,7 +120,7 @@ namespace Input
         yoffset *= sensitivity;
 
         cam->yaw += xoffset;
-        cam->pitch -= yoffset;
+        cam->pitch += yoffset;
 
         if (cam->pitch > 89.0f)
             cam->pitch = 89.0f;
@@ -130,7 +130,7 @@ namespace Input
         vector3D front;
         front[0] = (cos(rad(cam->yaw)) * cos(rad(cam->pitch)));
         front[1] = (sin(rad(cam->pitch)));
-        front[2] = -(sin(rad(cam->yaw)) * cos(rad(cam->pitch)));
+        front[2] = (sin(rad(cam->yaw)) * cos(rad(cam->pitch)));
         cam->camFront = front.normalizeRe();
 
         cam->oldPosX = xpos;

@@ -8,6 +8,7 @@ out vec3 Normal0;
 out vec3 WorldPos0;
 out vec3 Tangent0;
 out vec4 ColorIn;
+out float Depth0;
 
 layout(location=0) in vec3 pos;
 layout(location=1) in vec2 TexCoord;
@@ -22,6 +23,8 @@ void main()
 	Normal0 = (mat3(model) * normal);
 	Tangent0 = (mat3(model) * tangents);
 	WorldPos0 = worldPos.xyz;
+	Depth0 = (view * worldPos).z ;
+
 	
 	gl_Position = ( projection * view * worldPos);	
 }

@@ -25,12 +25,18 @@ struct BaseLight
 
 struct DirectionalLight : public BaseLight
 {
-	vector3D Direction;
+    vector3D Direction;
 
-	DirectionalLight()
-	{
-		Direction = vector3D(0.0f, 0.0f, 0.0f);
-	}
+    DirectionalLight()
+    {
+        Direction = vector3D(0.0f, 0.0f, 0.0f);
+
+    }
+    ~DirectionalLight()
+    {
+        
+    }
+
     void Setup(std::shared_ptr<Resources::ShaderObject> s, int i)
 	{
         s->modVector3f("gDirectionalLight.Base.Color", vector3D(this->Color.x(), this->Color.y(), this->Color.z()));

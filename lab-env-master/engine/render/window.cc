@@ -94,7 +94,7 @@ Window::StaticKeyPressCallback(GLFWwindow* win, int32 key, int32 scancode, int32
 	{
 		ImGui_ImplGlfw_KeyCallback(win, key, scancode, action, mods);
 	}
-	else if (nullptr != window->keyPressCallback) window->keyPressCallback(key, scancode, action, mods);
+    if (nullptr != window->keyPressCallback) window->keyPressCallback(key, scancode, action, mods);
 }
 
 //------------------------------------------------------------------------------

@@ -15,7 +15,10 @@ namespace Passes
         void Execute();
         void renderQuad();
         void UpdateResolution();
-        unsigned int gPosition, gNormal, gAlbedoSpec, gDepth;
+
+        unsigned int gPosition, gNormal, gAlbedoSpec, gDepth, rboDepth;
+        unsigned int gColor;
+
     private:
 
         std::shared_ptr<Resources::ShaderObject> shader;

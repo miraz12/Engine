@@ -17,7 +17,8 @@ namespace Managers
         specIntensity = 0.5f;
         specPower = 15.0f;
 
-        m_dLights = std::vector<DirectionalLight*>();
+
+        //m_dLights = std::vector<DirectionalLight*>();
 
     }
 
@@ -28,9 +29,10 @@ namespace Managers
         s->mod1i("gNumPointLights", (int(m_pLights.size())));
         s->mod1i("gNumSpotLights", (int(m_sLights.size())));
 
-        for (unsigned int i = 0; i < m_dLights.size(); i++)
+        for (unsigned int i = 0; i < 1; i++)
         {
-            m_dLights[i]->Setup(s, i);
+           // m_dLights[i]->Setup(s, i);
+            m_dLight->Setup(s, i);
         }
 
         for (unsigned int i = 0; i < m_pLights.size(); ++i)
@@ -59,7 +61,10 @@ namespace Managers
         dirLight->AmbientIntensity = ambientintensity;
         dirLight->DiffuseIntensity = diffuseintensity;
         dirLight->Direction = direction;
-        this->m_dLights.push_back(dirLight);
+
+        m_dLight = dirLight;
+
+        //this->m_dLights.push_back(dirLight);
     }
 
     void LightManager::AddPointLight(vector3D color, float diffuseintensity, vector3D position, float attenuationConst,
@@ -92,7 +97,7 @@ namespace Managers
 
     void LightManager::AddDirectionalLight(DirectionalLight* dirLight)
     {
-        this->m_dLights.push_back(dirLight);
+        //this->m_dLights.push_back(dirLight);
     }
 
     void LightManager::AddPointLight(PointLight* pLight)

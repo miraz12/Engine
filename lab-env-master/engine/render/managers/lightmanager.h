@@ -48,6 +48,8 @@ namespace Managers
         int m_numPointLightsLocation;
         int m_numSpotLightsLocation;
 
+        DirectionalLight* m_dLight;
+
         std::vector<DirectionalLight*> m_dLights;
         std::vector<SpotLight*> m_sLights;
         std::vector<PointLight*> m_pLights;

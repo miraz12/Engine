@@ -1,0 +1,23 @@
+#pragma once
+#include "render/base/framepass.h"
+
+namespace Passes
+{
+    class DofPass : public Base::FramePass
+    {
+    public:
+        DofPass();
+        ~DofPass();
+
+        void Setup();
+        void Execute();
+
+    private:
+        unsigned int colorBuffer;
+        std::shared_ptr<Resources::ShaderObject> shader;
+
+
+    };
+
+    
+}

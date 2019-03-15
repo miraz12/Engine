@@ -4,6 +4,7 @@
 #include "render/passes/geometrypass.h"
 #include "render/passes/lightpass.h"
 #include "render/skybox/skybox.h"
+#include "render/passes/drawpass.h"
 
 namespace Display {
     class Window;
@@ -24,6 +25,8 @@ namespace Servers
 
         void UpdateResolution(int w, int h);
         void BindGBuffer();
+        void ReadGBuffer();
+        void DrawGBuffer();
 
         GLuint gBuffer;
 
@@ -36,6 +39,8 @@ namespace Servers
         {
             return lPass;
         }
+        Passes::DrawPass* dPass;
+
 
         int width, height;
 
@@ -43,6 +48,7 @@ namespace Servers
         std::vector<Base::FramePass*> passes;
         Passes::GeometryPass* gPass;
         Passes::LightPass* lPass;
+
         Skybox::Skybox* skybox;
 
         Display::Window* window;
