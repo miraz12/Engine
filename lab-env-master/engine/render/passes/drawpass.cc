@@ -15,7 +15,6 @@ namespace Passes
 
     void DrawPass::Setup()
     {
-
         shader->bind();
         shader->mod1i("gColor", 4); //0:position, 1:normal, 2:albedoSpec, 3:depth, 4:Fragcolor 
         glUseProgram(0);
@@ -37,7 +36,6 @@ namespace Passes
 
         //Render quad that covers the whole screen
         renderQuad();
-
 
         glUseProgram(0);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

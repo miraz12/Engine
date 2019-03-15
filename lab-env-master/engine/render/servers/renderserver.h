@@ -5,6 +5,7 @@
 #include "render/passes/lightpass.h"
 #include "render/skybox/skybox.h"
 #include "render/passes/drawpass.h"
+#include "render/passes/depthoffieldpass.h"
 
 namespace Display {
     class Window;
@@ -48,6 +49,7 @@ namespace Servers
         std::vector<Base::FramePass*> passes;
         Passes::GeometryPass* gPass;
         Passes::LightPass* lPass;
+        Passes::DofPass* dofPass;
 
         Skybox::Skybox* skybox;
 

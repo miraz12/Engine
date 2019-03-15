@@ -1,6 +1,7 @@
 #include "config.h"
 #include "depthoffieldpass.h"
 #include "render/servers/renderserver.h"
+#include "render/camera.h"
 
 namespace Passes
 {
@@ -15,35 +16,66 @@ namespace Passes
 
     void DofPass::Setup()
     {
-        Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
-        int width = svr->width;
-        int height = svr->height;
-
         shader->bind();
-        shader->mod1i("colorBuffer", 0);
-
-        svr->BindGBuffer();
-        // position buffer
-        glGenTextures(1, &colorBuffer);
-        glBindTexture(GL_TEXTURE_2D, colorBuffer);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer, 0);
-
-        // tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
-        unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0 };
-        glDrawBuffers(1, attachments);
-
-        // finally check if framebuffer is complete
-        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-            std::cout << "Framebuffer not complete!" << std::endl;
-
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        shader->mod1i("gColor", 4); //0:position, 1:normal, 2:albedoSpec, 3:depth, 4:Fragcolor 
+        shader->mod1i("gDepth", 3); 
         glUseProgram(0);
     }
 
     void DofPass::Execute()
     {
+        Servers::RenderServer::GetInstance()->DrawGBuffer();
+        //Bind lighting shader
+        this->shader->bind();
+
+        shader->mod1f("inFocusPoint", Display::Camera::GetInstance()->depth);
+        shader->mod1f("inFocusScale", Display::Camera::GetInstance()->depthScale); 
+
+        //Bind lighting shader
+        this->shader->bind();
+        glActiveTexture(GL_TEXTURE3);
+        glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->getlPass()->gDepth);
+        glActiveTexture(GL_TEXTURE4);
+        glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->getlPass()->gColor);
+
+
+        //Render quad that covers the whole screen
+        renderQuad();
+
+        glUseProgram(0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
+
+
+    void DofPass::renderQuad()
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        unsigned int quadVAO = 0;
+        unsigned int quadVBO;
+        if (quadVAO == 0)
+        {
+            float quadVertices[] = {
+                // positions        // texture Coords
+                -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+                -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+                1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+                1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+            };
+            // setup plane VAO
+            glGenVertexArrays(1, &quadVAO);
+            glGenBuffers(1, &quadVBO);
+            glBindVertexArray(quadVAO);
+            glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+        }
+        glBindVertexArray(quadVAO);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(0);
+    }
+
 }

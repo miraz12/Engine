@@ -30,9 +30,9 @@ namespace Toolkit
             ImGui::Text("x: %.2f y: %.2f z: %.2f", cam->camFront.x(), cam->camFront.y(), cam->camFront.z());
         }
 
-        /*ImGui::SliderFloat("focal point", &cam->depth , 0.0f, 100.0f, "ratio = %.4f");
-        ImGui::SliderFloat("focal scale", &cam->depthScale, -1000.00f, 1000.0f, "ratio = %.4f");
-
+        ImGui::SliderFloat("focal point", &cam->depth , 0.0f, 100.0f, "ratio = %.4f");
+        ImGui::SliderFloat("focal scale", &cam->depthScale, 0.0f, 100.0f, "ratio = %.4f");
+        /*
         ImGui::SliderFloat("Near", &cam->zNear, 0.0f, 5.0f, "ratio = %.4f");
         ImGui::SliderFloat("Far", &cam->zFar, 0.00f, 1000.0f, "ratio = %.4f");*/
 

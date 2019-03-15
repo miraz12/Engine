@@ -11,6 +11,7 @@ namespace Passes
 
         void Setup();
         void Execute();
+        void renderQuad();
 
     private:
         unsigned int colorBuffer;

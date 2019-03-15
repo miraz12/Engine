@@ -43,8 +43,8 @@ namespace Servers
 
         skybox->Draw(cam->view, cam->projection);
 
-        glAlphaFunc(GL_ALWAYS, 0.0f);
-        glDepthFunc(GL_LESS);
+        //glAlphaFunc(GL_ALWAYS, 0.0f);
+        //glDepthFunc(GL_LESS);
 
 
         this->window->SwapBuffers();
@@ -58,13 +58,21 @@ namespace Servers
         skybox = new Skybox::Skybox(1500);
         lPass = new Passes::LightPass();
         gPass = new Passes::GeometryPass();
+        dofPass = new Passes::DofPass();
+
+
         dPass = new Passes::DrawPass();
+
         lPass->Setup();
         gPass->Setup();
+        dofPass->Setup();
+
         dPass->Setup();
  
         passes.push_back(gPass);
         passes.push_back(lPass);
+        passes.push_back(dofPass);
+
         passes.push_back(dPass);
     }
 
