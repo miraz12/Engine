@@ -6,6 +6,7 @@
 #include "render/skybox/skybox.h"
 #include "render/passes/drawpass.h"
 #include "render/passes/depthoffieldpass.h"
+#include "render/passes/skyboxpass.h"
 
 namespace Display {
     class Window;
@@ -50,8 +51,8 @@ namespace Servers
         Passes::GeometryPass* gPass;
         Passes::LightPass* lPass;
         Passes::DofPass* dofPass;
+        Passes::SkyboxPass* skyPass;
 
-        Skybox::Skybox* skybox;
 
         Display::Window* window;
         static RenderServer* instance;
