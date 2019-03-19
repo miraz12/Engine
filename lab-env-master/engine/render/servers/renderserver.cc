@@ -39,7 +39,7 @@ namespace Servers
             passes[i]->Execute();
         }
 
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        //glBindFramebuffer(GL_FRAMEBUFFER, 0);
         this->window->SwapBuffers();
     }
 

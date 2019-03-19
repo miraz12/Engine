@@ -33,6 +33,5 @@ namespace Passes
         eManager->OnBeginFrame();
         glDepthMask(GL_FALSE);
         glDisable(GL_DEPTH_TEST);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 }

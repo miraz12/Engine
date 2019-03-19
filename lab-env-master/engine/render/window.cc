@@ -27,6 +27,7 @@ namespace Display
 static void GLAPIENTRY
 GLDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
+
 	std::string msg("[OPENGL DEBUG MESSAGE] ");
 
 	// print error severity
@@ -34,6 +35,8 @@ GLDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei 
 	{
 	case GL_DEBUG_SEVERITY_LOW:
 		msg.append("<Low severity> ");
+
+
 		break;
 	case GL_DEBUG_SEVERITY_MEDIUM:
 		msg.append("<Medium severity> ");

@@ -22,10 +22,8 @@ namespace Passes
 
     void DrawPass::Execute()
     {
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
-        svr->ReadGBuffer();
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to screen
         glBlitFramebuffer(0, 0, svr->width, svr->height, 0, 0, svr->width, svr->height, GL_DEPTH_BUFFER_BIT, GL_NEAREST); //Copy depth
 
@@ -38,7 +36,6 @@ namespace Passes
         renderQuad();
 
         glUseProgram(0);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 

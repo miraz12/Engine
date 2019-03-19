@@ -15,6 +15,7 @@ namespace Passes
 
     private:
         unsigned int colorBuffer;
+        std::shared_ptr<Resources::ShaderObject> circleShader;
         std::shared_ptr<Resources::ShaderObject> shader;
 
 

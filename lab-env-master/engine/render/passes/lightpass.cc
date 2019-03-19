@@ -95,7 +95,6 @@ namespace Passes
 
     void LightPass::Execute()
     {
-        Servers::RenderServer::GetInstance()->DrawGBuffer();
         //Bind lighting shader
         this->shader->bind();
         glActiveTexture(GL_TEXTURE0);
@@ -124,7 +123,6 @@ namespace Passes
         renderQuad();
 
         glUseProgram(0);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
