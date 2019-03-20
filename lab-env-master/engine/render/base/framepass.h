@@ -13,6 +13,7 @@ namespace Base
         virtual ~FramePass();
         virtual void Setup();
         virtual void Execute();
+		void RenderQuad();
           
         //virtual void UpdateResolution();
 

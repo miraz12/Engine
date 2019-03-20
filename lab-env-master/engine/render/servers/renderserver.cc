@@ -5,6 +5,7 @@
 #include "render/window.h"
 
 #define G_WIREFRAME false
+#define DOF true
 
 namespace Servers
 {
@@ -39,7 +40,6 @@ namespace Servers
             passes[i]->Execute();
         }
 
-        //glBindFramebuffer(GL_FRAMEBUFFER, 0);
         this->window->SwapBuffers();
     }
 
@@ -62,15 +62,14 @@ namespace Servers
         dPass->Setup();
         skyPass->Setup();
 
- 
         passes.push_back(gPass);
         passes.push_back(lPass);
-        passes.push_back(dofPass);
+        if (DOF)
+			passes.push_back(dofPass);
         passes.push_back(dPass);
 
         passes.push_back(skyPass);
     }
-
 
     RenderServer* RenderServer::GetInstance()
     {
@@ -86,19 +85,5 @@ namespace Servers
         width = w;
         height = h;
         lPass->UpdateResolution();
-    }
-
-    void RenderServer::BindGBuffer()
-    {
-        glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
-    }
-
-    void RenderServer::ReadGBuffer()
-    {
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
-    }
-    void RenderServer::DrawGBuffer()
-    {
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, gBuffer);
     }
 }

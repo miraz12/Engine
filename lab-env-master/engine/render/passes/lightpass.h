@@ -13,7 +13,6 @@ namespace Passes
 
         void Setup();
         void Execute();
-        void renderQuad();
         void UpdateResolution();
 
         unsigned int gPosition, gNormal, gAlbedoSpec, gDepth, rboDepth;

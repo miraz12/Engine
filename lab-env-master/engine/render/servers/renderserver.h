@@ -26,9 +26,21 @@ namespace Servers
         void operator=(const RenderServer) = delete;
 
         void UpdateResolution(int w, int h);
-        void BindGBuffer();
-        void ReadGBuffer();
-        void DrawGBuffer();
+
+		void RenderServer::BindGBuffer()
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+		}
+
+		void RenderServer::ReadGBuffer()
+		{
+			glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
+		}
+		void RenderServer::DrawGBuffer()
+		{
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, gBuffer);
+		}
+
 
         GLuint gBuffer;
 
@@ -47,6 +59,8 @@ namespace Servers
         int width, height;
 
     private:
+
+
         std::vector<Base::FramePass*> passes;
         Passes::GeometryPass* gPass;
         Passes::LightPass* lPass;

@@ -11,7 +11,6 @@ namespace Passes
 
         void Setup();
         void Execute();
-        void renderQuad();
 
     private:
         std::shared_ptr<Resources::ShaderObject> shader;
