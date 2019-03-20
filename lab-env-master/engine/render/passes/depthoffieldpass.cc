@@ -42,14 +42,18 @@ namespace Passes
         glActiveTexture(GL_TEXTURE4);
         glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->getlPass()->gColor);
 
-
         //Render quad that covers the whole screen
         renderQuad();
 
 		this->shader->bind();
 
-		shader->mod1f("inFocusPoint", Display::Camera::GetInstance()->depth);
-		shader->mod1f("inFocusScale", Display::Camera::GetInstance()->depthScale);
+		Display::Camera* cam =  Display::Camera::GetInstance();
+		shader->mod1f("inFocusPoint", cam->depth);
+		shader->mod1f("inFocusScale", cam->depthScale);
+
+		Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
+		shader->mod1f("resX", svr->width);
+		shader->mod1f("resY", svr->height);
 
 		//Bind lighting shader
 		this->shader->bind();

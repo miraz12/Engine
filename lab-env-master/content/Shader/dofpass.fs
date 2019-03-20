@@ -5,12 +5,14 @@ uniform sampler2D gColor;
 uniform sampler2D gDepth;    
 
 uniform float inFocusPoint;                                                        
-uniform float inFocusScale;                                                        
+uniform float inFocusScale;  
+                                                      
+uniform float resX;                                                        
+uniform float resY;                                                        
                                                                              
 
 layout (location = 4) out vec4 outColor;  
   
-float near = 1.0; 
 float far  = 100.0; 
   
 const float GOLDEN_ANGLE = 2.39996323;
@@ -29,11 +31,11 @@ void main()
 	float focusScale = inFocusScale;
 	
 	float centerDepth = texture(gDepth, TexCoord0).r * far;
-	float centerSize = getBlurSize(centerDepth, focusPoint, focusScale);
+	float centerSize = texture(gColor, TexCoord0).a;
 	vec3 color = texture(gColor, TexCoord0).rgb;
 	float tot = 1.0;
 	
-	vec2 uPixelSize = vec2(1.0/1024.0, 1.0/768.0);
+	vec2 uPixelSize = vec2(1.0/resX, 1.0/resY);
 	
 
 	float radius = RAD_SCALE;
