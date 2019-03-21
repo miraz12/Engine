@@ -1,6 +1,8 @@
 #pragma once
 #include "render/base/framepass.h"
 
+
+
 namespace Passes
 {
     class DofPass : public Base::FramePass

@@ -179,6 +179,23 @@ namespace Resources
         GLint loc = glGetUniformLocation(this->program, name);
         glUniform3f(loc, vec[0], vec[1], vec[2]);
     }
+	void ShaderObject::modVector1fArray(const char* name, int size, float* vec)
+    {
+		GLint loc = glGetUniformLocation(this->program, name);
+		glUniform1fv(loc, size, vec);
+    }
+
+    void ShaderObject::modVector3fArray(const char* name, int size, vector3D* vec)
+    {
+		GLint loc = glGetUniformLocation(this->program, name);
+		glUniform3fv(loc, size, vec[0]); 
+    }
+
+	void ShaderObject::modVector4fArray(const char* name, int size, vector4D* vec)
+	{
+		GLint loc = glGetUniformLocation(this->program, name);
+		glUniform4fv(loc, size, vec[0]);
+	}
 
     ShaderObject::ShaderObject(const std::string &computeShader)
     {

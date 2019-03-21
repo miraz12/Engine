@@ -8,7 +8,7 @@ namespace Passes
     DofPass::DofPass()
     {
         shader = std::make_shared<Resources::ShaderObject>("content/Shader/dofpass.vs", "content/Shader/dofpass.fs");
-		circleShader = std::make_shared<Resources::ShaderObject>("content/Shader/dofpass2.vs", "content/Shader/dofpass2.fs");
+		circleShader = std::make_shared<Resources::ShaderObject>("content/Shader/dofprepass.vs", "content/Shader/dofprepass.fs");
     }
 
     DofPass::~DofPass()
@@ -17,18 +17,40 @@ namespace Passes
 
     void DofPass::Setup()
     {
+		Servers::RenderServer* svr;
+		svr = Servers::RenderServer::GetInstance();
 		circleShader->bind();
 		circleShader->mod1i("gDepth", 3);
 
         shader->bind();
         shader->mod1i("gColor", 4); //0:position, 1:normal, 2:albedoSpec, 3:depth, 4:Fragcolor 
-        shader->mod1i("gDepth", 3); 
+        shader->mod1i("gDepth", 3);
+
+		vector3D v[12]; //Maybe switch to vec2?
+    	//Setup sample offsets
+    	float dx = 0.5f / svr->width;
+		float dy = 0.5f / svr->height;
+    	v[0] = vector3D(-0.326212f * dx, -0.40581f * dy, 0.0f);
+		v[1] = vector3D(-0.840144f * dx, -0.07358f * dy, 0.0f);
+		v[2] = vector3D(-0.695914f * dx, 0.457137f * dy, 0.0f);
+		v[3] = vector3D(-0.203345f * dx, 0.620716f * dy, 0.0f);
+    	v[4] = vector3D(0.96234f * dx, -0.194983f * dy, 0.0f);
+    	v[5] = vector3D(0.473434f * dx, -0.480026f * dy, 0.0f);
+    	v[6] = vector3D(0.519456f * dx, 0.767022f * dy, 0.0f);
+    	v[7] = vector3D(0.185461f * dx, -0.893124f * dy, 0.0f);
+    	v[8] = vector3D(0.507431f * dx, 0.064425f * dy, 0.0f);
+    	v[9] = vector3D(0.89642f * dx, 0.412458f * dy, 0.0f);
+    	v[10] = vector3D(-0.32194f * dx, -0.932615f * dy, 0.0f);
+    	v[11] = vector3D(-0.791559f * dx, -0.59771f * dy, 0.0f);
+		shader->modVector3fArray("sampleArray", 12, v);
+
         glUseProgram(0);
     }
 
     void DofPass::Execute()
     {
-		Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
+		Servers::RenderServer* svr;
+		svr = Servers::RenderServer::GetInstance();
         //Bind dof shader that calculates coc size and saves it in alpha of each pixel.
         this->circleShader->bind();
 

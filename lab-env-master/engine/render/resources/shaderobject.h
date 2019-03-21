@@ -29,6 +29,9 @@ namespace Resources
         void modMatrix3fv(const char* name, matrix3D mat);
         void modVector4f(const char*, vector4D);
         void modVector3f(const char* name, vector3D vec);
+        void modVector1fArray(const char* name, int size, float* vec);
+        void modVector3fArray(const char* name, int size, vector3D* vec);
+        void modVector4fArray(const char* name, int size, vector4D* vec);
 
 
         void checkGlErrors(std::string location)

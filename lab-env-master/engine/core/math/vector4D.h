@@ -37,6 +37,10 @@ vector4D(vector3D v)
 ~vector4D(void)
 {
 }
+
+//Varray to float*. used when writing unifrom arrays.
+operator const float*() { return Varray; }
+
 //�verlagrar brackets f�r att kunna skriva a[x] = 1;
 float& operator[](int n)
 {

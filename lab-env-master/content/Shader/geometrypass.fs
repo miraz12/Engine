@@ -41,7 +41,7 @@ void main()
 	gAlbedoSpec = texture(DiffuseTextureSampler, TexCoord0);
 	gPosition = WorldPos0;
 	gNormal = CalcBumpedNormal();
-	gDepth.r = (-Depth0)/100.0f;
+	gDepth.r = (-Depth0);
 
 	if(gAlbedoSpec.a < 0.1) 
 	{
