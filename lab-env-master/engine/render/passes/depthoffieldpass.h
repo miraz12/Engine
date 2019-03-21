@@ -13,6 +13,7 @@ namespace Passes
 
         void Setup();
         void Execute();
+        void UpdateResolution();
 
     private:
         unsigned int colorBuffer;

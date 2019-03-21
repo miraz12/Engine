@@ -4,22 +4,14 @@ in vec2 TexCoord0;
 uniform sampler2D gColor;                                                                                 
 uniform sampler2D gDepth;    
 
-uniform float inFocusPoint;                                                        
-uniform float inFocusScale;  
-uniform float inFar;
-
-uniform vec3 sampleArray[12];
-                                                      
+uniform vec2 sampleArray[12];
 uniform float resX;                                                        
 uniform float resY;                                                        
-                                                                             
 
 layout (location = 4) out vec4 outColor;  
   
-float far  = inFar; 
-  
 const float GOLDEN_ANGLE = 2.39996323;
-const float MAX_BLUR_SIZE = 5.0;
+const float MAX_BLUR_SIZE = 10.0;
 const float RAD_SCALE = 0.99; // Smaller = nicer blur, larger = faster
 
 vec3 dof_stochastic()
@@ -32,7 +24,7 @@ vec3 dof_stochastic()
 	for(int i = 0; i < 12; i++)
 	{
 		//Sample coords
-		vec2 sampleCoord = TexCoord0 + sampleArray[i].xy * centerSize;
+		vec2 sampleCoord = TexCoord0 + sampleArray[i] * centerSize;
 		
 		vec3 sampleColor = texture(gColor, sampleCoord).rgb;
 		vec2 depthVec = texture(gDepth, sampleCoord).rg;
@@ -56,9 +48,7 @@ vec3 dof_stochastic()
 
 vec3 dof_gather_as_scatter()
 {
-	float focusPoint = inFocusPoint;
-	float focusScale = inFocusScale;
-	
+
 	vec2 centerDepthVec = texture(gDepth, TexCoord0).rg;
 	float centerDepth = centerDepthVec.x;
 	float centerSize = centerDepthVec.y;

@@ -2,18 +2,18 @@
 
 in vec2 TexCoord0;                                                                                        
 uniform sampler2D gDepth;    
+ 
+uniform float inDistToFocus;                                                        
+uniform float inFocalLen;                                                        
+uniform float inAperture;                                                        
 
-uniform float inFocusPoint;                                                        
-uniform float inFocusScale;                                                        
-uniform float inFar; 
 
 layout (location = 3) out vec4 outDepth;  
 
-float far  = inFar; 
 
-const float MaxCocSize = 5.0;
+const float MaxCocSize = 10.0;
 
-//Focus scale is based on focal lenngth and apture
+//Focus scale is based on focal lenngth and aperture
 float getBlurSize(float depth, float focusPoint, float focusScale)
 {
 	float coc = clamp((1.0 / focusPoint - 1.0 / depth)*focusScale, -1.0, 1.0);
@@ -21,21 +21,21 @@ float getBlurSize(float depth, float focusPoint, float focusScale)
 }
 
 //A calculation of CoC size based on lens properties. current depth, distance from plane in focus, lense focal lenngth, lens diameter CoC = |D * f(zfocus - z) / zfocus * (z - f)|
-float getBlurSizePhysical(float depth, float zfocus, float focallen, float dialens)
+float getBlurSizePhysical(float depth, float zfocus, float focallen, float aperture)
 {
- 	float coc = abs(dialens * focallen * (zfocus - depth) / (zfocus * (depth - focallen)));
+	float diaLens = focallen/aperture;
+ 	float coc = abs(diaLens * focallen * (zfocus - depth) / (zfocus * (depth - focallen)));
 	return clamp(coc , 0.0, 1.0);
 }
   
 void main()                                                                                 
 {   
-	float focusPoint = inFocusPoint;
-	float focusScale = inFocusScale;
-		
-	float centerDepth = texture(gDepth, TexCoord0).r;
+	float distToFocus = inDistToFocus;
+	float focalLen = inFocalLen;
+	float aperture = inAperture;
+	float depth = texture(gDepth, TexCoord0).r;
 	
-	float zfocus = inFocusPoint + centerDepth; //distance from object to plane in focus
 	//float centerSize = getBlurSize(centerDepth, focusPoint, focusScale);
-	float centerSize = getBlurSizePhysical(centerDepth, inFocusPoint, focusScale, 1.0f);
+	float centerSize = getBlurSizePhysical(depth, distToFocus, focalLen, aperture);
 	outDepth.g = centerSize;
 }

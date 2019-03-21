@@ -85,5 +85,6 @@ namespace Servers
         width = w;
         height = h;
         lPass->UpdateResolution();
+        dofPass->UpdateResolution();
     }
 }

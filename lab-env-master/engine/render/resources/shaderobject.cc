@@ -1,6 +1,7 @@
 #include "config.h"
 #include "shaderobject.h"
 #include <fstream>
+#include "core/math/vector2D.h"
 
 namespace Resources
 {
@@ -184,6 +185,12 @@ namespace Resources
 		GLint loc = glGetUniformLocation(this->program, name);
 		glUniform1fv(loc, size, vec);
     }
+
+	void ShaderObject::modVector2fArray(const char* name, int size, vector2D* vec)
+	{
+		GLint loc = glGetUniformLocation(this->program, name);
+		glUniform2fv(loc, size, vec[0]);
+	}
 
     void ShaderObject::modVector3fArray(const char* name, int size, vector3D* vec)
     {

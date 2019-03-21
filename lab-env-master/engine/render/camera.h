@@ -52,6 +52,11 @@ namespace Display
         float depth = 1.0f;
         float depthScale = 1.0f;
 
+
+        float distToFocus = 1.0f;
+        float focalLen = 1.0f;
+        float aperture = 1.0f;
+
     private:
 
         static Camera* instance;
