@@ -6,6 +6,7 @@ uniform sampler2D gDepth;
 
 uniform float inFocusPoint;                                                        
 uniform float inFocusScale;  
+uniform float inFar;
                                                       
 uniform float resX;                                                        
 uniform float resY;                                                        
@@ -13,25 +14,21 @@ uniform float resY;
 
 layout (location = 4) out vec4 outColor;  
   
-float far  = 100.0; 
+float far  = inFar; 
   
 const float GOLDEN_ANGLE = 2.39996323;
 const float MAX_BLUR_SIZE = 5.0;
 const float RAD_SCALE = 0.99; // Smaller = nicer blur, larger = faster
 
-float getBlurSize(float depth, float focusPoint, float focusScale)
-{
- float coc = clamp((1.0 / focusPoint - 1.0 / depth)*focusScale, -1.0, 1.0);
- return abs(coc) * MAX_BLUR_SIZE;
-}
   
 void main()                                                                                 
 {   
 	float focusPoint = inFocusPoint;
 	float focusScale = inFocusScale;
 	
-	float centerDepth = texture(gDepth, TexCoord0).r * far;
-	float centerSize = texture(gColor, TexCoord0).a;
+	vec2 centerDepthVec = texture(gDepth, TexCoord0).rg;
+	float centerDepth = centerDepthVec.x * far;
+	float centerSize = centerDepthVec.y;
 	vec3 color = texture(gColor, TexCoord0).rgb;
 	float tot = 1.0;
 	
@@ -44,13 +41,13 @@ void main()
 		vec2 tc = TexCoord0 + vec2(cos(ang), sin(ang)) * uPixelSize * radius;
 
 		vec3 sampleColor = texture(gColor, tc).rgb;
-		float sampleDepth = texture(gDepth, tc).r * far;
-		float sampleSize = texture(gColor, tc).a;
+		vec2 depthVec = texture(gDepth, tc).rg;
+		float sampleDepth = depthVec.x * far;
+		float sampleSize = depthVec.y;
 		if (sampleDepth > centerDepth)
 		{
 			sampleSize = clamp(sampleSize, 0.0, centerSize*2.0);
 		}
-
 
 		float m = smoothstep(radius-0.5, radius+0.5, sampleSize);
 		color += mix(color/tot, sampleColor, m);

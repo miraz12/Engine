@@ -1,17 +1,15 @@
 #version 330                                                                        
-                                                     
-in vec2 TexCoord0;         
-uniform sampler2D gColor;                                                                                 
+
+in vec2 TexCoord0;                                                                                        
 uniform sampler2D gDepth;    
 
 uniform float inFocusPoint;                                                        
 uniform float inFocusScale;                                                        
-                                                                             
+uniform float inFar; 
 
-layout (location = 4) out vec4 outColor;  
-  
+layout (location = 3) out vec4 outDepth;  
 
-const float far  = 100.0; 
+float far  = inFar; 
 const float maxBlur = 5.0;
 
 
@@ -28,6 +26,5 @@ void main()
 	
 	float centerDepth = texture(gDepth, TexCoord0).r * far;
 	float centerSize = getBlurSize(centerDepth, focusPoint, focusScale);
-	outColor.rgb = texture(gColor, TexCoord0).rgb;
-	outColor.a = centerSize;
+	outDepth.g = centerSize;
 }

@@ -7,8 +7,7 @@ in vec2 TexCoord0;
 
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
-uniform sampler2D gAlbedoSpec;                                                                       
-uniform sampler2D gDepth;                                                                       
+uniform sampler2D gAlbedoSpec;                                                                                                                                           
 
 layout (location = 4) out vec4 gColor;
                                                                                     
@@ -121,7 +120,6 @@ void main()
 	vec3 FragPos = texture(gPosition, TexCoord0).rgb;
     vec3 Normal = texture(gNormal, TexCoord0).rgb;
     vec4 Diffuse = texture(gAlbedoSpec, TexCoord0).rgba;
-    vec3 Depth = texture(gDepth, TexCoord0).rgb;
 	
 	if (Normal == vec3(0.0, 0.0, 0.0)){ discard; }
 	

@@ -3,7 +3,7 @@
 layout (location = 0) out vec3 gPosition;
 layout (location = 1) out vec3 gNormal;
 layout (location = 2) out vec4 gAlbedoSpec;
-layout (location = 3) out vec3 gDepth;
+layout (location = 3) out vec2 gDepth;
 
 
 							
@@ -41,7 +41,7 @@ void main()
 	gAlbedoSpec = texture(DiffuseTextureSampler, TexCoord0);
 	gPosition = WorldPos0;
 	gNormal = CalcBumpedNormal();
-	gDepth = vec3(-Depth0)/100.0f;
+	gDepth.r = (-Depth0)/100.0f;
 
 	if(gAlbedoSpec.a < 0.1) 
 	{
