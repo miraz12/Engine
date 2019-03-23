@@ -9,7 +9,7 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;                                                                                                                                           
 
-layout (location = 4) out vec4 gColor;
+layout (location = 0) out vec4 gColor;
                                                                                     
 struct BaseLight                                                                    
 {                                                                                   

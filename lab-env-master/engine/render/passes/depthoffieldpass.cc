@@ -15,7 +15,7 @@ namespace Passes
 
 
 		shader->bind();
-		shader->mod1i("gColor", 4); //0:position, 1:normal, 2:albedoSpec, 3:depth, 4:Fragcolor 
+		shader->mod1i("gColor", 0); //0:position, 1:normal, 2:albedoSpec, 3:depth, 4:Fragcolor 
 		shader->mod1i("gDepth", 3);
 
 		vector2D v[12];
@@ -57,10 +57,11 @@ namespace Passes
 		shader->mod1f("resY", svr->height);
 
 		//Bind lighting shader
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->gBuffer->gColor);
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->gBuffer->gDepth);
-		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->gBuffer->gColor);
+		
 
 		//Render quad that covers the whole screen
 		RenderQuad();
