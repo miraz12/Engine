@@ -6,10 +6,13 @@ namespace Passes
 {
     SkyboxPass::SkyboxPass()
     {
+		cam = Display::Camera::GetInstance();
     }
 
     SkyboxPass::SkyboxPass(int scale)
     {
+		cam = Display::Camera::GetInstance();
+
         for (int i = 0; i < 108; ++i)
         {
             skyboxVertices[i] *= scale;
@@ -114,11 +117,6 @@ namespace Passes
 
     SkyboxPass::~SkyboxPass()
     {
-    }
-
-    void SkyboxPass::Setup()
-    {
-        cam = Display::Camera::GetInstance();
     }
 
     void SkyboxPass::Execute()

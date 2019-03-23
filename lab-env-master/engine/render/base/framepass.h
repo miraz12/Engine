@@ -11,7 +11,6 @@ namespace Base
         void BindFrameBuffer();
 
         virtual ~FramePass();
-        virtual void Setup();
         virtual void Execute();
 		void RenderQuad();
           

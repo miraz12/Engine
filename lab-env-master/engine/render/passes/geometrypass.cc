@@ -8,21 +8,18 @@ namespace Passes
 
     GeometryPass::GeometryPass()
     {
+		eManager = Managers::EntityManager::GetInstance();
     }
 
     GeometryPass::~GeometryPass()
     {
     }
 
-    void GeometryPass::Setup()
-    {
-        eManager = Managers::EntityManager::GetInstance();
-    }
 
     void GeometryPass::Execute()
     {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        Servers::RenderServer::GetInstance()->DrawGBuffer();
+        Servers::RenderServer::GetInstance()->gBuffer->DrawGBuffer();
         glDepthMask(GL_TRUE);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);

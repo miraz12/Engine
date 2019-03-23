@@ -24,6 +24,11 @@ namespace  Properties
         mesh->getShader()->modMatrix4fv("projection", cam->projection);
         mesh->getShader()->modMatrix4fv("view", cam->view);
         mesh->getShader()->modMatrix4fv("model", model);
+
+		mesh->getShader()->mod1f("inDistToFocus", Display::Camera::GetInstance()->distToFocus);
+		mesh->getShader()->mod1f("inFocalLen", Display::Camera::GetInstance()->focalLen);
+		mesh->getShader()->mod1f("inAperture", Display::Camera::GetInstance()->aperture);
+
         mesh->Render();
         glUseProgram(0);
     }

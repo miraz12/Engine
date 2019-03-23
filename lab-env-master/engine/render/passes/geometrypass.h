@@ -11,8 +11,8 @@ namespace Passes
         GeometryPass();
         ~GeometryPass();
 
-        void Setup();
         void Execute();
+		std::shared_ptr<Resources::ShaderObject> shader;
 
     private:
 

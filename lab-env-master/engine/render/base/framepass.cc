@@ -13,11 +13,6 @@ namespace Base
         //empty
     }
 
-    void FramePass::Setup()
-    {
-        //empty
-    }
-
     void FramePass::Execute()
     {
         //empty

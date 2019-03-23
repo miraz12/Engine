@@ -8,7 +8,7 @@ uniform vec2 sampleArray[12];
 uniform float resX;                                                        
 uniform float resY;                                                        
 
-layout (location = 4) out vec4 outColor;  
+layout (location = 0) out vec4 outColor;  
   
 const float GOLDEN_ANGLE = 2.39996323;
 const float MAX_BLUR_SIZE = 10.0;

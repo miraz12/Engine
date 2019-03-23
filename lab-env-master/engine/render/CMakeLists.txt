@@ -72,6 +72,13 @@ SET(files_skybox
 	${skybox_sources})
 SOURCE_GROUP("skybox" FILES ${files_skybox})
 
+FILE(GLOB framebuffers_headers framebuffers/*.h)
+FILE(GLOB framebuffers_sources framebuffers/*.cc)
+SET(files_framebuffers
+	${framebuffers_headers}
+	${framebuffers_sources})
+SOURCE_GROUP("framebuffers" FILES ${files_framebuffers})
+
 SET(files_render
 	${files_render_display}
 	${files_render_pch}
@@ -83,7 +90,8 @@ SET(files_render
 	${files_base}
 	${files_servers}
 	${files_passes}
-	${files_skybox})
+	${files_skybox}
+	${files_framebuffers})
 
 SET(files_pch ../config.h ../config.cc)
 SOURCE_GROUP("pch" FILES ${files_pch})

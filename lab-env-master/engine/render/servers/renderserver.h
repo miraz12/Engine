@@ -3,14 +3,16 @@
 #include <vector>
 #include "render/passes/geometrypass.h"
 #include "render/passes/lightpass.h"
-#include "render/skybox/skybox.h"
 #include "render/passes/drawpass.h"
 #include "render/passes/depthoffieldpass.h"
 #include "render/passes/skyboxpass.h"
+#include "render/framebuffers/gbufferobject.h"
+#include "render/framebuffers/postbuffer.h"
 
 namespace Display {
     class Window;
 }
+
 
 namespace Servers
 {
@@ -27,34 +29,11 @@ namespace Servers
 
         void UpdateResolution(int w, int h);
 
-		void RenderServer::BindGBuffer()
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
-		}
-
-		void RenderServer::ReadGBuffer()
-		{
-			glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
-		}
-		void RenderServer::DrawGBuffer()
-		{
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, gBuffer);
-		}
+		Passes::GeometryPass* gPass;
 
 
-        GLuint gBuffer;
-
-        Passes::GeometryPass* getgPass() const
-        {
-            return gPass;
-        }
-
-        Passes::LightPass* getlPass() const
-        {
-            return lPass;
-        }
-        Passes::DrawPass* dPass;
-
+	    FrameBuffers::GBufferObject* gBuffer;
+		FrameBuffers::PostBuffer* pBuffer;
 
         int width, height;
 
@@ -62,13 +41,13 @@ namespace Servers
 
 
         std::vector<Base::FramePass*> passes;
-        Passes::GeometryPass* gPass;
         Passes::LightPass* lPass;
         Passes::DofPass* dofPass;
         Passes::SkyboxPass* skyPass;
-
+		Passes::DrawPass* dPass;
 
         Display::Window* window;
         static RenderServer* instance;
+
     };
 }

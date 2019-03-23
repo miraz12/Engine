@@ -9,7 +9,6 @@ namespace Passes
         DrawPass();
         ~DrawPass();
 
-        void Setup();
         void Execute();
 
     private:

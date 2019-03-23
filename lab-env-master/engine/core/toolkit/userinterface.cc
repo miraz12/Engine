@@ -39,17 +39,17 @@ namespace Toolkit
         if (ImGui::CollapsingHeader("G-Buffer"))
         {
             int imageSize = 180;
-            ImTextureID albedo = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gAlbedoSpec;
+            ImTextureID albedo = (void *)(intptr_t)Servers::RenderServer::GetInstance()->gBuffer->gAlbedoSpec;
             ImGui::Image(albedo, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
             ImGui::SameLine(200);
-            ImTextureID normal = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gNormal;
+            ImTextureID normal = (void *)(intptr_t)Servers::RenderServer::GetInstance()->gBuffer->gNormal;
             ImGui::Image(normal, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 
 
-            ImTextureID pos = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gPosition;
+            ImTextureID pos = (void *)(intptr_t)Servers::RenderServer::GetInstance()->gBuffer->gPosition;
             ImGui::Image(pos, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
             ImGui::SameLine(200);
-            ImTextureID depth = (void *)(intptr_t)Servers::RenderServer::GetInstance()->getlPass()->gDepth;
+            ImTextureID depth = (void *)(intptr_t)Servers::RenderServer::GetInstance()->gBuffer->gDepth;
             ImGui::Image(depth, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 
         }

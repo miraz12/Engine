@@ -5,8 +5,10 @@ layout (location = 1) out vec3 gNormal;
 layout (location = 2) out vec4 gAlbedoSpec;
 layout (location = 3) out vec2 gDepth;
 
+uniform float inDistToFocus;                                                        
+uniform float inFocalLen;                                                        
+uniform float inAperture;         
 
-							
 uniform sampler2D DiffuseTextureSampler;
 uniform sampler2D NormalTextureSampler;     
 				
@@ -32,8 +34,13 @@ vec3 CalcBumpedNormal()
     return NewNormal;
 }
 
-float near = 1.0; 
-float far = 100.0; 
+//A calculation of CoC size based on lens properties. current depth, distance from plane in focus, lense focal lenngth, lens diameter CoC = |D * f(zfocus - z) / zfocus * (z - f)|
+float getBlurSizePhysical(float depth, float zfocus, float focallen, float aperture)
+{
+	float diaLens = focallen/aperture;
+ 	float coc = abs(diaLens * focallen * (zfocus - depth) / (zfocus * (depth - focallen)));
+	return clamp(coc , 0.0, 1.0);
+}
 
 				
 void main()                                                                                 
@@ -42,6 +49,14 @@ void main()
 	gPosition = WorldPos0;
 	gNormal = CalcBumpedNormal();
 	gDepth.r = (-Depth0);
+	
+	float distToFocus = inDistToFocus;
+	float focalLen = inFocalLen;
+	float aperture = inAperture;
+	
+	//float centerSize = getBlurSize(centerDepth, focusPoint, focusScale);
+	float centerSize = getBlurSizePhysical(gDepth.r, distToFocus, focalLen, aperture);
+	gDepth.g = centerSize;
 
 	if(gAlbedoSpec.a < 0.1) 
 	{

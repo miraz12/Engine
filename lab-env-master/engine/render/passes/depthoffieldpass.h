@@ -11,7 +11,6 @@ namespace Passes
         DofPass();
         ~DofPass();
 
-        void Setup();
         void Execute();
         void UpdateResolution();
 

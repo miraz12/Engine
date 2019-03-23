@@ -13,7 +13,6 @@ namespace Passes
         SkyboxPass(int scale);
         ~SkyboxPass();
 
-        void Setup();
         void Execute();
 
     private:

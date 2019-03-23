@@ -3,6 +3,7 @@
 #include "render/passes/geometrypass.h"
 #include "render/camera.h"
 #include "render/window.h"
+#include "render/framebuffers/gbufferobject.h"
 
 #define G_WIREFRAME false
 #define DOF true
@@ -47,28 +48,23 @@ namespace Servers
     {
         this->window = window;
 
-        glGenFramebuffers(1, &gBuffer);
+		//Setup framebuffers
+    	gBuffer = new FrameBuffers::GBufferObject(this);
+		pBuffer = new FrameBuffers::PostBuffer(this);
+
+		//Setup passes
         lPass = new Passes::LightPass();
         gPass = new Passes::GeometryPass();
         dofPass = new Passes::DofPass();
-
+		skyPass = new Passes::SkyboxPass(1500);
         dPass = new Passes::DrawPass();
-        skyPass = new Passes::SkyboxPass(1500);
 
-        lPass->Setup();
-        gPass->Setup();
-        dofPass->Setup();
-
-        dPass->Setup();
-        skyPass->Setup();
-
+		//Geometry pass -> light pass -> skybox pass -> pos processing (DoF) -> Draw to screen
         passes.push_back(gPass);
         passes.push_back(lPass);
-        if (DOF)
-			passes.push_back(dofPass);
+		passes.push_back(skyPass);
+		passes.push_back(dofPass);
         passes.push_back(dPass);
-
-        passes.push_back(skyPass);
     }
 
     RenderServer* RenderServer::GetInstance()
@@ -84,7 +80,7 @@ namespace Servers
     {
         width = w;
         height = h;
-        lPass->UpdateResolution();
+        gBuffer->UpdateResolution();
         dofPass->UpdateResolution();
     }
 }

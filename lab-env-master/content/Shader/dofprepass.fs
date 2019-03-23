@@ -8,7 +8,7 @@ uniform float inFocalLen;
 uniform float inAperture;                                                        
 
 
-layout (location = 3) out vec4 outDepth;  
+layout (location = 1) out vec4 outDepth;  
 
 
 const float MaxCocSize = 10.0;

@@ -11,12 +11,7 @@ namespace Passes
         LightPass();
         ~LightPass();
 
-        void Setup();
         void Execute();
-        void UpdateResolution();
-
-        unsigned int gPosition, gNormal, gAlbedoSpec, gDepth, rboDepth;
-        unsigned int gColor;
 
     private:
 
