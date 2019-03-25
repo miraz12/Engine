@@ -20,7 +20,9 @@ namespace Passes
 
     private:
         std::shared_ptr<Resources::ShaderObject> downsampleShader;
-        std::shared_ptr<Resources::ShaderObject> shader;
+        std::shared_ptr<Resources::ShaderObject> gaussX;
+        std::shared_ptr<Resources::ShaderObject> gaussY;
+        std::shared_ptr<Resources::ShaderObject> composit;
 
 		//FBO
 		GLuint downFBO;
