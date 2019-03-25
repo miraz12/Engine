@@ -49,7 +49,7 @@ namespace Toolkit
             ImTextureID pos = (void *)(intptr_t)Servers::RenderServer::GetInstance()->gBuffer->gPosition;
             ImGui::Image(pos, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
             ImGui::SameLine(200);
-            ImTextureID depth = (void *)(intptr_t)Servers::RenderServer::GetInstance()->gBuffer->gDepth;
+            ImTextureID depth = (void *)(intptr_t)Servers::RenderServer::GetInstance()->dGPass->downTex;
             ImGui::Image(depth, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 
         }

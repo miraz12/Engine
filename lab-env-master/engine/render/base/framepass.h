@@ -19,6 +19,10 @@ namespace Base
     protected:
         GLuint frameBufferObject;
         GLuint textureBuffer;
+    
+    private:
+
+		unsigned int quadVAO;
 
     };
 }

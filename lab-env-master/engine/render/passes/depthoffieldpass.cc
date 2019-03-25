@@ -15,8 +15,8 @@ namespace Passes
 
 
 		shader->bind();
-		shader->mod1i("gColor", 0); //0:position, 1:normal, 2:albedoSpec, 3:depth, 4:Fragcolor 
-		shader->mod1i("gDepth", 3);
+		shader->mod1i("gColor", 0); 
+		shader->mod1i("gDepth", 1);
 
 		vector2D v[12];
 		//Setup sample offsets
@@ -59,7 +59,7 @@ namespace Passes
 		//Bind lighting shader
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->gBuffer->gColor);
-		glActiveTexture(GL_TEXTURE3);
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->gBuffer->gDepth);
 		
 

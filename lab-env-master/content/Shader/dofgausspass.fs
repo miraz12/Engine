@@ -1,13 +1,14 @@
 #version 330                                                                        
                                                      
-in vec2 TexCoord0; 
-uniform sampler2D gColor;                                                                
+in vec2 TexCoord0;                                                                 
 
-layout(location = 4) out vec4 FragColor;    
-  
+uniform sampler2D gColor;  
+uniform sampler2D inDownSampled;  
+
+layout(location = 0) out vec4 FragColor;    
+
 void main()                                                                                 
 {   
-	FragColor.rgb = texture(gColor, TexCoord0).xyz;
-	FragColor.a = 1.0f;
+	FragColor = texture(gColor, TexCoord0);
 		
 }

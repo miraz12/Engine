@@ -4,6 +4,7 @@
 #include "render/camera.h"
 #include "render/window.h"
 #include "render/framebuffers/gbufferobject.h"
+#include "../../../projects/example/code/application.h"
 
 #define G_WIREFRAME false
 #define DOF true
@@ -58,12 +59,14 @@ namespace Servers
         dofPass = new Passes::DofPass();
 		skyPass = new Passes::SkyboxPass(1500);
         dPass = new Passes::DrawPass();
+		dGPass = new Passes::DofGaussPass();
 
 		//Geometry pass -> light pass -> skybox pass -> pos processing (DoF) -> Draw to screen
         passes.push_back(gPass);
         passes.push_back(lPass);
 		passes.push_back(skyPass);
-		passes.push_back(dofPass);
+		//passes.push_back(dofPass);
+		passes.push_back(dGPass);
         passes.push_back(dPass);
     }
 
@@ -81,6 +84,7 @@ namespace Servers
         width = w;
         height = h;
         gBuffer->UpdateResolution();
+        pBuffer->UpdateResolution();
         dofPass->UpdateResolution();
     }
 }

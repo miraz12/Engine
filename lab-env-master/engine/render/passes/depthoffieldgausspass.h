@@ -15,8 +15,16 @@ namespace Passes
         void Execute();
         void UpdateResolution();
 
+		//Texture
+		GLuint downTex;
+
     private:
         std::shared_ptr<Resources::ShaderObject> downsampleShader;
+        std::shared_ptr<Resources::ShaderObject> shader;
+
+		//FBO
+		GLuint downFBO;
+
     };
 
     

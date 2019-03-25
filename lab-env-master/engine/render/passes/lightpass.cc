@@ -17,10 +17,10 @@ namespace Passes
 		int height = svr->height;
 
 		shader->bind();
+		shader->mod1i("gPosition", 0);
 		shader->mod1i("gNormal", 1);
 		shader->mod1i("gAlbedoSpec", 2);
 		shader->mod1i("gDepth", 3);
-		shader->mod1i("gPosition", 4);
     }
 
     LightPass::~LightPass()
@@ -33,16 +33,14 @@ namespace Passes
 		Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
         //Bind lighting shader
         this->shader->bind();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, svr->gBuffer->gPosition);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, svr->gBuffer->gNormal);
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, svr->gBuffer->gAlbedoSpec);
         glActiveTexture(GL_TEXTURE3);
         glBindTexture(GL_TEXTURE_2D, svr->gBuffer->gDepth);
-		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, svr->gBuffer->gPosition);
-
-
 
         Managers::LightManager::GetInstance()->Setup(this->shader);
 

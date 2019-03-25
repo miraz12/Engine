@@ -5,8 +5,8 @@ namespace Base
 {
     FramePass::FramePass()
     {
-        //empty
-    }
+		quadVAO = 0;
+	}
 
     FramePass::~FramePass()
     {
@@ -21,7 +21,6 @@ namespace Base
     void FramePass::RenderQuad()
     {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		unsigned int quadVAO = 0;
 		unsigned int quadVBO;
 		if (quadVAO == 0)
 		{
