@@ -49,7 +49,7 @@ namespace Passes
     {
 		Servers::RenderServer* svr;
 		svr = Servers::RenderServer::GetInstance();
-		svr->pBuffer->DrawBuffer();
+		svr->pBuffer->BindBuffer();
 
 		this->shader->bind();
 		Display::Camera* cam =  Display::Camera::GetInstance();
@@ -58,11 +58,10 @@ namespace Passes
 
 		//Bind lighting shader
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->gBuffer->gColor);
+		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->pBuffer->fragColor);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->gBuffer->gDepth);
 		
-
 		//Render quad that covers the whole screen
 		RenderQuad();
 

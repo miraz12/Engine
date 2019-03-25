@@ -6,10 +6,7 @@ namespace Passes
 {
     DrawPass::DrawPass()
     {
-        shader = std::make_shared<Resources::ShaderObject>("content/Shader/drawpass.vs", "content/Shader/drawpass.fs");
-		shader->bind();
-		shader->mod1i("gColor", 0); //0:position, 1:normal, 2:albedoSpec, 3:depth, 4:Fragcolor 
-		glUseProgram(0);
+
     }
 
     DrawPass::~DrawPass()

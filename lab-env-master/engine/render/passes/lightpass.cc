@@ -31,6 +31,10 @@ namespace Passes
     void LightPass::Execute()
     {
 		Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
+		svr->pBuffer->DrawBuffer();
+
+		//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
         //Bind lighting shader
         this->shader->bind();
 		glActiveTexture(GL_TEXTURE0);
