@@ -49,7 +49,6 @@ namespace Passes
     {
 		Servers::RenderServer* svr;
 		svr = Servers::RenderServer::GetInstance();
-		svr->pBuffer->BindBuffer();
 
 		this->shader->bind();
 		Display::Camera* cam =  Display::Camera::GetInstance();
