@@ -3,11 +3,13 @@
 const int MAX_POINT_LIGHTS = 2;                                                     
 const int MAX_SPOT_LIGHTS = 2;                                                      
                                                                                     
-in vec2 TexCoord0;                                                                 
+in vec2 TexCoord0;             
+in float blurr;                                                    
 
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;                                                                                                                                           
+uniform sampler2D gDepth;                                                                                                                                           
 
 layout (location = 0) out vec4 gColor;
                                                                                     
@@ -134,7 +136,7 @@ void main()
     }                   
 
     gColor = vec4(Diffuse.rgb, 1.0) * TotalLight;        
-    gColor.a = Diffuse.a;  
+    gColor.a = texture(gDepth, TexCoord0).g; ;  
 	
 	
 }

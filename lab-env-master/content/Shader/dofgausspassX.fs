@@ -1,26 +1,31 @@
 #version 330                                                                        
                                                      
 in vec2 TexCoord0;     
-in vec2 tap0;
-in vec2 tap1;
-in vec2 tap2;
-in vec2 tap3;
-in vec2 tap4;
-in vec2 tap5;
-in vec2 tap6;                         
+                    
 
 uniform vec2 sampleArrayX[7];
                                    
 uniform sampler2D inDownSampled;  
 
+uniform float resDownX;                                                        
+uniform float resDownY;  
+
 //Inner and outer weight thresholds
-const vec4 threshInnner = {0.1, 0.3, 0.5, -0.01};
-const vec4 threshOuter = {0.6, 0.7, 0.8, 0.9};
+const vec4 threshInnner = vec4(0.1, 0.3, 0.5, -0.01);
+const vec4 threshOuter = vec4(0.6, 0.7, 0.8, 0.9);
 
 layout(location = 0) out vec4 FragColor;    
 
 void main()                                                                                 
-{   
+{
+	vec2 scaledScreen = vec2(resDownX, resDownY); 
+	vec2 tap0 = gl_FragCoord.xy * scaledScreen;
+	vec2 tap1 = tap0 + sampleArrayX[1];
+	vec2 tap2 = tap0 + sampleArrayX[2];
+	vec2 tap3 = tap0 + sampleArrayX[3];
+	vec2 tap4 = tap0 - sampleArrayX[1];
+	vec2 tap5 = tap0 - sampleArrayX[2];
+	vec2 tap6 = tap0 - sampleArrayX[3];
 	vec4 s0, s1, s2, s3, s4, s5, s6;
 	
 	//Sample texture with taps for first 6 samples
@@ -98,5 +103,5 @@ void main()
 	
 
 	// Color and weights sum output scaled (by 1/256)
-	//FragColor = vec4(colorSum, totalWeight) * 0.00390625;
+	FragColor = vec4(colorSum, totalWeight) ;
 }

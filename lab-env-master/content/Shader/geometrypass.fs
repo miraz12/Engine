@@ -56,6 +56,7 @@ void main()
 	
 	//float centerSize = getBlurSize(centerDepth, focusPoint, focusScale);
 	float centerSize = getBlurSizePhysical(gDepth.r, distToFocus, focalLen, aperture);
+	//float centerSize = clamp(abs(gDepth.r - inDistToFocus) / inFocalLen , 0.0f, 1.0f);
 	gDepth.g = centerSize;
 
 	if(gAlbedoSpec.a < 0.1) 
