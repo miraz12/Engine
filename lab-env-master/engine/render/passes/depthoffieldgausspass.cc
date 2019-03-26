@@ -27,7 +27,7 @@ namespace Passes
 		// position buffer
 		glGenTextures(1, &downTex);
 		glBindTexture(GL_TEXTURE_2D, downTex);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -51,8 +51,8 @@ namespace Passes
 
 		vector2D v[7];
 		//Setup sample offsets
-		float dx = 1.f / ((svr->width + 1) * 0.5f);
-		float dy = 1.f / ((svr->height + 1) * 0.5f);
+		float dx = 0.5f / ((svr->width ) );
+		float dy = 0.5f / ((svr->height ) );
 		v[0] = vector2D(0.0f, 0.0f);
 		v[1] = vector2D(1.3366f * dx, 0.0f);
 		v[2] = vector2D(3.4295f * dx, 0.0f);

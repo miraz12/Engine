@@ -102,6 +102,6 @@ void main()
 	colorSum /= totalWeight;
 	
 
-	// Color and weights sum output scaled (by 1/256)
-	FragColor = vec4(colorSum, totalWeight) ;
+	// Color and weights sum 
+	FragColor = vec4(colorSum, totalWeight);
 }

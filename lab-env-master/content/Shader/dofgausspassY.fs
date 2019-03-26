@@ -80,6 +80,6 @@ void main()
 				
 	weights4.rgb /= weights4.a;
 
-	FragColor = weights4;
+	FragColor = weights4 ;
 	
 }
