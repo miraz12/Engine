@@ -44,6 +44,8 @@ namespace Servers
 		Passes::DrawPass* dPass;
 		Passes::DofGaussPass* dGPass;
 
+		int dof_type;
+
         int width, height;
 
     private:

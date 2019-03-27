@@ -96,8 +96,12 @@ namespace Passes
     void DofGaussPass::Execute()
     {
 
+
 		Servers::RenderServer* svr;
 		svr = Servers::RenderServer::GetInstance();
+
+		if (svr->dof_type != 2)
+			return;
 
 		//Downsample screen--------------
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, downFBO);
@@ -153,8 +157,8 @@ namespace Passes
 		gaussX->bind();
 		vector2D v[7];
 		//Setup sample offsets
-		float dx = 0.5f / svr->width *0.5;
-		float dy = 0.5f / svr->height*0.5;
+		float dx = 0.5f / svr->width;
+		float dy = 0.5f / svr->height;
 		v[0] = vector2D(0.0f, 0.0f);
 		v[1] = vector2D(1.3366f * dx, 0.0f);
 		v[2] = vector2D(3.4295f * dx, 0.0f);

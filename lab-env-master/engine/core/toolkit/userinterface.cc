@@ -2,7 +2,7 @@
 #include "userinterface.h"
 #include "imgui.h"
 #include "../../../projects/example/code/application.h"
-#include "render/managers/lightmanager.h"
+#include "render/servers/renderserver.h"
 
 
 using namespace Core;
@@ -13,6 +13,8 @@ namespace Toolkit
     UserInterface::UserInterface(Example::Application* app)
     {
         this->app = app;
+		srv = Servers::RenderServer::GetInstance();
+		dof_type = &srv->dof_type;
     }
     void UserInterface::Run()
     {
@@ -30,26 +32,34 @@ namespace Toolkit
             ImGui::Text("x: %.2f y: %.2f z: %.2f", cam->camFront.x(), cam->camFront.y(), cam->camFront.z());
         }
 
-        ImGui::SliderFloat("Distance to plane in focus", &cam->distToFocus , 0.0f, 100.0f, "ratio = %.4f");
-        ImGui::SliderFloat("Focal length", &cam->focalLen, 0.0f, 100.0f, "ratio = %.4f");
-        ImGui::SliderFloat("Aperture", &cam->aperture, 0.0f, 100.0f, "ratio = %.4f");
-		/*
-		ImGui::SliderFloat("Far", &cam->zFar, 0.00f, 1000.0f, "ratio = %.4f");*/
+        
+		if (ImGui::Combo("Depth of field", dof_type, "None\0Stochastic\0Gaussian\0"))
+		{
+			
+		}
+
+        if (*dof_type != 0)
+        {
+			ImGui::SliderFloat("Distance to plane in focus", &cam->distToFocus, 0.0f, 100.0f, "ratio = %.4f");
+			ImGui::SliderFloat("Focal length", &cam->focalLen, 0.0f, 100.0f, "ratio = %.4f");
+			ImGui::SliderFloat("Aperture", &cam->aperture, 0.0f, 100.0f, "ratio = %.4f");
+        }
+    	
 
         if (ImGui::CollapsingHeader("G-Buffer"))
         {
             int imageSize = 180;
-            ImTextureID albedo = (void *)(intptr_t)Servers::RenderServer::GetInstance()->gBuffer->gAlbedoSpec;
+            ImTextureID albedo = (void *)(intptr_t)srv->gBuffer->gAlbedoSpec;
             ImGui::Image(albedo, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
             ImGui::SameLine(200);
-            ImTextureID normal = (void *)(intptr_t)Servers::RenderServer::GetInstance()->gBuffer->gNormal;
+            ImTextureID normal = (void *)(intptr_t)srv->gBuffer->gNormal;
             ImGui::Image(normal, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 
 
-            ImTextureID pos = (void *)(intptr_t)Servers::RenderServer::GetInstance()->gBuffer->gPosition;
+            ImTextureID pos = (void *)(intptr_t)srv->gBuffer->gPosition;
             ImGui::Image(pos, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
             ImGui::SameLine(200);
-            ImTextureID depth = (void *)(intptr_t)Servers::RenderServer::GetInstance()->gBuffer->gDepth;
+            ImTextureID depth = (void *)(intptr_t)srv->gBuffer->gDepth;
             ImGui::Image(depth, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 
         }

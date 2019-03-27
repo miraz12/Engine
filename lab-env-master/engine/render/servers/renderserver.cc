@@ -64,7 +64,7 @@ namespace Servers
 		//Geometry pass -> light pass -> skybox pass -> pos processing (DoF) -> Draw to screen
         passes.push_back(gPass);
         passes.push_back(lPass);
-		//passes.push_back(dofPass);
+		passes.push_back(dofPass);
 		passes.push_back(dGPass);
         passes.push_back(dPass);
 

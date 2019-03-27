@@ -50,6 +50,9 @@ namespace Passes
 		Servers::RenderServer* svr;
 		svr = Servers::RenderServer::GetInstance();
 
+		if (svr->dof_type != 1)
+			return;
+
 		this->shader->bind();
 		Display::Camera* cam =  Display::Camera::GetInstance();
 		shader->mod1f("resX", svr->width);

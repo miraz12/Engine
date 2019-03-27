@@ -7,6 +7,11 @@ namespace Example
     class Application;
 }
 
+namespace Servers
+{
+	class RenderServer;
+}
+
 
 namespace Toolkit
 {
@@ -27,6 +32,10 @@ namespace Toolkit
         bool showNewDir = false;
         bool showNewPoint = false;
         bool showNewSpot = false;
+
+		int* dof_type;
+
+		Servers::RenderServer* srv;
 
         DirectionalLight* dirLight;
         PointLight* pointLight;
