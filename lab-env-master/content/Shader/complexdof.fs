@@ -8,7 +8,6 @@ uniform vec2 kernelArray1[17];
 
 uniform sampler2D inFullRes;  
 
-
 uniform float pixelSizeX;                                                        
 uniform float pixelSizeY;  
 
@@ -24,7 +23,7 @@ void main()  //x direction
     vec4 colorRed = vec4(0,0,0,0);
     vec4 colorGreen = vec4(0,0,0,0);
     vec4 colorBlue = vec4(0,0,0,0);
-    float filterRadius = texture(inFullRes, TexCoord0).a * 2.0; //CoC Size saved in alpha
+    float filterRadius = texture(inFullRes, TexCoord0).a; //CoC Size saved in alpha
     for (int i=-MAX_COC; i <=MAX_COC; ++i)
     {
         vec2 sampleCoord = TexCoord0 + stepVal*vec2(float(i),0.0)*filterRadius; 

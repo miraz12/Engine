@@ -33,7 +33,7 @@ void main()  //x direction
     vec4 colorRed = vec4(0,0,0,0);
     vec4 colorGreen = vec4(0,0,0,0);
     vec4 colorBlue = vec4(0,0,0,0);
-    float filterRadius = texture(inFullRes, TexCoord0).a * 2.0f; //CoC Size saved in alpha
+    float filterRadius = texture(inFullRes, TexCoord0).a; //CoC Size saved in alpha
     for (int i=-MAX_COC; i <=MAX_COC; ++i)
     {
         vec2 sampleCoord = TexCoord0 + stepVal*vec2(0.0,float(i))*filterRadius; //stepVal*i can be precalculated on cpu and sent as array to save calulcations for each framgent.

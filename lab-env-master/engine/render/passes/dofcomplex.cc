@@ -26,7 +26,7 @@ namespace Passes
 		vector2D v1[17];
 		vector2D v2[17];
 		//Component 1
-		v1[0] = vector2D(1.014096, -0.022658);
+		v1[0] = vector2D(0.014096, -0.022658);
 		v1[1] = vector2D(-0.020612, -0.025574);
 		v1[2] = vector2D(-0.038708, 0.006957);
 		v1[3] = vector2D(-0.021449, 0.040468);
