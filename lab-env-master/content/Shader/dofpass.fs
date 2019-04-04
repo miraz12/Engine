@@ -33,10 +33,11 @@ vec3 dof_stochastic()
 		
 		float sampleContribute = 1.0f; 
 		
-		if (sampleDepth > centerDepthVec.x)
+		if (sampleDepth < centerDepthVec.x)
 		{
 			sampleContribute = sampleSize;
 		}
+		
 		
 		totalColor += sampleColor * sampleContribute;
 		totalContribute += sampleContribute;

@@ -9,6 +9,7 @@
 #include "render/framebuffers/gbufferobject.h"
 #include "render/framebuffers/postbuffer.h"
 #include "render/passes/depthoffieldgausspass.h"
+#include "render/passes/dofcomplex.h"
 
 namespace Display {
     class Window;
@@ -43,6 +44,7 @@ namespace Servers
 		Passes::SkyboxPass* skyPass;
 		Passes::DrawPass* dPass;
 		Passes::DofGaussPass* dGPass;
+		Passes::DofComplex* cdPass;
 
 		int dof_type;
 

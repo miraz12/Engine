@@ -5,6 +5,7 @@
 
 namespace Passes
 {
+	///Depth of field with gaussian blur
     class DofGaussPass : public Base::FramePass
     {
     public:
@@ -15,7 +16,7 @@ namespace Passes
         void Execute();
         void UpdateResolution();
 
-		//Texture
+		//Downscaled render to texture
 		GLuint downTex;
 
     private:

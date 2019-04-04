@@ -36,9 +36,9 @@ namespace Example
     {
         Base::Entity* temp = new Base::Entity();
         Properties::GraphicsProperty* prop = new Properties::GraphicsProperty();
-        //prop->mesh->LoadMesh("content/ocrytek_sponza/sponza.obj");
+        prop->mesh->LoadMesh("content/ocrytek_sponza/sponza.obj");
         //prop->mesh->LoadMesh("content/sponzafixed/sponza.obj");
-		prop->mesh->LoadMesh("content/cat.obj");
+		//prop->mesh->LoadMesh("content/cat.obj");
         temp->AttachProperty(prop);
         this->entityManager->AttachEntity(temp);
     }

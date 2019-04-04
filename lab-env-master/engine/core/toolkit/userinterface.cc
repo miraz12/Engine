@@ -33,7 +33,7 @@ namespace Toolkit
         }
 
         
-		if (ImGui::Combo("Depth of field", dof_type, "None\0Stochastic\0Gaussian\0"))
+		if (ImGui::Combo("Depth of field", dof_type, "None\0Stochastic\0Gaussian\0CircularConvolution\0"))
 		{
 			
 		}

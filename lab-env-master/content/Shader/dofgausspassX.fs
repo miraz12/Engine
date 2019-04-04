@@ -12,7 +12,7 @@ uniform float resDownY;
 
 //Inner and outer weight thresholds
 const vec4 threshInnner = vec4(0.1, 0.3, 0.5, -0.01);
-const vec4 threshOuter = vec4(0.6, 0.7, 0.8, 0.9);
+const vec3 threshOuter = vec3(0.6, 0.7, 0.8);
 
 layout(location = 0) out vec4 FragColor;    
 

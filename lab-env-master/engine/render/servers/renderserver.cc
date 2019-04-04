@@ -60,12 +60,14 @@ namespace Servers
 		skyPass = new Passes::SkyboxPass(1500);
         dPass = new Passes::DrawPass();
 		dGPass = new Passes::DofGaussPass();
+		cdPass = new Passes::DofComplex();
 
 		//Geometry pass -> light pass -> skybox pass -> pos processing (DoF) -> Draw to screen
         passes.push_back(gPass);
         passes.push_back(lPass);
 		passes.push_back(dofPass);
 		passes.push_back(dGPass);
+		passes.push_back(cdPass);
         passes.push_back(dPass);
 
     }
@@ -86,5 +88,7 @@ namespace Servers
         gBuffer->UpdateResolution();
         pBuffer->UpdateResolution();
         dofPass->UpdateResolution();
+        dofPass->UpdateResolution();
+		cdPass->UpdateResolution();
     }
 }
