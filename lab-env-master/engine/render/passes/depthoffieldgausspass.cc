@@ -11,39 +11,10 @@ namespace Passes
 		Servers::RenderServer* svr;
 		svr = Servers::RenderServer::GetInstance();
 
-		downsampleShader = std::make_shared<Resources::ShaderObject>("content/Shader/downsamplepass.vs", "content/Shader/downsamplepass.fs");
-		gaussX = std::make_shared<Resources::ShaderObject>("content/Shader/dofgausspassX.vs", "content/Shader/dofgausspassX.fs");
-		gaussY = std::make_shared<Resources::ShaderObject>("content/Shader/dofgausspassY.vs", "content/Shader/dofgausspassY.fs");
+		gaussX = std::make_shared<Resources::ShaderObject>("content/Shader/dofgausspass_x.vs", "content/Shader/dofgausspass_x.fs");
+		gaussY = std::make_shared<Resources::ShaderObject>("content/Shader/dofgausspass_y.vs", "content/Shader/dofgausspass_y.fs");
 		composit = std::make_shared<Resources::ShaderObject>("content/Shader/composit.vs", "content/Shader/composit.fs");
 		
-		downsampleShader->bind();
-		downsampleShader->mod1i("inFragColor", 0);
-		downsampleShader->mod1i("gDepth", 1);
-		downsampleShader->mod1f("resDownX", 1.f / ((svr->width + 1) * 0.5f));
-		downsampleShader->mod1f("resDownY", 1.f / ((svr->height + 1) * 0.5f));
-
-		glGenFramebuffers(1, &downFBO);
-		glBindFramebuffer(GL_FRAMEBUFFER, downFBO);
-		// position buffer
-		glGenTextures(1, &downTex);
-		glBindTexture(GL_TEXTURE_2D, downTex);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, downTex, 0);
-
-		// tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
-		unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0 };
-		glDrawBuffers(1, attachments);
-
-		// finally check if framebuffer is complete
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-			std::cout << "Framebuffer not complete!" << std::endl;
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 		gaussX->bind();
 		gaussX->mod1i("inDownSampled", 0);
 		gaussX->mod1f("resDownX", 1.f / ((svr->width + 1) * 0.5f));
@@ -74,11 +45,9 @@ namespace Passes
 		v[6] = vector2D(0.0f, 11.4401f * dy);
 		gaussY->modVector2fArray("sampleArrayY", 7, v);
 
-
 		composit->bind();
 		composit->mod1i("inFullRes", 0);
 		composit->mod1i("inDownSampled", 1);
-
 		
 		glUseProgram(0);
 
@@ -87,11 +56,6 @@ namespace Passes
 	DofGaussPass::~DofGaussPass()
     {
 	}
-
-    void DofGaussPass::Setup()
-    {
-
-    }
 
     void DofGaussPass::Execute()
     {
@@ -103,27 +67,16 @@ namespace Passes
 		if (svr->dof_type != 2)
 			return;
 
-		//Downsample screen--------------
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, downFBO);
-		this->downsampleShader->bind();
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->pBuffer->fragColor);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, svr->gBuffer->gDepth); //depth
-		RenderQuad();
-
 		//Gauss X------------------------
-		
 		gaussX->bind();
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, downTex); //Downscaled color
+		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTex); //Downscaled color
 		RenderQuad();
 
 		//Gauss Y------------------------
 		gaussY->bind();
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, downTex); //Downscaled color
+		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTexX); //Downscaled with convolution in X color
 		RenderQuad();
 
 
@@ -137,7 +90,7 @@ namespace Passes
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->pBuffer->fragColor); //Fullscale color
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, downTex); //Downscaled blurred color
+		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTexY); //Downscaled blurred color
 
 
 		//Render quad that covers the whole screen
@@ -149,10 +102,6 @@ namespace Passes
     {
 		Servers::RenderServer* svr;
 		svr = Servers::RenderServer::GetInstance();
-
-		downsampleShader->bind();
-		downsampleShader->mod1f("resDownX", 1.f / ((svr->width + 1) * 0.5f));
-		downsampleShader->mod1f("resDownY", 1.f / ((svr->height + 1) * 0.5f));
 
 		gaussX->bind();
 		vector2D v[7];
@@ -177,9 +126,6 @@ namespace Passes
 		v[5] = vector2D(0.0f, 9.4436f * dy);
 		v[6] = vector2D(0.0f, 11.4401f * dy);
 		gaussY->modVector2fArray("sampleArrayY", 7, v);
-
-		glBindTexture(GL_TEXTURE_2D, downTex);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
 		glUseProgram(0);
     }

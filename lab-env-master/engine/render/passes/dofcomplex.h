@@ -16,8 +16,11 @@ namespace Passes
         ~DofComplex();
         void Execute();
 		void UpdateResolution();
+		void ChangeNumberOfComponents();
 
 		GLuint colorOutRed, colorOutBlue, colorOutGreen;
+
+		int comp = 1;
 
     private:
 		std::shared_ptr<Resources::ShaderObject> xpass;

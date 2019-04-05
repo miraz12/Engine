@@ -61,10 +61,12 @@ namespace Servers
         dPass = new Passes::DrawPass();
 		dGPass = new Passes::DofGaussPass();
 		cdPass = new Passes::DofComplex();
+		downPass = new Passes::DownsamplePass();
 
 		//Geometry pass -> light pass -> skybox pass -> pos processing (DoF) -> Draw to screen
         passes.push_back(gPass);
         passes.push_back(lPass);
+		passes.push_back(downPass);
 		passes.push_back(dofPass);
 		passes.push_back(dGPass);
 		passes.push_back(cdPass);
@@ -90,5 +92,6 @@ namespace Servers
         dofPass->UpdateResolution();
         dofPass->UpdateResolution();
 		cdPass->UpdateResolution();
+		downPass->UpdateResolution();
     }
 }

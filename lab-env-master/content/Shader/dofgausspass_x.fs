@@ -14,7 +14,7 @@ uniform float resDownY;
 const vec4 threshInnner = vec4(0.1, 0.3, 0.5, -0.01);
 const vec3 threshOuter = vec3(0.6, 0.7, 0.8);
 
-layout(location = 0) out vec4 FragColor;    
+layout(location = 1) out vec4 FragColorY;    
 
 void main()                                                                                 
 {
@@ -103,5 +103,5 @@ void main()
 	
 
 	// Color and weights sum 
-	FragColor = vec4(colorSum, totalWeight);
+	FragColorY = vec4(colorSum, totalWeight);
 }

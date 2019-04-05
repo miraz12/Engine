@@ -43,8 +43,6 @@ namespace Passes
     {
     }
 
-
-
     void DofPass::Execute()
     {
 		Servers::RenderServer* svr;

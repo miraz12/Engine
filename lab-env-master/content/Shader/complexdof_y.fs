@@ -13,9 +13,10 @@ uniform sampler2D colorOutBlue;
 
 uniform float pixelSizeX;                                                        
 uniform float pixelSizeY;
+uniform int nrComp;
 
-const vec2 kernellWeights0 = vec2(0.411259, -0.548794);
-const vec2 kernellWeights1 = vec2(0.513282, 4.561110);
+uniform vec2 kernellWeights0;
+uniform vec2 kernellWeights1;
 
 layout(location = 0) out vec4 FragColor;    
 
@@ -33,7 +34,7 @@ void main()  //x direction
     vec4 colorRed = vec4(0,0,0,0);
     vec4 colorGreen = vec4(0,0,0,0);
     vec4 colorBlue = vec4(0,0,0,0);
-    float filterRadius = texture(inFullRes, TexCoord0).a; //CoC Size saved in alpha
+    float filterRadius = texture(inFullRes, TexCoord0).a*2.0; //CoC Size saved in alpha
     for (int i=-MAX_COC; i <=MAX_COC; ++i)
     {
         vec2 sampleCoord = TexCoord0 + stepVal*vec2(0.0,float(i))*filterRadius; //stepVal*i can be precalculated on cpu and sent as array to save calulcations for each framgent.
@@ -42,19 +43,32 @@ void main()  //x direction
         vec4 imageTexelB = texture(colorOutBlue, sampleCoord);
 		
         vec2 c0 = kernelArray0[i+MAX_COC];
-        vec2 c1 = kernelArray1[i+MAX_COC];
+
 		
         colorRed.xy += multComplex(imageTexelR.xy,c0);
-        colorRed.zw += multComplex(imageTexelR.zw,c1);
 		colorGreen.xy += multComplex(imageTexelG.xy,c0);
-        colorGreen.zw += multComplex(imageTexelG.zw,c1);
 		colorBlue.xy += multComplex(imageTexelB.xy,c0);
-        colorBlue.zw += multComplex(imageTexelB.zw,c1);
+        
+		
+		if(nrComp == 2)
+		{
+		    vec2 c1 = kernelArray1[i+MAX_COC];
+			colorRed.zw += multComplex(imageTexelR.zw,c1);
+			colorGreen.zw += multComplex(imageTexelG.zw,c1);
+			colorBlue.zw += multComplex(imageTexelB.zw,c1);
+		}
         
     }
-	float redChannel   = dot(colorRed.xy, kernellWeights0)+dot(colorRed.zw, kernellWeights1);
-    float greenChannel = dot(colorGreen.xy, kernellWeights0)+dot(colorGreen.zw, kernellWeights1);
-    float blueChannel  = dot(colorBlue.xy, kernellWeights0)+dot(colorBlue.zw, kernellWeights1);
+	float redChannel   = dot(colorRed.xy, kernellWeights0);
+    float greenChannel = dot(colorGreen.xy, kernellWeights0);
+    float blueChannel  = dot(colorBlue.xy, kernellWeights0);
+	
+	if(nrComp == 2)
+	{
+		redChannel   += dot(colorRed.zw, kernellWeights1);
+		greenChannel += dot(colorGreen.zw, kernellWeights1);
+		blueChannel  += dot(colorBlue.zw, kernellWeights1);
+	}
 	
 	FragColor = vec4(vec3(redChannel,greenChannel,blueChannel),1.0);   
     

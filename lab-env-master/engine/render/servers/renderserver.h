@@ -10,6 +10,7 @@
 #include "render/framebuffers/postbuffer.h"
 #include "render/passes/depthoffieldgausspass.h"
 #include "render/passes/dofcomplex.h"
+#include "render/passes/downsamplepass.h"
 
 namespace Display {
     class Window;
@@ -45,8 +46,9 @@ namespace Servers
 		Passes::DrawPass* dPass;
 		Passes::DofGaussPass* dGPass;
 		Passes::DofComplex* cdPass;
+		Passes::DownsamplePass* downPass;
 
-		int dof_type;
+		int dof_type = 0;
 
         int width, height;
 

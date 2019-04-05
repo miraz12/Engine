@@ -10,6 +10,7 @@ uniform sampler2D inFullRes;
 
 uniform float pixelSizeX;                                                        
 uniform float pixelSizeY;  
+uniform int nrComp;
 
 layout(location = 0) out vec4 colorOutRed;  
 layout(location = 1) out vec4 colorOutGreen;  
@@ -23,22 +24,24 @@ void main()  //x direction
     vec4 colorRed = vec4(0,0,0,0);
     vec4 colorGreen = vec4(0,0,0,0);
     vec4 colorBlue = vec4(0,0,0,0);
-    float filterRadius = texture(inFullRes, TexCoord0).a; //CoC Size saved in alpha
+    float filterRadius = texture(inFullRes, TexCoord0).a*2.0; //CoC Size saved in alpha
     for (int i=-MAX_COC; i <=MAX_COC; ++i)
     {
         vec2 sampleCoord = TexCoord0 + stepVal*vec2(float(i),0.0)*filterRadius; 
 		vec3 sampleColor = texture(inFullRes, sampleCoord).rgb;
         vec2 c0 = kernelArray0[i+MAX_COC];
-        vec2 c1 = kernelArray1[i+MAX_COC];
 		
         colorRed.xy += sampleColor.r * c0;
-        colorRed.zw += sampleColor.r * c1;
-		
 		colorGreen.xy += sampleColor.g * c0;
-        colorGreen.zw += sampleColor.g * c1;
-		
 		colorBlue.xy += sampleColor.b * c0;
-        colorBlue.zw += sampleColor.b * c1;
+				
+		if(nrComp == 2)
+		{
+			vec2 c1 = kernelArray1[i+MAX_COC];
+			colorRed.zw += sampleColor.r * c1;
+			colorGreen.zw += sampleColor.g * c1;
+			colorBlue.zw += sampleColor.b * c1;
+		}
         
     }
     colorOutRed = colorRed;
