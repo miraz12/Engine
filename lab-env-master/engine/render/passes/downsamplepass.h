@@ -22,9 +22,6 @@ namespace Passes
 		GLuint downFBO;
 
     private:
-        std::shared_ptr<Resources::ShaderObject> downsampleShader;
-
-
 
     };
 

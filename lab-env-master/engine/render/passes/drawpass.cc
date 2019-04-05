@@ -21,7 +21,6 @@ namespace Passes
     	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to screen
 		glBlitFramebuffer(0, 0, svr->width, svr->height, 0, 0, svr->width, svr->height, GL_COLOR_BUFFER_BIT, GL_NEAREST); //Copy color
 
-        glUseProgram(0);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
