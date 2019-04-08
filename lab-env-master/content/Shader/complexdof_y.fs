@@ -18,7 +18,7 @@ uniform int nrComp;
 uniform vec2 kernellWeights0;
 uniform vec2 kernellWeights1;
 
-layout(location = 0) out vec4 FragColor;    
+layout(location = 3) out vec4 FragColor;    
 
 
 //(Pr+Pi)*(Qr+Qi) = (Pr*Qr+Pr*Qi+Pi*Qr-Pi*Qi)
@@ -34,10 +34,10 @@ void main()  //x direction
     vec4 colorRed = vec4(0,0,0,0);
     vec4 colorGreen = vec4(0,0,0,0);
     vec4 colorBlue = vec4(0,0,0,0);
-    float filterRadius = texture(inFullRes, TexCoord0).a*2.0; //CoC Size saved in alpha
+    float filterRadius = texture(inFullRes, gl_FragCoord.xy*stepVal).a; //CoC Size saved in alpha
     for (int i=-MAX_COC; i <=MAX_COC; ++i)
     {
-        vec2 sampleCoord = TexCoord0 + stepVal*vec2(0.0,float(i))*filterRadius; //stepVal*i can be precalculated on cpu and sent as array to save calulcations for each framgent.
+        vec2 sampleCoord = gl_FragCoord.xy *stepVal + stepVal*vec2(0.0,float(i))*filterRadius; //stepVal*i can be precalculated on cpu and sent as array to save calulcations for each framgent.
         vec4 imageTexelR = texture(colorOutRed, sampleCoord);
         vec4 imageTexelG = texture(colorOutGreen, sampleCoord);
         vec4 imageTexelB = texture(colorOutBlue, sampleCoord);

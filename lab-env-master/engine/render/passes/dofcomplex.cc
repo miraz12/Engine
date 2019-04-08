@@ -12,10 +12,15 @@ namespace Passes
 
 		xpass = std::make_shared<Resources::ShaderObject>("content/Shader/complexdof_x.vs", "content/Shader/complexdof_x.fs");
 		ypass = std::make_shared<Resources::ShaderObject>("content/Shader/complexdof_y.vs", "content/Shader/complexdof_y.fs");
+		composit = std::make_shared<Resources::ShaderObject>("content/Shader/composit.vs", "content/Shader/composit.fs");
+
+
+		float scale = 2.0f;
+
 
 		//Setup sample offsets
-		float dx = 0.5f / ((svr->width));
-		float dy = 0.5f / ((svr->height));
+		float dx = 1.f / ((svr->width) / scale);
+		float dy = 1.f / ((svr->height) / scale);
 
 		xpass->bind();
 		xpass->mod1i("nrComp", comp);
@@ -112,12 +117,17 @@ namespace Passes
 		ypass->modVector2f("kernellWeights0", ve1);
 		ypass->modVector2f("kernellWeights1", ve2);
 
+		composit->bind();
+		composit->mod1i("inFullRes", 0);
+		composit->mod1i("inDownSampled", 1);
+
+
 		glGenFramebuffers(1, &fbo);
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 		// red texture
 		glGenTextures(1, &colorOutRed);
 		glBindTexture(GL_TEXTURE_2D, colorOutRed);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, Servers::RenderServer::GetInstance()->width, Servers::RenderServer::GetInstance()->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -126,7 +136,7 @@ namespace Passes
 		//Blue texture
 		glGenTextures(1, &colorOutGreen);
 		glBindTexture(GL_TEXTURE_2D, colorOutGreen);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, Servers::RenderServer::GetInstance()->width, Servers::RenderServer::GetInstance()->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -135,16 +145,25 @@ namespace Passes
 		//Green texture 
 		glGenTextures(1, &colorOutBlue);
 		glBindTexture(GL_TEXTURE_2D, colorOutBlue);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, Servers::RenderServer::GetInstance()->width, Servers::RenderServer::GetInstance()->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, colorOutBlue, 0);
+		//final color texture 
+		glGenTextures(1, &fragColor);
+		glBindTexture(GL_TEXTURE_2D, fragColor);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, fragColor, 0);
 
 		// tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
-		unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
-		glDrawBuffers(3, attachments);
+		unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
+		glDrawBuffers(4, attachments);
 
 		// finally check if framebuffer is complete
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -171,15 +190,13 @@ namespace Passes
 		this->xpass->bind();
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, svr->pBuffer->fragColor); //maybe downsample?
+		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTex); //maybe downsample?
 		RenderQuad();
 
 		//Ypass
-		svr->pBuffer->DrawBuffer();
 		this->ypass->bind();
-
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, svr->pBuffer->fragColor);
+		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTex);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, colorOutRed);
 		glActiveTexture(GL_TEXTURE2);
@@ -188,14 +205,27 @@ namespace Passes
 		glBindTexture(GL_TEXTURE_2D, colorOutBlue);
 		RenderQuad();
 
+		//composit 
+		svr->pBuffer->DrawBuffer();
+		composit->bind();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, svr->pBuffer->fragColor); //Fullscale color
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, fragColor); //Downscaled blurred color
+		RenderQuad();
 
+		glUseProgram(0);
     }
 
 	void DofComplex::UpdateResolution()
 	{
 
-		float dx = 1.f / ((svr->width));
-		float dy = 1.f / ((svr->height));
+		float scale = 2.0f;
+
+		//Setup sample offsets
+		float dx = 1.f / ((svr->width) / scale);
+		float dy = 1.f / ((svr->height) / scale);
+
 
 		xpass->bind();
 		xpass->mod1f("pixelSizeX", dx);
@@ -206,11 +236,13 @@ namespace Passes
 		ypass->mod1f("pixelSizeY", dy);
 
 		glBindTexture(GL_TEXTURE_2D, colorOutRed);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width, svr->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
 		glBindTexture(GL_TEXTURE_2D, colorOutGreen);	
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width, svr->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
 		glBindTexture(GL_TEXTURE_2D, colorOutBlue);		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width, svr->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glBindTexture(GL_TEXTURE_2D, fragColor);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_FLOAT, NULL);
 		glUseProgram(0);
 
 	}
@@ -298,6 +330,8 @@ namespace Passes
 		ypass->modVector2fArray("kernelArray1", 17, v2);
 		ypass->modVector2f("kernellWeights0", ve1);
 		ypass->modVector2f("kernellWeights1", ve2);
+
+		
 
 		glUseProgram(0);
 	}

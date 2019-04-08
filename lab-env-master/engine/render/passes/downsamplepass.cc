@@ -70,7 +70,7 @@ namespace Passes
 		Servers::RenderServer* svr;
 		svr = Servers::RenderServer::GetInstance();
 
-		if ((svr->dof_type != 2))
+		if ((svr->dof_type != 2)&&(svr->dof_type !=3))
 			return;
 
 		//Downsample screen--------------

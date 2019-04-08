@@ -24,10 +24,10 @@ void main()  //x direction
     vec4 colorRed = vec4(0,0,0,0);
     vec4 colorGreen = vec4(0,0,0,0);
     vec4 colorBlue = vec4(0,0,0,0);
-    float filterRadius = texture(inFullRes, TexCoord0).a*2.0; //CoC Size saved in alpha
+    float filterRadius = texture(inFullRes, gl_FragCoord.xy*stepVal).a; //CoC Size saved in alpha
     for (int i=-MAX_COC; i <=MAX_COC; ++i)
     {
-        vec2 sampleCoord = TexCoord0 + stepVal*vec2(float(i),0.0)*filterRadius; 
+        vec2 sampleCoord = gl_FragCoord.xy *stepVal + stepVal*vec2(float(i),0.0)*filterRadius; 
 		vec3 sampleColor = texture(inFullRes, sampleCoord).rgb;
         vec2 c0 = kernelArray0[i+MAX_COC];
 		
