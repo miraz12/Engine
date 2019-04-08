@@ -66,11 +66,7 @@ namespace Passes
 
 		//Downsample screen--------------
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, downFBO);
-
-		svr->pBuffer->ReadBuffer();
 		glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, svr->pBuffer->fragColor, 0);
-
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, downFBO);
 		glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, downTex, 0);
 
 		glBlitFramebuffer(0, 0, svr->width, svr->height, 0, 0, svr->width*0.5, svr->height*0.5,	GL_COLOR_BUFFER_BIT, GL_LINEAR);
