@@ -24,7 +24,7 @@ namespace FrameBuffers
 		// normal buffer
 		glGenTextures(1, &gNormal);
 		glBindTexture(GL_TEXTURE_2D, gNormal);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, srv->width, srv->height, 0, GL_RGB, GL_HALF_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, srv->width, srv->height, 0, GL_RGBA, GL_HALF_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -51,7 +51,7 @@ namespace FrameBuffers
 		// position buffer
 		glGenTextures(1, &gPosition);
 		glBindTexture(GL_TEXTURE_2D, gPosition);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, srv->width, srv->height, 0, GL_RGB, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, srv->width, srv->height, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -80,25 +80,24 @@ namespace FrameBuffers
 	void GBufferObject::UpdateResolution()
 	{
 		Servers::RenderServer* srv = Servers::RenderServer::GetInstance();
-		int width = srv->width;
-		int height = srv->height;
-		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gPosition);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
-
-		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gNormal);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
-
-		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gAlbedoSpec);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
-
-		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gDepth);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG32F, width, height, 0, GL_RG, GL_FLOAT, NULL);
 
 		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gColor);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, srv->width, srv->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gNormal);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, srv->width, srv->height, 0, GL_RGBA, GL_HALF_FLOAT, NULL);
+
+		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gAlbedoSpec);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, srv->width, srv->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gDepth);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, srv->width, srv->height, 0, GL_RG, GL_FLOAT, NULL);
+
+		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gPosition);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, srv->width, srv->height, 0, GL_RGBA, GL_FLOAT, NULL);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, srv->gBuffer->rboDepth);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, srv->width, srv->height);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}

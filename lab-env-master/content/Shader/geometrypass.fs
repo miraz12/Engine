@@ -1,9 +1,9 @@
 #version 330                                                                        
 
-layout (location = 1) out vec3 gNormal;
+layout (location = 1) out vec4 gNormal;
 layout (location = 2) out vec4 gAlbedoSpec;
 layout (location = 3) out vec2 gDepth;
-layout (location = 4) out vec3 gPosition;
+layout (location = 4) out vec4 gPosition;
 
 uniform float inDistToFocus;                                                        
 uniform float inFocalLen;                                                        
@@ -46,8 +46,8 @@ float getBlurSizePhysical(float depth, float zfocus, float focallen, float apert
 void main()                                                                                 
 {   
 	gAlbedoSpec = texture(DiffuseTextureSampler, TexCoord0);
-	gPosition = WorldPos0;
-	gNormal = CalcBumpedNormal();
+	gPosition = vec4(WorldPos0, 1.0f);
+	gNormal = vec4(CalcBumpedNormal(),1.0);
 	gDepth.r = (-Depth0);
 	
 	float distToFocus = inDistToFocus;

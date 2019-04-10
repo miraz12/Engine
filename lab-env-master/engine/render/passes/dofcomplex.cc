@@ -214,6 +214,7 @@ namespace Passes
 		glBindTexture(GL_TEXTURE_2D, fragColor); //Downscaled blurred color
 		RenderQuad();
 
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glUseProgram(0);
     }
 
@@ -243,6 +244,7 @@ namespace Passes
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
 		glBindTexture(GL_TEXTURE_2D, fragColor);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glUseProgram(0);
 
 	}

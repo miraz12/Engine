@@ -20,8 +20,8 @@ namespace Passes
 
 		vector2D v[12];
 		//Setup sample offsets
-		float dx = 0.5f / svr->width;
-		float dy = 0.5f / svr->height;
+		float dx = 1.0f / svr->width;
+		float dy = 1.0f / svr->height;
 		v[0] = vector2D(-0.326212f * dx, -0.40581f * dy);
 		v[1] = vector2D(-0.840144f * dx, -0.07358f * dy);
 		v[2] = vector2D(-0.695914f * dx, 0.457137f * dy);
@@ -52,9 +52,6 @@ namespace Passes
 			return;
 
 		this->shader->bind();
-		Display::Camera* cam =  Display::Camera::GetInstance();
-		shader->mod1f("resX", svr->width);
-		shader->mod1f("resY", svr->height);
 
 		//Bind lighting shader
 		glActiveTexture(GL_TEXTURE0);
@@ -65,8 +62,8 @@ namespace Passes
 		//Render quad that covers the whole screen
 		RenderQuad();
 
-        glUseProgram(0);
-        glBindTexture(GL_TEXTURE_2D, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glUseProgram(0);
     }
 
 	void DofPass::UpdateResolution()
@@ -78,8 +75,8 @@ namespace Passes
 
 		vector2D v[12];
 		//Setup sample offsets
-		float dx = 0.5f / svr->width;
-		float dy = 0.5f / svr->height;
+		float dx = 1.0f / svr->width;
+		float dy = 1.0f / svr->height;
 		v[0] = vector2D(-0.326212f * dx, -0.40581f * dy);
 		v[1] = vector2D(-0.840144f * dx, -0.07358f * dy);
 		v[2] = vector2D(-0.695914f * dx, 0.457137f * dy);

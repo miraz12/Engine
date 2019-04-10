@@ -152,9 +152,6 @@ void main()
      pct *= tr.x * tr.y;
 
     color = vec3(pct);
-
-    //gColor = vec4(color,1.0);
-	
 	
 	
 	

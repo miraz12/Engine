@@ -22,8 +22,8 @@ namespace Passes
 
 		vector2D v[7];
 		//Setup sample offsets
-		float dx = 0.5f / ((svr->width ) );
-		float dy = 0.5f / ((svr->height ) );
+		float dx = 1.0f / svr->width;
+		float dy = 1.0f / svr->height;
 		v[0] = vector2D(0.0f, 0.0f);
 		v[1] = vector2D(1.3366f * dx, 0.0f);
 		v[2] = vector2D(3.4295f * dx, 0.0f);
@@ -90,11 +90,10 @@ namespace Passes
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->pBuffer->fragColor); //Fullscale color
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTexY); //Downscaled blurred color
-
-
-		//Render quad that covers the whole screen
+		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTexY); //Downscaled blurred 
 		RenderQuad();
+
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glUseProgram(0);
     }
 
@@ -104,10 +103,12 @@ namespace Passes
 		svr = Servers::RenderServer::GetInstance();
 
 		gaussX->bind();
+		gaussX->mod1f("resDownX", 1.f / ((svr->width + 1) * 0.5f));
+		gaussX->mod1f("resDownY", 1.f / ((svr->height + 1) * 0.5f));
 		vector2D v[7];
 		//Setup sample offsets
-		float dx = 0.5f / svr->width;
-		float dy = 0.5f / svr->height;
+		float dx = 1.0f / svr->width;
+		float dy = 1.0f / svr->height;
 		v[0] = vector2D(0.0f, 0.0f);
 		v[1] = vector2D(1.3366f * dx, 0.0f);
 		v[2] = vector2D(3.4295f * dx, 0.0f);
@@ -118,6 +119,8 @@ namespace Passes
 		gaussX->modVector2fArray("sampleArrayX", 7, v);
 
 		gaussY->bind();
+		gaussY->mod1f("resDownX", 1.f / ((svr->width + 1) * 0.5f));
+		gaussY->mod1f("resDownY", 1.f / ((svr->height + 1) * 0.5f));
 		v[0] = vector2D(0.0f, 0.0f);
 		v[1] = vector2D(0.0f, 1.3366f * dy);
 		v[2] = vector2D(0.0f, 3.4295f * dy);
@@ -126,7 +129,6 @@ namespace Passes
 		v[5] = vector2D(0.0f, 9.4436f * dy);
 		v[6] = vector2D(0.0f, 11.4401f * dy);
 		gaussY->modVector2fArray("sampleArrayY", 7, v);
-
 		glUseProgram(0);
     }
 

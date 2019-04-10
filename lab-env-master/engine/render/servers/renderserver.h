@@ -28,7 +28,8 @@ namespace Servers
 
 
         static RenderServer* GetInstance();
-        RenderServer(const RenderServer&) = delete;
+	    void ResolutionUpdated(int w, int h);
+	    RenderServer(const RenderServer&) = delete;
         void operator=(const RenderServer) = delete;
 
         void UpdateResolution(int w, int h);
@@ -51,6 +52,7 @@ namespace Servers
 		int dof_type = 0;
 
         int width, height;
+	    bool resUpdated=false;
 
     private:
 

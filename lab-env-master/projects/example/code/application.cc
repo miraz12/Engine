@@ -75,7 +75,7 @@ namespace Example
             // Set window resize function
             window->SetWindowResizeCallback([this](float w, float h)
             {
-                renderServer->GetInstance()->UpdateResolution(w, h);
+                renderServer->GetInstance()->ResolutionUpdated(w, h);
             });
             return true;
         }

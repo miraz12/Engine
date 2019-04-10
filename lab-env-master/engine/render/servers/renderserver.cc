@@ -17,6 +17,7 @@ namespace Servers
     {
         width = 1024;
         height = 768;
+		
     }
 
     void RenderServer::Render()
@@ -33,9 +34,12 @@ namespace Servers
             glDisable(GL_TEXTURE_2D);
         }
 
-        Display::Camera* cam = Display::Camera::GetInstance();
-        cam->UpdateCamera(width, height);
-
+		Display::Camera::GetInstance()->UpdateCamera(width, height);
+	    if (resUpdated)
+	    {
+			UpdateResolution(width, height);
+			resUpdated = false;
+	    }
 
         for (int i = 0; i < passes.size(); ++i)
         {
@@ -83,15 +87,21 @@ namespace Servers
         return instance;
     }
 
+	void RenderServer::ResolutionUpdated(int w, int h)
+    {
+		width = w;
+		height = h;
+		this->resUpdated = true;
+    }
+
     void RenderServer::UpdateResolution(int w, int h)
     {
-        width = w;
-        height = h;
         gBuffer->UpdateResolution();
         pBuffer->UpdateResolution();
         dofPass->UpdateResolution();
-        dofPass->UpdateResolution();
+		dGPass->UpdateResolution();
 		cdPass->UpdateResolution();
 		downPass->UpdateResolution();
+
     }
 }
