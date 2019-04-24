@@ -17,6 +17,7 @@ namespace Servers
     {
         width = 1024;
         height = 768;
+
 		
     }
 
@@ -40,13 +41,16 @@ namespace Servers
 			UpdateResolution(width, height);
 			resUpdated = false;
 	    }
-
+	
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         for (int i = 0; i < passes.size(); ++i)
         {
             passes[i]->Execute();
         }
 
         this->window->SwapBuffers();
+
     }
 
     void RenderServer::Init(Display::Window* window )
@@ -61,7 +65,7 @@ namespace Servers
         lPass = new Passes::LightPass();
         gPass = new Passes::GeometryPass();
         dofPass = new Passes::DofPass();
-		skyPass = new Passes::SkyboxPass(1500);
+		//skyPass = new Passes::SkyboxPass(1500);
         dPass = new Passes::DrawPass();
 		dGPass = new Passes::DofGaussPass();
 		cdPass = new Passes::DofComplex();

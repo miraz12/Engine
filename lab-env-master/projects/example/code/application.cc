@@ -13,7 +13,7 @@ using namespace Display;
 
 namespace Example
 {
-    //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------WWWWWW
     /**
     */
     Application::Application()
@@ -35,12 +35,31 @@ namespace Example
     void Application::ObjectSetup()
     {
         Base::Entity* temp = new Base::Entity();
+        Base::Entity* temp2 = new Base::Entity();
+        Base::Entity* temp3 = new Base::Entity();
+        Base::Entity* temp4 = new Base::Entity();
         Properties::GraphicsProperty* prop = new Properties::GraphicsProperty();
-        prop->mesh->LoadMesh("content/ocrytek_sponza/sponza.obj");
+        Properties::GraphicsProperty* prop2 = new Properties::GraphicsProperty();
+        Properties::GraphicsProperty* prop3 = new Properties::GraphicsProperty();
+        Properties::GraphicsProperty* prop4 = new Properties::GraphicsProperty();
+        prop->mesh->LoadMesh("content/teapot.obj");
+		prop3->mesh->LoadMesh("content/teapot.obj");
+		prop3->model.setPos(vector3D(50., 0, 100.));
+		prop4->mesh->LoadMesh("content/teapot.obj");
+		prop4->model.setPos((vector3D(100, 0, 200.)));
+        prop2->mesh->LoadMesh("content/cubeNormal.obj");
+		prop2->model.scale(100.f, 100.f, 100.f);
+        //prop->mesh->LoadMesh("content/ama/Interior/interior.obj");
         //prop->mesh->LoadMesh("content/sponzafixed/sponza.obj");
 		//prop->mesh->LoadMesh("content/cat.obj");
         temp->AttachProperty(prop);
+        temp2->AttachProperty(prop2);
+		temp3->AttachProperty(prop3);
+		temp4->AttachProperty(prop4);
         this->entityManager->AttachEntity(temp);
+        this->entityManager->AttachEntity(temp2);
+        this->entityManager->AttachEntity(temp3);
+        this->entityManager->AttachEntity(temp4);
     }
 
     //------------------------------------------------------------------------------

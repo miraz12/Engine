@@ -33,8 +33,6 @@ namespace Passes
 		Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
 		svr->pBuffer->DrawBuffer();
 
-		//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-
         //Bind lighting shader
         this->shader->bind();
 		glActiveTexture(GL_TEXTURE0);
@@ -56,9 +54,9 @@ namespace Passes
         shader->mod1f("zNear", cam->zNear);
         shader->mod1f("zFar", cam->zFar);
 
-
         //Render quad that cover the whole screen
 		RenderQuad();
+
 
         glUseProgram(0);
         glBindTexture(GL_TEXTURE_2D, 0);

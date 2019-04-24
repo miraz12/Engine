@@ -34,9 +34,9 @@ namespace Properties
             float rad = (PI / 180.f) * d;
             return rad;
         }
+		matrix4D model;
 
     private:
-        matrix4D model;
         Display::Camera* cam;
     };
 }
