@@ -28,8 +28,9 @@ namespace Base
 				// positions        // texture Coords
 				-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
 				-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-				1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
 				1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+				1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+				
 			};
 			// setup plane VAO
 			glGenVertexArrays(1, &quadVAO);
@@ -43,7 +44,7 @@ namespace Base
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 		}
 		glBindVertexArray(quadVAO);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glDrawArrays(GL_QUADS, 0, 4);
 		glBindVertexArray(0);
     }
 }
