@@ -57,9 +57,63 @@ uniform vec3 cameraPos;
 uniform float gMatSpecularIntensity;                                                        
 uniform float gSpecularPower;     
 
+uniform int dirLight;
 uniform int gNumPointLights;                                                                
 uniform int gNumSpotLights;                                                          
                                                                                             
+vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal, vec3 WorldPos0);
+vec4 CalcDirectionalLight(vec3 Normal, vec3 WorldPos0);
+vec4 CalcPointLight(PointLight l, vec3 Normal, vec3 WorldPos0);
+vec4 CalcSpotLight(SpotLight l, vec3 Normal, vec3 WorldPos0);
+
+
+void main()                                                                                 
+{   
+
+	vec3 FragPos = texture(gPosition, TexCoord0).rgb;
+    vec3 Normal = texture(gNormal, TexCoord0).rgb;
+    vec4 Diffuse = texture(gAlbedoSpec, TexCoord0).rgba;
+	
+	if (Normal == vec3(0.0, 0.0, 0.0)){ discard; }
+	
+	vec4 TotalLight = vec4(0.0, 0.0, 0.0, 1);
+	if(dirLight == 1)
+	{
+		TotalLight = CalcDirectionalLight(Normal, FragPos);                                         
+	}
+    for (int i = 0 ; i < gNumPointLights; i++) 
+	{                                           
+        TotalLight += CalcPointLight(gPointLights[i], Normal, FragPos);                              
+    }                                                                                       
+    for (int i = 0 ; i < gNumSpotLights ; i++) 
+	{                                            
+        TotalLight += CalcSpotLight(gSpotLights[i], Normal, FragPos);                                
+    }                   
+
+    gColor = vec4(Diffuse.rgb, 1.0) * TotalLight;        
+	
+    gColor.rgb = gColor.rgb / (gColor.rgb + vec3(1.0));	 // HDR
+    gColor.rgb = pow(gColor.rgb, vec3(1.0/2.2)); // gamma correct
+	
+    gColor.a = texture(gDepth, TexCoord0).g; ;  
+	
+	
+	vec2 res = vec2(1024, 768);
+	vec2 st = gl_FragCoord.xy/res;
+    vec3 color = vec3(0.0);
+
+    // bottom-left
+    vec2 bl = step(vec2(0.1),st);
+    float pct = bl.x * bl.y;
+
+    // top-right
+     vec2 tr = step(vec2(0.1),1.0-st);
+     pct *= tr.x * tr.y;
+
+    color = vec3(pct);
+	
+}
+
 vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal, vec3 WorldPos0)                  
 {                                                                                           
     vec4 AmbientColor = vec4(Light.Color * Light.AmbientIntensity, 1.0f);
@@ -84,7 +138,7 @@ vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal, vec3 W
 }                                                                                           
                                                                                             
 vec4 CalcDirectionalLight(vec3 Normal, vec3 WorldPos0)                                                      
-{                                                                                           
+{                                 
     return CalcLightInternal(gDirectionalLight.Base, gDirectionalLight.Direction, Normal, WorldPos0);  
 }                                                                                           
                                                                                             
@@ -114,45 +168,4 @@ vec4 CalcSpotLight(SpotLight l, vec3 Normal, vec3 WorldPos0)
     else {                                                                                  
         return vec4(0,0,0,0);                                                               
     }                                                                                           
-}               
-               			
-void main()                                                                                 
-{   
-
-	vec3 FragPos = texture(gPosition, TexCoord0).rgb;
-    vec3 Normal = texture(gNormal, TexCoord0).rgb;
-    vec4 Diffuse = texture(gAlbedoSpec, TexCoord0).rgba;
-	
-	if (Normal == vec3(0.0, 0.0, 0.0)){ discard; }
-	
-    vec4 TotalLight = CalcDirectionalLight(Normal, FragPos);                                         
-                                                                                            
-    for (int i = 0 ; i < gNumPointLights; i++) {                                           
-        TotalLight += CalcPointLight(gPointLights[i], Normal, FragPos);                              
-    }                                                                                       
-                                                                                            
-    for (int i = 0 ; i < gNumSpotLights ; i++) {                                            
-        TotalLight += CalcSpotLight(gSpotLights[i], Normal, FragPos);                                
-    }                   
-
-    gColor = vec4(Diffuse.rgb, 1.0) * TotalLight;        
-    gColor.a = texture(gDepth, TexCoord0).g; ;  
-	
-	
-	vec2 res = vec2(1024, 768);
-	vec2 st = gl_FragCoord.xy/res;
-    vec3 color = vec3(0.0);
-
-    // bottom-left
-    vec2 bl = step(vec2(0.1),st);
-    float pct = bl.x * bl.y;
-
-    // top-right
-     vec2 tr = step(vec2(0.1),1.0-st);
-     pct *= tr.x * tr.y;
-
-    color = vec3(pct);
-	
-	
-	
-}
+}  

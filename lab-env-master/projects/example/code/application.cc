@@ -80,8 +80,8 @@ namespace Example
         if (this->window->Open())
         {
             //Setup everyting
-            this->lightManager->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), 0.05f, 0.2f,
-                                                                       vector3D(0.0f, -1.0, 0.0));
+			this->lightManager->AddDirectionalLight(vector3D(1.0f, 1.0f, 1.0f), .05f, .2f, vector3D(0.0f, -1.0, 0.0));
+			//this->lightManager->AddPointLight(vector3D(1, 0, 0), 0.8, vector3D(0, 10, 0), 1, 0.09, 0.032);
             ObjectSetup();
             renderServer->Init(this->window);
             keyHandler->Init(window);

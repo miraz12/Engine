@@ -37,7 +37,7 @@ struct DirectionalLight : public BaseLight
         
     }
 
-    void Setup(std::shared_ptr<Resources::ShaderObject> s, int i)
+    void Setup(std::shared_ptr<Resources::ShaderObject> s, int i = -1)
 	{
         s->modVector3f("gDirectionalLight.Base.Color", vector3D(this->Color.x(), this->Color.y(), this->Color.z()));
         s->mod1f("gDirectionalLight.Base.AmbientIntensity", this->AmbientIntensity);

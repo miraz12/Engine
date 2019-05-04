@@ -252,7 +252,7 @@ namespace Resources
                     }
                 }
             }
-            if (pMaterial->GetTextureCount(aiTextureType_OPACITY) > 0) {
+            /*if (pMaterial->GetTextureCount(aiTextureType_OPACITY) > 0) {
                 aiString Path;
 
                 if (pMaterial->GetTexture(aiTextureType_OPACITY, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
@@ -287,7 +287,7 @@ namespace Resources
                         printf("Loaded Spec '%s'\n", FullPath.c_str());
                     }
                 }
-            }
+            }*/
         }
 
         return Ret;
@@ -336,7 +336,7 @@ namespace Resources
 
             }*/
             glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
-            glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, 0);
         }
         glBindVertexArray(0);
     }

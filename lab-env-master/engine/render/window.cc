@@ -239,7 +239,7 @@ Window::Open()
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unusedIds, true);
 
 		// setup stuff
-		glEnable(GL_FRAMEBUFFER_SRGB); //gamma correction 
+		//glEnable(GL_FRAMEBUFFER_SRGB); //gamma correction 
 		//glEnable(GL_LINE_SMOOTH);
 		//glEnable(GL_POLYGON_SMOOTH);
 		//glEnable(GL_MULTISAMPLE);
