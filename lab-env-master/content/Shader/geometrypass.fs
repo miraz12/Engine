@@ -11,6 +11,12 @@ uniform float inAperture;
 
 uniform sampler2D DiffuseTextureSampler;
 uniform sampler2D NormalTextureSampler;     
+uniform sampler2D ShininessTextureSampler;     
+uniform sampler2D AmbientTextureSampler;     
+
+uniform vec4 materialDiffuse;
+uniform vec4 materialAmbient;
+uniform vec4 materialSpecular;   
 				
 in vec2 TexCoord0;                                                                 
 in vec3 Normal0;                                                                 
@@ -46,8 +52,19 @@ float getBlurSizePhysical(float depth, float zfocus, float focallen, float apert
 void main()                                                                                 
 {   
 	gAlbedoSpec = texture(DiffuseTextureSampler, TexCoord0);
+	
+	if(gAlbedoSpec.a < 0.1) 
+	{
+		discard;
+	}
+	
+	
+	
 	gPosition = vec4(WorldPos0, 1.0f);
 	gNormal = vec4(CalcBumpedNormal(),1.0);
+	
+	gAlbedoSpec.a = texture(ShininessTextureSampler, TexCoord0).r;
+	gNormal.a = texture(AmbientTextureSampler, TexCoord0).r;
 	gDepth.r = (-Depth0);
 	
 	float distToFocus = inDistToFocus;
@@ -59,8 +76,5 @@ void main()
 	//float centerSize = clamp(abs(gDepth.r - inDistToFocus) / inFocalLen , 0.0f, 1.0f);
 	gDepth.g = centerSize;
 
-	if(gAlbedoSpec.a < 0.1) 
-	{
-		discard;
-	}
+
 }

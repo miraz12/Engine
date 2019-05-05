@@ -31,6 +31,13 @@ struct Vertex
 	}
 };
 
+struct material
+{
+	vector4D diffuse;
+	vector4D ambient;
+	vector4D specular;
+};
+
 namespace Resources
 {
 
@@ -76,9 +83,13 @@ namespace Resources
         std::shared_ptr<ShaderObject> shader;
         std::vector<MeshEntry> m_Entries;
         std::vector<TextureResource*> m_Textures;
+        std::vector<TextureResource*> m_SpecularTextures;
         std::vector<TextureResource*> m_Normals;
         std::vector<TextureResource*> m_Masks;
         std::vector<TextureResource*> m_Spec;
+        std::vector<TextureResource*> m_Ambient;
+        std::vector<TextureResource*> m_Shine;
+        std::vector<material*> m_materials;
         TextureResource* defaulNormal;
         TextureResource* defaultDiff;
         TextureResource* defaulMask;

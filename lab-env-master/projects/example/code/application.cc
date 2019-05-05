@@ -13,7 +13,7 @@ using namespace Display;
 
 namespace Example
 {
-    //------------------------------------------------------------------------------WWWWWW
+    //------------------------------------------------------------------------------
     /**
     */
     Application::Application()
@@ -49,8 +49,10 @@ namespace Example
 		prop4->model.setPos((vector3D(100, 0, 200.)));
         prop2->mesh->LoadMesh("content/cubeNormal.obj");
 		prop2->model.scale(100.f, 100.f, 100.f);*/
-        //prop->mesh->LoadMesh("content/ama/Interior/interior.obj");
+        
         prop->mesh->LoadMesh("content/ocrytek_sponza/sponza.obj");
+        //prop->mesh->LoadMesh("content/shaderball/export3dcoat.obj");
+        //prop->mesh->LoadMesh("content/testObj.obj");
 		//prop->mesh->LoadMesh("content/cat.obj");
         temp->AttachProperty(prop);
         temp2->AttachProperty(prop2);
