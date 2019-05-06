@@ -59,6 +59,7 @@ void main()  //x direction
 		}
         
     }
+	//complex addition of real and imaginary parts.
 	float redChannel   = dot(colorRed.xy, kernellWeights0);
     float greenChannel = dot(colorGreen.xy, kernellWeights0);
     float blueChannel  = dot(colorBlue.xy, kernellWeights0);

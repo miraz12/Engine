@@ -31,6 +31,7 @@ void main()  //x direction
 		vec3 sampleColor = texture(inFullRes, sampleCoord).rgb;
         vec2 c0 = kernelArray0[i+MAX_COC];
 		
+		//complex multiplication with no imaginary color part.
         colorRed.xy += sampleColor.r * c0;
 		colorGreen.xy += sampleColor.g * c0;
 		colorBlue.xy += sampleColor.b * c0;
