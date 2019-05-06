@@ -14,11 +14,8 @@ namespace Managers
         pos = vector3D(1.0, 1.0, 1.0);
         intens = 1.0f;
 
-        specIntensity = 0.5f;
+        specIntensity = 1.0f;
         specPower = 15.0f;
-
-
-        //m_dLights = std::vector<DirectionalLight*>();
 
     }
 
@@ -28,12 +25,12 @@ namespace Managers
         s->modVector3f("cameraPos", vector3D(cam->position.x(), cam->position.y(), cam->position.z()));
         s->mod1i("gNumPointLights", (int(m_pLights.size())));
         s->mod1i("gNumSpotLights", (int(m_sLights.size())));
+        s->mod1i("dirLight", dirLight);
 
-        for (unsigned int i = 0; i < 1; i++)
-        {
-           // m_dLights[i]->Setup(s, i);
-            m_dLight->Setup(s, i);
-        }
+	    if (dirLight)
+	    {
+			m_dLight->Setup(s);
+	    }
 
         for (unsigned int i = 0; i < m_pLights.size(); ++i)
         {
@@ -56,7 +53,8 @@ namespace Managers
     void LightManager::AddDirectionalLight(vector3D color, float ambientintensity, float diffuseintensity,
         vector3D direction)
     {
-        DirectionalLight* dirLight = new DirectionalLight();
+		dirLight = 1;
+    	DirectionalLight* dirLight = new DirectionalLight();
         dirLight->Color = color;
         dirLight->AmbientIntensity = ambientintensity;
         dirLight->DiffuseIntensity = diffuseintensity;
@@ -64,12 +62,12 @@ namespace Managers
 
         m_dLight = dirLight;
 
-        //this->m_dLights.push_back(dirLight);
     }
 
     void LightManager::AddPointLight(vector3D color, float diffuseintensity, vector3D position, float attenuationConst,
         float attenuationLin, float attenuationExp)
     {
+
         PointLight* pLight = new PointLight();
         pLight->DiffuseIntensity = diffuseintensity; // 0.25f;
         pLight->Color = color;

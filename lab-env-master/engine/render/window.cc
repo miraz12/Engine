@@ -239,12 +239,12 @@ Window::Open()
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unusedIds, true);
 
 		// setup stuff
-		glEnable(GL_FRAMEBUFFER_SRGB);
-		glEnable(GL_LINE_SMOOTH);
-		glEnable(GL_POLYGON_SMOOTH);
-		glEnable(GL_MULTISAMPLE);
-		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-		glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+		//glEnable(GL_FRAMEBUFFER_SRGB); //gamma correction 
+		//glEnable(GL_LINE_SMOOTH);
+		//glEnable(GL_POLYGON_SMOOTH);
+		//glEnable(GL_MULTISAMPLE);
+		//glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+		//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
 		// setup viewport
 		glViewport(0, 0, this->width, this->height);

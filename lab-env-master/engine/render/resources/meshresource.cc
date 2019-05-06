@@ -138,9 +138,14 @@ namespace Resources
     {
         m_Entries.resize(pScene->mNumMeshes);
         m_Textures.resize(pScene->mNumMaterials);
+		m_SpecularTextures.resize(pScene->mNumMaterials);
         m_Normals.resize(pScene->mNumMaterials);
         m_Masks.resize(pScene->mNumMaterials);
         m_Spec.resize(pScene->mNumMaterials);
+		m_Ambient.resize(pScene->mNumMaterials);
+		m_Shine.resize(pScene->mNumMaterials);
+
+		m_materials.resize(pScene->mNumMeshes);
 
         // Initialize the meshes in the scene one by one
         for (unsigned int i = 0; i < m_Entries.size(); i++) {
@@ -211,10 +216,13 @@ namespace Resources
             const aiMaterial* pMaterial = pScene->mMaterials[i];
 
             m_Textures[i] = nullptr;
+			m_SpecularTextures[i] = nullptr;
             m_Normals[i] = nullptr;
             m_Masks[i] = nullptr;
             m_Spec[i] = nullptr;
-
+			m_Ambient[i] = nullptr;
+			m_Shine[i] = nullptr;
+			m_materials[i] = nullptr;
 
             if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
                 aiString Path;
@@ -234,6 +242,60 @@ namespace Resources
                     }
                 }
             }
+			if (pMaterial->GetTextureCount(aiTextureType_SPECULAR) > 0) {
+				aiString Path;
+
+				if (pMaterial->GetTexture(aiTextureType_SPECULAR, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+					std::string FullPath = Dir + "/" + Path.data;
+					m_SpecularTextures[i] = new TextureResource(FullPath.c_str());
+
+					if (!m_SpecularTextures[i]->Load()) {
+						printf("Error loading specular texture '%s'\n", FullPath.c_str());
+						delete m_SpecularTextures[i];
+						m_SpecularTextures[i] = NULL;
+						Ret = false;
+					}
+					else {
+						printf("Loaded specular texture '%s'\n", FullPath.c_str());
+					}
+				}
+			}
+			if (pMaterial->GetTextureCount(aiTextureType_SHININESS) > 0) {//Actually roughness in sponza PBR
+				aiString Path;
+
+				if (pMaterial->GetTexture(aiTextureType_SHININESS, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+					std::string FullPath = Dir + "/" + Path.data;
+					m_Shine[i] = new TextureResource(FullPath.c_str());
+
+					if (!m_Shine[i]->Load()) {
+						printf("Error loading shiny texture '%s'\n", FullPath.c_str());
+						delete m_Shine[i];
+						m_Shine[i] = NULL;
+						Ret = false;
+					}
+					else {
+						printf("Loaded shiny texture '%s'\n", FullPath.c_str());
+					}
+				}
+			}
+			if (pMaterial->GetTextureCount(aiTextureType_AMBIENT) > 0) { //Actually metallic in sponza PBR
+				aiString Path;
+
+				if (pMaterial->GetTexture(aiTextureType_AMBIENT, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+					std::string FullPath = Dir + "/" + Path.data;
+					m_Ambient[i] = new TextureResource(FullPath.c_str());
+
+					if (!m_Ambient[i]->Load()) {
+						printf("Error loading ambient texture '%s'\n", FullPath.c_str());
+						delete m_Ambient[i];
+						m_Ambient[i] = NULL;
+						Ret = false;
+					}
+					else {
+						printf("Loaded ambient texture '%s'\n", FullPath.c_str());
+					}
+				}
+			}
             if (pMaterial->GetTextureCount(aiTextureType_HEIGHT) > 0) {
                 aiString Path;
 
@@ -252,7 +314,7 @@ namespace Resources
                     }
                 }
             }
-            if (pMaterial->GetTextureCount(aiTextureType_OPACITY) > 0) {
+            /*if (pMaterial->GetTextureCount(aiTextureType_OPACITY) > 0) {
                 aiString Path;
 
                 if (pMaterial->GetTexture(aiTextureType_OPACITY, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
@@ -287,7 +349,27 @@ namespace Resources
                         printf("Loaded Spec '%s'\n", FullPath.c_str());
                     }
                 }
-            }
+            }*/
+
+			m_materials[i] = new material();
+			vector4D c(0.8f, 0.8f, 0.8f, 1.0f);
+			aiColor4D diffuse;
+			if (AI_SUCCESS == aiGetMaterialColor(pMaterial, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
+				c = vector4D(diffuse.r, diffuse.g, diffuse.b, diffuse.a);
+			m_materials[i]->diffuse = c;
+
+			c = vector4D(0.2f, 0.2f, 0.2f, 1.0f);
+			aiColor4D ambient;
+			if (AI_SUCCESS == aiGetMaterialColor(pMaterial, AI_MATKEY_COLOR_AMBIENT, &ambient))
+				c = vector4D(ambient.r, ambient.g, ambient.b, ambient.a);
+			m_materials[i]->ambient = c;
+
+			c = vector4D(0.0f, 0.0f, 0.0f, 1.0f);
+			aiColor4D specular;
+			if (AI_SUCCESS == aiGetMaterialColor(pMaterial, AI_MATKEY_COLOR_SPECULAR, &specular))
+				c = vector4D(specular.r, specular.g, specular.b, specular.a);
+			m_materials[i]->diffuse = c;
+
         }
 
         return Ret;
@@ -302,41 +384,46 @@ namespace Resources
 
             const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
 
+			if (m_Textures[MaterialIndex])
+			{
+				m_Textures[MaterialIndex]->bind(GL_TEXTURE0, glGetUniformLocation(shader->getProgram(), "DiffuseTextureSampler"), 0);
+			}
+			else
+			{
+				defaultDiff->bind(GL_TEXTURE0, glGetUniformLocation(shader->getProgram(), "DiffuseTextureSampler"), 0);
+			}
+			if (m_Normals[MaterialIndex])
+			{
+				m_Normals[MaterialIndex]->bind(GL_TEXTURE1, glGetUniformLocation(shader->getProgram(), "NormalTextureSampler"), 1);
+			}
+			else
+			{
+				defaulNormal->bind(GL_TEXTURE1, glGetUniformLocation(shader->getProgram(), "NormalTextureSampler"), 1);
+			}
+			if (m_Shine[MaterialIndex])
+			{
+				m_Shine[MaterialIndex]->bind(GL_TEXTURE2, glGetUniformLocation(shader->getProgram(), "ShininessTextureSampler"), 2);
+			}
+			if (m_Ambient[MaterialIndex])
+			{
+				m_Ambient[MaterialIndex]->bind(GL_TEXTURE3, glGetUniformLocation(shader->getProgram(), "AmbientTextureSampler"), 3);
+			}
+			if (m_materials[MaterialIndex])
+			{
+				shader->modVector4f("materialDiffuse", m_materials[MaterialIndex]->diffuse);
+				shader->modVector4f("materialAmbient", m_materials[MaterialIndex]->ambient);
+				shader->modVector4f("materialSpecular", m_materials[MaterialIndex]->specular);
+			}
+			else
+			{
+				shader->modVector4f("materialDiffuse", vector4D(0.8f, 0.8f, 0.8f, 1.0f));
+				shader->modVector4f("materialAmbient", vector4D(0.2f, 0.2f, 0.2f, 1.0f));
+				shader->modVector4f("materialSpecular", vector4D(0.0f, 0.0f, 0.0f, 1.0f));
+			}
 
-            //TODO:This needs fixing, move binding of textures outside of this class so that its only responsible for rendering geometry
-            if (MaterialIndex < m_Textures.size()) {
-                if (m_Textures[MaterialIndex])
-                {
-                    m_Textures[MaterialIndex]->bind(GL_TEXTURE0, glGetUniformLocation(shader->getProgram(), "DiffuseTextureSampler"), 0);
-                }
-                else
-                {
-                    defaultDiff->bind(GL_TEXTURE0, glGetUniformLocation(shader->getProgram(), "DiffuseTextureSampler"), 0);
-                }
-            }
-            if (MaterialIndex < m_Normals.size()) {
-                if (m_Normals[MaterialIndex] != nullptr)
-                {
-                    m_Normals[MaterialIndex]->bind(GL_TEXTURE1, glGetUniformLocation(shader->getProgram(), "NormalTextureSampler"), 1);
-                }
-                else
-                {
-                    defaulNormal->bind(GL_TEXTURE1, glGetUniformLocation(shader->getProgram(), "NormalTextureSampler"), 1);
-                }
-            }
-            /*if (MaterialIndex < m_Masks.size()) {
-            	if (m_Masks[MaterialIndex] != nullptr)
-            	{
-            		m_Masks[MaterialIndex]->bind(GL_TEXTURE2, glGetUniformLocation(shader->getProgram(), "MaskTextureSampler"), 2);
-            	}
-                else
-                {
-                    defaulMask->bind(GL_TEXTURE2, glGetUniformLocation(shader->getProgram(), "MaskTextureSampler"), 2);
-                }
-
-            }*/
+           
             glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
-            glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, 0);
         }
         glBindVertexArray(0);
     }
