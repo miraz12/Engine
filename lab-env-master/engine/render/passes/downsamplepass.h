@@ -17,9 +17,12 @@ namespace Passes
         void UpdateResolution();
 
 		//Downscaled render to texture
-		GLuint downTex, downTexX, downTexY;
+		GLuint downTex, downTexX, downTexY, downDepth;
 		//FBO
 		GLuint downFBO;
+
+		std::shared_ptr<Resources::ShaderObject> shader;
+
 
     private:
 
