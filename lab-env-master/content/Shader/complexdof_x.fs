@@ -7,10 +7,11 @@ uniform vec2 kernelArray0[17];
 uniform vec2 kernelArray1[17];
 
 uniform sampler2D inFullRes;  
+uniform sampler2D depth;  
 
 uniform float pixelSizeX;                                                        
 uniform float pixelSizeY;  
-uniform int nrComp;
+
 
 layout(location = 0) out vec4 colorOutRed;  
 layout(location = 1) out vec4 colorOutGreen;  
@@ -35,14 +36,12 @@ void main()  //x direction
         colorRed.xy += sampleColor.r * c0;
 		colorGreen.xy += sampleColor.g * c0;
 		colorBlue.xy += sampleColor.b * c0;
-				
-		if(nrComp == 2)
-		{
-			vec2 c1 = kernelArray1[i+MAX_COC];
-			colorRed.zw += sampleColor.r * c1;
-			colorGreen.zw += sampleColor.g * c1;
-			colorBlue.zw += sampleColor.b * c1;
-		}
+
+		vec2 c1 = kernelArray1[i+MAX_COC];
+		colorRed.zw += sampleColor.r * c1;
+		colorGreen.zw += sampleColor.g * c1;
+		colorBlue.zw += sampleColor.b * c1;
+
         
     }
     colorOutRed = colorRed;

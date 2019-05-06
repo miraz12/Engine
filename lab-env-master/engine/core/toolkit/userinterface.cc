@@ -40,13 +40,6 @@ namespace Toolkit
 			ImGui::SliderFloat("Distance to plane in focus", &cam->distToFocus, 0.0f, 100.0f, "ratio = %.4f");
 			ImGui::SliderFloat("Focal length", &cam->focalLen, 0.0f, 100.0f, "ratio = %.4f");
 			ImGui::SliderFloat("Aperture", &cam->aperture, 0.0f, 100.0f, "ratio = %.4f");
-			if (*dof_type == 3)
-			{
-				if(ImGui::SliderInt("Number of components", &srv->cdPass->comp, 1, 2))
-				{
-					srv->cdPass->ChangeNumberOfComponents();
-				}
-			}
         }
     	
 

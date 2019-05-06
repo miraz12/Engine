@@ -4,14 +4,14 @@ in vec2 TexCoord0;
 uniform sampler2D gColor;                                                                                 
 uniform sampler2D gDepth;    
 
-uniform vec2 sampleArray[12];
+uniform vec2 sampleArray[64];
 uniform float resDownX;                                                        
 uniform float resDownY;                                                        
 
 layout (location = 2) out vec4 outColor;  
   
 const float GOLDEN_ANGLE = 2.39996323;
-const float MAX_BLUR_SIZE = 8.0;
+const float MAX_BLUR_SIZE = 10.0;
 const float RAD_SCALE = 0.09; // Smaller = nicer blur, larger = faster
 
 vec3 dof_stochastic()
@@ -24,7 +24,7 @@ vec3 dof_stochastic()
 	vec2 centerDepthVec = texture(gDepth, tap0).rg;
 	float centerSize = centerDepthVec.y * MAX_BLUR_SIZE;
 	
-	for(int i = 0; i < 12; i++)
+	for(int i = 0; i < 64; i++)
 	{
 		//Sample coords
 		vec2 sampleCoord = tap0 + sampleArray[i] * centerSize;
@@ -32,7 +32,7 @@ vec3 dof_stochastic()
 		vec3 sampleColor = texture(gColor, sampleCoord).rgb;
 		vec2 depthVec = texture(gDepth, sampleCoord).rg;
 		float sampleDepth = depthVec.x;
-		float sampleSize = depthVec.y;
+		float sampleSize = depthVec.y ;
 		
 		float sampleContribute = 1.0f; 
 		

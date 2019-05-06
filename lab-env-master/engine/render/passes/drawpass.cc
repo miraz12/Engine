@@ -17,9 +17,8 @@ namespace Passes
     {
 
         Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
-		svr->gBuffer->ReadGBuffer();
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to screen
-		glBlitFramebuffer(0, 0, svr->width, svr->height, 0, 0, svr->width, svr->height,	GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+		glBlitFramebuffer(0, 0, svr->width, svr->height, 0, 0, svr->width, svr->height,	GL_DEPTH_BUFFER_BIT, GL_NEAREST); //Copy depth
     	svr->pBuffer->ReadBuffer();
 		glBlitFramebuffer(0, 0, svr->width, svr->height, 0, 0, svr->width, svr->height, GL_COLOR_BUFFER_BIT, GL_NEAREST); //Copy color
 		
