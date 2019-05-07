@@ -14,10 +14,11 @@ namespace Passes
 		ypass = std::make_shared<Resources::ShaderObject>("content/Shader/complexdof_y.vs", "content/Shader/complexdof_y.fs");
 		composit = std::make_shared<Resources::ShaderObject>("content/Shader/composit.vs", "content/Shader/composit.fs");
 
-
-		float scale = 2.0f;
-
-
+		float scale = 1.0f;
+		if (svr->downssample)
+		{
+			scale = 2.0f;
+		}
 		//Setup sample offsets
 		float dx = 1.f / ((svr->width) / scale);
 		float dy = 1.f / ((svr->height) / scale);
@@ -53,6 +54,7 @@ namespace Passes
 		v1[15] = vector2D(-0.020612, -0.025574);
 		v1[16] = vector2D(0.014096, -0.022658);
 
+
 		//Component 2 
 		ve2 = vector2D(0.513282, 4.561110);; //Weights
 		v2[0] = vector2D(0.000115, 0.009116);
@@ -75,7 +77,6 @@ namespace Passes
 
 		xpass->modVector2fArray("kernelArray0", 17, v1);
 		xpass->modVector2fArray("kernelArray1", 17, v2);
-
 		
 		ypass->bind();
 		ypass->mod1i("inFullRes", 0);
@@ -164,13 +165,20 @@ namespace Passes
 		this->xpass->bind();
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTex); //maybe downsample?
+		if (svr->downssample)
+			glBindTexture(GL_TEXTURE_2D, svr->downPass->downTex);
+		else
+			glBindTexture(GL_TEXTURE_2D, svr->pBuffer->fragColor);
 		RenderQuad();
 
 		//Ypass
 		this->ypass->bind();
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTex);
+		if (svr->downssample)
+			glBindTexture(GL_TEXTURE_2D, svr->downPass->downTex);
+		else
+			glBindTexture(GL_TEXTURE_2D, svr->pBuffer->fragColor);
+		glBindTexture(GL_TEXTURE_2D, svr->pBuffer->fragColor);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, colorOutRed);
 		glActiveTexture(GL_TEXTURE2);
@@ -195,7 +203,11 @@ namespace Passes
 	void DofComplex::UpdateResolution()
 	{
 
-		float scale = 2.0f;
+		float scale = 1.0f;
+		if (svr->downssample)
+		{
+			scale = 2.0f;
+		}
 
 		//Setup sample offsets
 		float dx = 1.f / ((svr->width) / scale);

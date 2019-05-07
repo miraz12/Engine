@@ -4,11 +4,13 @@ in vec2 TexCoord0;
 uniform sampler2D gColor;                                                                                 
 uniform sampler2D gDepth;    
 
+uniform int samples;  
 uniform vec2 sampleArray[64];
 uniform float resDownX;                                                        
 uniform float resDownY;                                                        
+                                                      
 
-layout (location = 2) out vec4 outColor;  
+layout (location = 1) out vec4 outColor;  
   
 const float GOLDEN_ANGLE = 2.39996323;
 const float MAX_BLUR_SIZE = 10.0;
@@ -18,13 +20,14 @@ vec3 dof_stochastic()
 {
 	vec2 scaledScreen = vec2(resDownX, resDownY); 
 	vec2 tap0 = gl_FragCoord.xy * scaledScreen;
+
 	
 	vec3 totalColor = texture(gColor, tap0).rgb;
 	float totalContribute = 1.0f;
 	vec2 centerDepthVec = texture(gDepth, tap0).rg;
 	float centerSize = centerDepthVec.y * MAX_BLUR_SIZE;
 	
-	for(int i = 0; i < 64; i++)
+	for(int i = 0; i < samples; i++)
 	{
 		//Sample coords
 		vec2 sampleCoord = tap0 + sampleArray[i] * centerSize;

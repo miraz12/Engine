@@ -49,6 +49,7 @@ namespace Servers
 		Passes::DofComplex* cdPass;
 		Passes::DownsamplePass* downPass;
 
+		bool downssample = true;
 		int dof_type = 0;
 
         int width, height;

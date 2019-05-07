@@ -20,7 +20,7 @@ namespace Passes
         std::shared_ptr<Resources::ShaderObject> shader;
         std::shared_ptr<Resources::ShaderObject> composit;
 
-
+		int samples;
     };
 
     
