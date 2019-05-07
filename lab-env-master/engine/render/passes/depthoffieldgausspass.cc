@@ -14,16 +14,22 @@ namespace Passes
 		gaussX = std::make_shared<Resources::ShaderObject>("content/Shader/dofgausspass_x.vs", "content/Shader/dofgausspass_x.fs");
 		gaussY = std::make_shared<Resources::ShaderObject>("content/Shader/dofgausspass_y.vs", "content/Shader/dofgausspass_y.fs");
 		composit = std::make_shared<Resources::ShaderObject>("content/Shader/composit.vs", "content/Shader/composit.fs");
-		
+
+		float scale = 1.0f;
+		if (svr->downssample)
+		{
+			scale = 2.0f;
+		}
+
 		gaussX->bind();
 		gaussX->mod1i("inDownSampled", 0);
-		gaussX->mod1f("resDownX", 1.f / ((svr->width + 1) * 0.5f));
-		gaussX->mod1f("resDownY", 1.f / ((svr->height + 1) * 0.5f));
+		gaussX->mod1f("resDownX", 1.f / ((svr->width + 1) / scale));
+		gaussX->mod1f("resDownY", 1.f / ((svr->height + 1) / scale));
 
 		vector2D v[7];
 		//Setup sample offsets
-		float dx = 1.0f / svr->width;
-		float dy = 1.0f / svr->height;
+		float dx = 1.0f / svr->width / scale;
+		float dy = 1.0f / svr->height / scale;
 		v[0] = vector2D(0.0f, 0.0f);
 		v[1] = vector2D(1.3366f * dx, 0.0f);
 		v[2] = vector2D(3.4295f * dx, 0.0f);
@@ -35,8 +41,8 @@ namespace Passes
 
 		gaussY->bind();
 		gaussY->mod1i("inDownSampled", 0);
-		gaussY->mod1f("resDownX", 1.f / ((svr->width + 1) * 0.5f));
-		gaussY->mod1f("resDownY", 1.f / ((svr->height + 1) * 0.5f));
+		gaussY->mod1f("resDownX", 1.f / ((svr->width + 1) / scale));
+		gaussY->mod1f("resDownY", 1.f / ((svr->height + 1) / scale));
 		v[1] = vector2D(0.0f, 1.3366f * dy);
 		v[2] = vector2D(0.0f, 3.4295f * dy);
 		v[3] = vector2D(0.0f, 5.4264f * dy);
@@ -70,27 +76,41 @@ namespace Passes
 		//Gauss X------------------------
 		gaussX->bind();
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTex); //Downscaled color
+		if (svr->downssample)
+			glBindTexture(GL_TEXTURE_2D, svr->downPass->downTex);
+		else
+			glBindTexture(GL_TEXTURE_2D, svr->pBuffer->fragColor);
 		RenderQuad();
 
 		//Gauss Y------------------------
 		gaussY->bind();
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTexX); //Downscaled with convolution in X color
+		if (svr->downssample)
+			glBindTexture(GL_TEXTURE_2D, svr->downPass->downTexX); //Downscaled with convolution in X color
+		else
+			glBindTexture(GL_TEXTURE_2D, svr->pBuffer->postColorX); //convolution in X color
+
+	
 		RenderQuad();
 
 
 		//Dof---------------------------
-		svr->pBuffer->DrawBuffer();
+		if (svr->downssample)
+		{
+			svr->pBuffer->DrawBuffer();
+		}
 		composit->bind();
 		Display::Camera* cam = Display::Camera::GetInstance();
-		composit->mod1f("resX", svr->width);
-		composit->mod1f("resY", svr->height);
+
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->pBuffer->fragColor); //Fullscale color
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, svr->downPass->downTexY); //Downscaled blurred 
+		if (svr->downssample)
+			glBindTexture(GL_TEXTURE_2D, svr->downPass->downTexY); //Downscaled blurred 
+		else
+			glBindTexture(GL_TEXTURE_2D, svr->pBuffer->postColorY); //Downscaled blurred 
+
 		RenderQuad();
 
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -102,9 +122,15 @@ namespace Passes
 		Servers::RenderServer* svr;
 		svr = Servers::RenderServer::GetInstance();
 
+		float scale = 1.0f;
+		if (svr->downssample)
+		{
+			scale = 2.0f;
+		}
+
 		gaussX->bind();
-		gaussX->mod1f("resDownX", 1.f / ((svr->width + 1) * 0.5f));
-		gaussX->mod1f("resDownY", 1.f / ((svr->height + 1) * 0.5f));
+		gaussX->mod1f("resDownX", 1.f / ((svr->width + 1) / scale));
+		gaussX->mod1f("resDownY", 1.f / ((svr->height + 1) / scale));
 		vector2D v[7];
 		//Setup sample offsets
 		float dx = 1.0f / svr->width;
@@ -119,8 +145,8 @@ namespace Passes
 		gaussX->modVector2fArray("sampleArrayX", 7, v);
 
 		gaussY->bind();
-		gaussY->mod1f("resDownX", 1.f / ((svr->width + 1) * 0.5f));
-		gaussY->mod1f("resDownY", 1.f / ((svr->height + 1) * 0.5f));
+		gaussY->mod1f("resDownX", 1.f / ((svr->width + 1) / scale));
+		gaussY->mod1f("resDownY", 1.f / ((svr->height + 1) / scale));
 		v[0] = vector2D(0.0f, 0.0f);
 		v[1] = vector2D(0.0f, 1.3366f * dy);
 		v[2] = vector2D(0.0f, 3.4295f * dy);

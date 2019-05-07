@@ -20,7 +20,7 @@ namespace FrameBuffers
 		void DrawBuffer();
 
 		//Texture attachements
-		GLuint fragColor, depth;
+		GLuint fragColor, depth, postColorX, postColorY;
 
 		//Framebuffer object
 		GLuint fbo;

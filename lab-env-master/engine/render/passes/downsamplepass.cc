@@ -81,6 +81,9 @@ namespace Passes
 		Servers::RenderServer* svr;
 		svr = Servers::RenderServer::GetInstance();
 
+		if (!svr->downssample)
+			return;
+
 		//Downsample screen--------------
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, downFBO);
 
