@@ -23,9 +23,9 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0);
 const float PI = 3.14159265359;
 
 const vec3 lighPos[3] = vec3[3](
-vec3(1000, 100, 0.f),
-vec3(0, 100, 0.f),
-vec3(-1000, 100, 0.f)
+vec3(0, 100, -180.f),
+vec3(100, 100, 0.f),
+vec3(-100, 100, 0.f)
 );
 
 void main()                                                                                 
@@ -50,7 +50,7 @@ void main()
 	
 	// reflectance equation
     vec3 Lo = vec3(0.0);
-	for(int i = 0; i < 3; ++i) 
+	for(int i = 0; i < 1; ++i) 
     {
 
 		
