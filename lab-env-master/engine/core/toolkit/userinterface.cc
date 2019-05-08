@@ -37,7 +37,7 @@ namespace Toolkit
 
         if (*dof_type != 0)
         {
-			ImGui::SliderFloat("Distance to plane in focus", &cam->distToFocus, 0.0f, 100.0f, "ratio = %.4f");
+			ImGui::SliderFloat("Distance to plane in focus", &cam->distToFocus, 0.0f, 1000.0f, "ratio = %.4f");
 			ImGui::SliderFloat("Focal length", &cam->focalLen, 0.0f, 100.0f, "ratio = %.4f");
 			ImGui::SliderFloat("Aperture", &cam->aperture, 0.0f, 100.0f, "ratio = %.4f");
 
