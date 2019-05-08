@@ -11,11 +11,6 @@ namespace Passes
     LightPass::LightPass() 
     {
         shader = std::make_shared<Resources::ShaderObject>("content/Shader/lightingpass.vs", "content/Shader/pbrlightingpass.fs");
-
-		Servers::RenderServer* svr = Servers::RenderServer::GetInstance();
-		int width = svr->width;
-		int height = svr->height;
-
 		shader->bind();
 		shader->mod1i("gPosition", 0);
 		shader->mod1i("gNormal", 1);

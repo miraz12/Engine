@@ -61,6 +61,7 @@ namespace FrameBuffers
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, srv->width, srv->height, 0, GL_RGBA, GL_FLOAT, NULL);
 		glBindTexture(GL_TEXTURE_2D, postColorY);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, srv->width, srv->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	void PostBuffer::BindBuffer()

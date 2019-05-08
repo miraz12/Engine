@@ -23,14 +23,14 @@ namespace Passes
 		shader->bind();
 		shader->mod1i("gColor", 0); 
 		shader->mod1i("gDepth", 1);
-		shader->mod1f("resDownX", 1.f / ((svr->width + 1) / scale));
-		shader->mod1f("resDownY", 1.f / ((svr->height + 1) / scale));
+		shader->mod1f("resDownX", 1.f / ((svr->width + scale - 1) / scale));
+		shader->mod1f("resDownY", 1.f / ((svr->height + scale - 1) / scale));
 
 		samples = 64;
 
 		//Setup sample offsets
-		float dx = 1.0f / svr->width / scale;
-		float dy = 1.0f / svr->height / scale;
+		float dx = 1.f / ((svr->width + scale - 1) / scale);
+		float dy = 1.f / ((svr->height + scale - 1) / scale);
 		/*	
 		vector2D v[27];
 		v[0] = vector2D(-0.326212f * dx, -0.40581f * dy);
@@ -113,7 +113,7 @@ namespace Passes
 		poissonDisk[62] = vector2D(-0.545396, 0.538133);
 		poissonDisk[63] = vector2D(-0.178564, -0.596057);
 
-        for (int i = 0; i < samples; ++i)
+        for (int i = 0; i < 64; ++i)
         {
 			poissonDisk[i][0] *= dx;
 			poissonDisk[i][1] *= dy;
@@ -121,7 +121,7 @@ namespace Passes
 
 
 
-		shader->modVector2fArray("sampleArray", samples, poissonDisk);
+		shader->modVector2fArray("sampleArray", 64, poissonDisk);
 		shader->mod1i("samples", samples);
 
 		composit->bind();
@@ -195,8 +195,8 @@ namespace Passes
 		}
 
 		//Setup sample offsets
-		float dx = 1.0f / svr->width / scale;
-		float dy = 1.0f / svr->height / scale;
+		float dx = 1.f / ((svr->width + scale - 1) / scale);
+		float dy = 1.f / ((svr->height + scale - 1) / scale);
 
 		/*vector2D v[12];
 		//Setup sample offsets
@@ -282,16 +282,16 @@ namespace Passes
 		poissonDisk[62] = vector2D(-0.545396, 0.538133);
 		poissonDisk[63] = vector2D(-0.178564, -0.596057);
 
-		for (int i = 0; i < samples; ++i)
+		for (int i = 0; i < 64; ++i)
 		{
 			poissonDisk[i][0] *= dx;
 			poissonDisk[i][1] *= dy;
 		}
 
-		shader->modVector2fArray("sampleArray", samples, poissonDisk);
+		shader->modVector2fArray("sampleArray", 64, poissonDisk);
 
-		shader->mod1f("resDownX", 1.f / ((svr->width + 1) / scale));
-		shader->mod1f("resDownY", 1.f / ((svr->height + 1) / scale));
+		shader->mod1f("resDownX", 1.f / ((svr->width + scale - 1) / scale));
+		shader->mod1f("resDownY", 1.f / ((svr->height + scale - 1) / scale));
 		glUseProgram(0);
     }
 

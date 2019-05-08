@@ -23,13 +23,13 @@ namespace Passes
 
 		gaussX->bind();
 		gaussX->mod1i("inDownSampled", 0);
-		gaussX->mod1f("resDownX", 1.f / ((svr->width + 1) / scale));
-		gaussX->mod1f("resDownY", 1.f / ((svr->height + 1) / scale));
+		gaussX->mod1f("resDownX", 1.f / ((svr->width + scale - 1) / scale));
+		gaussX->mod1f("resDownY", 1.f / ((svr->height + scale - 1) / scale));
 
 		vector2D v[7];
 		//Setup sample offsets
-		float dx = 1.0f / svr->width / scale;
-		float dy = 1.0f / svr->height / scale;
+		float dx = 1.f / ((svr->width + scale - 1) / scale);
+		float dy = 1.f / ((svr->height + scale - 1) / scale);
 		v[0] = vector2D(0.0f, 0.0f);
 		v[1] = vector2D(1.3366f * dx, 0.0f);
 		v[2] = vector2D(3.4295f * dx, 0.0f);
@@ -41,8 +41,8 @@ namespace Passes
 
 		gaussY->bind();
 		gaussY->mod1i("inDownSampled", 0);
-		gaussY->mod1f("resDownX", 1.f / ((svr->width + 1) / scale));
-		gaussY->mod1f("resDownY", 1.f / ((svr->height + 1) / scale));
+		gaussY->mod1f("resDownX", 1.f / ((svr->width + scale - 1) / scale));
+		gaussY->mod1f("resDownY", 1.f / ((svr->height + scale - 1) / scale));
 		v[1] = vector2D(0.0f, 1.3366f * dy);
 		v[2] = vector2D(0.0f, 3.4295f * dy);
 		v[3] = vector2D(0.0f, 5.4264f * dy);
@@ -129,12 +129,12 @@ namespace Passes
 		}
 
 		gaussX->bind();
-		gaussX->mod1f("resDownX", 1.f / ((svr->width + 1) / scale));
-		gaussX->mod1f("resDownY", 1.f / ((svr->height + 1) / scale));
+		gaussX->mod1f("resDownX", 1.f / ((svr->width + scale - 1) / scale));
+		gaussX->mod1f("resDownY", 1.f / ((svr->height + scale - 1) / scale));
 		vector2D v[7];
 		//Setup sample offsets
-		float dx = 1.0f / svr->width;
-		float dy = 1.0f / svr->height;
+		float dx = 1.f / ((svr->width + scale - 1) / scale);
+		float dy = 1.f / ((svr->height + scale - 1) / scale);
 		v[0] = vector2D(0.0f, 0.0f);
 		v[1] = vector2D(1.3366f * dx, 0.0f);
 		v[2] = vector2D(3.4295f * dx, 0.0f);
@@ -145,8 +145,8 @@ namespace Passes
 		gaussX->modVector2fArray("sampleArrayX", 7, v);
 
 		gaussY->bind();
-		gaussY->mod1f("resDownX", 1.f / ((svr->width + 1) / scale));
-		gaussY->mod1f("resDownY", 1.f / ((svr->height + 1) / scale));
+		gaussY->mod1f("resDownX", 1.f / ((svr->width + scale - 1) / scale));
+		gaussY->mod1f("resDownY", 1.f / ((svr->height + scale - 1) / scale));
 		v[0] = vector2D(0.0f, 0.0f);
 		v[1] = vector2D(0.0f, 1.3366f * dy);
 		v[2] = vector2D(0.0f, 3.4295f * dy);

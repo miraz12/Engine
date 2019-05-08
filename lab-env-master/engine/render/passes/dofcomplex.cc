@@ -20,8 +20,8 @@ namespace Passes
 			scale = 2.0f;
 		}
 		//Setup sample offsets
-		float dx = 1.f / ((svr->width) / scale);
-		float dy = 1.f / ((svr->height) / scale);
+		float dx = 1.f / ((svr->width + scale - 1) / scale);
+		float dy = 1.f / ((svr->height + scale - 1) / scale);
 
 		xpass->bind();
 		xpass->mod1f("pixelSizeX", dx);
@@ -210,8 +210,8 @@ namespace Passes
 		}
 
 		//Setup sample offsets
-		float dx = 1.f / ((svr->width) / scale);
-		float dy = 1.f / ((svr->height) / scale);
+		float dx = 1.f / ((svr->width + scale - 1) / scale);
+		float dy = 1.f / ((svr->height + scale - 1) / scale);
 
 
 		xpass->bind();
@@ -230,6 +230,7 @@ namespace Passes
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
 		glBindTexture(GL_TEXTURE_2D, fragColor);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glUseProgram(0);
 

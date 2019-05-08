@@ -22,7 +22,7 @@ namespace Passes
 		// position buffer
 		glGenTextures(1, &downTex);
 		glBindTexture(GL_TEXTURE_2D, downTex);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width*0.5f, svr->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -31,7 +31,7 @@ namespace Passes
 
 		glGenTextures(1, &downTexX);
 		glBindTexture(GL_TEXTURE_2D, downTexX);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width*0.5f, svr->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -40,7 +40,7 @@ namespace Passes
 
 		glGenTextures(1, &downTexY);
 		glBindTexture(GL_TEXTURE_2D, downTexY);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width*0.5f, svr->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -50,7 +50,7 @@ namespace Passes
 		// depth buffer
 		glGenTextures(1, &downDepth);
 		glBindTexture(GL_TEXTURE_2D, downDepth);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RG, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, svr->width*0.5f, svr->height*0.5f, 0, GL_RG, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -91,9 +91,9 @@ namespace Passes
 
 		//Bind lighting shader
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->pBuffer->fragColor);
+		glBindTexture(GL_TEXTURE_2D, svr->pBuffer->fragColor);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, Servers::RenderServer::GetInstance()->gBuffer->gDepth);
+		glBindTexture(GL_TEXTURE_2D, svr->gBuffer->gDepth);
 		//Render quad that covers the whole screen
 		RenderQuad();
 
@@ -107,16 +107,21 @@ namespace Passes
 		Servers::RenderServer* svr;
 		svr = Servers::RenderServer::GetInstance();
 
-		glBindTexture(GL_TEXTURE_2D, downTexX);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-		glBindTexture(GL_TEXTURE_2D, downTexY);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		shader->bind();
+		shader->mod1f("resDownX", 1.f / ((svr->width + 1) * 0.5f));
+		shader->mod1f("resDownY", 1.f / ((svr->height + 1) * 0.5f));
+
 		glBindTexture(GL_TEXTURE_2D, downTex);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width*0.5f, svr->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glBindTexture(GL_TEXTURE_2D, downTexX);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width*0.5f, svr->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glBindTexture(GL_TEXTURE_2D, downTexY);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width*0.5f, svr->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glBindTexture(GL_TEXTURE_2D, downDepth);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, Servers::RenderServer::GetInstance()->width*0.5f, Servers::RenderServer::GetInstance()->height*0.5f, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-		
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, svr->width*0.5f, svr->height*0.5f, 0, GL_RG, GL_FLOAT, NULL);
+
 		glBindTexture(GL_TEXTURE_2D, 0);
+		glUseProgram(0);
     }
 
 }

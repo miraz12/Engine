@@ -81,22 +81,22 @@ namespace FrameBuffers
 	{
 		Servers::RenderServer* srv = Servers::RenderServer::GetInstance();
 
-		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gColor);
+		glBindTexture(GL_TEXTURE_2D, gColor);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, srv->width, srv->height, 0, GL_RGBA, GL_FLOAT, NULL);
 
-		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gNormal);
+		glBindTexture(GL_TEXTURE_2D, gNormal);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, srv->width, srv->height, 0, GL_RGBA, GL_HALF_FLOAT, NULL);
 
-		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gAlbedoSpec);
+		glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, srv->width, srv->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gDepth);
+		glBindTexture(GL_TEXTURE_2D, gDepth);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, srv->width, srv->height, 0, GL_RG, GL_FLOAT, NULL);
 
-		glBindTexture(GL_TEXTURE_2D, srv->gBuffer->gPosition);
+		glBindTexture(GL_TEXTURE_2D, gPosition);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, srv->width, srv->height, 0, GL_RGBA, GL_FLOAT, NULL);
 
-		glBindRenderbuffer(GL_RENDERBUFFER, srv->gBuffer->rboDepth);
+		//glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, srv->width, srv->height);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
