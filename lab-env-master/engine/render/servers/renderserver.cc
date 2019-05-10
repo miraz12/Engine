@@ -18,11 +18,14 @@ namespace Servers
         width = 1024;
         height = 768;
 
-		
+		prevt = glfwGetTime();
     }
 
     void RenderServer::Render()
     {
+
+		t = glfwGetTime();
+		dt = fabs(t - prevt);
 
         //Render as wireframe
         if (!G_WIREFRAME)
@@ -50,7 +53,7 @@ namespace Servers
         }
 
         this->window->SwapBuffers();
-
+		prevt = t;
     }
 
     void RenderServer::Init(Display::Window* window )
@@ -70,10 +73,14 @@ namespace Servers
 		dGPass = new Passes::DofGaussPass();
 		cdPass = new Passes::DofComplex();
 		downPass = new Passes::DownsamplePass();
+		//particlePass = new Passes::ParticlePass();
+
+		
 
 		//Geometry pass -> light pass -> skybox pass -> pos processing (DoF) -> Draw to screen
     	passes.push_back(gPass);
         passes.push_back(lPass);
+		//passes.push_back(particlePass);
 		passes.push_back(downPass);
 		passes.push_back(dofPass);
 		passes.push_back(dGPass);

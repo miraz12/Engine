@@ -75,6 +75,16 @@ inline vector3D operator*(float m)
 	return temp;
 }
 
+inline vector3D operator+(float m)
+{
+	vector3D temp = *this;
+	for (int i = 0; i < 3; i++)
+	{
+		temp.Varray[i] += m;
+	}
+	return temp;
+}
+
 inline vector3D operator*(vector3D& other)
 {
 	vector3D temp = *this;

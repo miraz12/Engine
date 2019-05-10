@@ -11,6 +11,7 @@
 #include "render/passes/depthoffieldgausspass.h"
 #include "render/passes/dofcomplex.h"
 #include "render/passes/downsamplepass.h"
+#include "render/passes/ParticlePass.h"
 
 namespace Display {
     class Window;
@@ -48,12 +49,16 @@ namespace Servers
 		Passes::DofGaussPass* dGPass;
 		Passes::DofComplex* cdPass;
 		Passes::DownsamplePass* downPass;
+		Passes::ParticlePass* particlePass;
+
 
 		bool downssample = true;
 		int dof_type = 0;
 
         int width, height;
 	    bool resUpdated=false;
+
+		float t, prevt, dt; // time
 
     private:
 

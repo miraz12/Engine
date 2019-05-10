@@ -50,7 +50,8 @@ namespace Example
         prop2->mesh->LoadMesh("content/cubeNormal.obj");
 		prop2->model.scale(100.f, 100.f, 100.f);*/
         
-        prop->mesh->LoadMesh("content/ocrytek_sponza/sponza.obj");
+        //prop->mesh->LoadMesh("content/ocrytek_sponza/sponza.obj");
+        prop->mesh->LoadMesh("content/plane.obj");
         //prop->mesh->LoadMesh("content/New folder/teapots.obj");
         //prop->mesh->LoadMesh("content/shaderball/export3dcoat.obj");
         //prop->mesh->LoadMesh("content/testObj.obj");

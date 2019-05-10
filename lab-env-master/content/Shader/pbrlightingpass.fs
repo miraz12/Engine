@@ -24,8 +24,8 @@ const float PI = 3.14159265359;
 
 const vec3 lighPos[3] = vec3[3](
 vec3(0, 100, -180.f),
-vec3(100, 100, 0.f),
-vec3(-100, 100, 0.f)
+vec3(100, 1000, 0.f),
+vec3(-950, 100, 0.f)
 );
 
 void main()                                                                                 
@@ -50,7 +50,7 @@ void main()
 	
 	// reflectance equation
     vec3 Lo = vec3(0.0);
-	for(int i = 0; i < 1; ++i) 
+	for(int i = 0; i < 3; ++i) 
     {
 
 		
@@ -95,9 +95,9 @@ void main()
     vec3 color = ambient + Lo;
 	
 	// HDR tonemapping
-    color = color / (color + vec3(1.0));
+    color = albedo / (albedo + vec3(1.0));
     // gamma correct
-    color = pow(color, vec3(1.0/2.2)); 
+    color = pow(albedo, vec3(1.0/2.2)); 
 	
 	gColor.rgb = color;
     gColor.a = texture(gDepth, TexCoord0).g; ;  

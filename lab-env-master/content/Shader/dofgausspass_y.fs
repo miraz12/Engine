@@ -83,3 +83,38 @@ void main()
 	FragColorX = weights4 ;
 	
 }
+
+/*
+
+float g_fSigma = 1.0f;
+
+float CalcGaussianWeight(int iSamplePoint)
+{
+	float g = 1.0f / sqrt(2.0f * 3.14159 * g_fSigma * g_fSigma);  
+	return (g * exp(-(iSamplePoint * iSamplePoint) / (2 * g_fSigma * g_fSigma)));
+}
+
+void main()                                                                                 
+{
+	vec2 scaledScreen = vec2(resDownX, resDownY); 
+	vec2 tap0 = gl_FragCoord.xy * scaledScreen;
+
+	
+	vec3 totalColor;// = texture(gColor, tap0).rgb;
+	float centerSize = texture(inDownSampled, gl_FragCoord.xy*scaledScreen).a*4;
+
+	int iRadius = 64;
+	
+	for (int i = -iRadius; i < iRadius; i++)
+	{
+		
+		float fWeight = CalcGaussianWeight(i);
+		vec2 sampleCoord = tap0 + scaledScreen*vec2(0.0, float(i))*centerSize; 		
+		vec3 sampleColor = texture(inDownSampled, sampleCoord).rgb;
+		totalColor += sampleColor * fWeight;
+	}
+	
+
+	// Color and weights sum 
+	FragColorX = vec4(totalColor, 1.0f);
+*/

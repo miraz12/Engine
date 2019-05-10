@@ -145,7 +145,7 @@ namespace Resources
 		m_Ambient.resize(pScene->mNumMaterials);
 		m_Shine.resize(pScene->mNumMaterials);
 
-		m_materials.resize(pScene->mNumMeshes);
+		m_materials.resize(pScene->mNumMaterials);
 
         // Initialize the meshes in the scene one by one
         for (unsigned int i = 0; i < m_Entries.size(); i++) {

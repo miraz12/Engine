@@ -15,9 +15,4 @@ namespace Passes
 		//Emtpy
     }
 
-
-    void Dummy::Execute()
-    {
-        //Emtpy
-    }
 }

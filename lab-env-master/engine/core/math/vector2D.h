@@ -45,11 +45,47 @@ vector2D operator-(const vector2D& m)
 	return temp;
 }
 
-inline float x()
+
+vector2D operator*(float m)
+{
+	vector2D temp = *this;
+
+	for (int i = 0; i < 2; i++)
+	{
+		temp.Varray[i] *= m;
+	}
+	return temp;
+}
+
+vector2D operator+(float m)
+{
+	vector2D temp = *this;
+
+	for (int i = 0; i < 2; i++)
+	{
+		temp.Varray[i] += m;
+	}
+	return temp;
+}
+
+vector2D operator+(const vector2D& m)
+{
+
+	vector2D temp = *this;
+
+	for (int i = 0; i < 2; i++)
+	{
+		temp.Varray[i] += m.Varray[i];
+	}
+	return temp;
+}
+
+ float x()
 {
 	return this->Varray[0];
 }
-inline float y()
+
+float y()
 {
 	return this->Varray[1];
 }
