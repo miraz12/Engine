@@ -73,20 +73,21 @@ namespace Servers
 		dGPass = new Passes::DofGaussPass();
 		cdPass = new Passes::DofComplex();
 		downPass = new Passes::DownsamplePass();
-		//particlePass = new Passes::ParticlePass();
+		particlePass = new Passes::ParticlePass();
 
 		
 
 		//Geometry pass -> light pass -> skybox pass -> pos processing (DoF) -> Draw to screen
     	passes.push_back(gPass);
         passes.push_back(lPass);
-		//passes.push_back(particlePass);
-		passes.push_back(downPass);
-		passes.push_back(dofPass);
-		passes.push_back(dGPass);
-		passes.push_back(cdPass);
+		//passes.push_back(downPass);
+		//passes.push_back(dofPass);
+		//passes.push_back(dGPass);
+		//passes.push_back(cdPass);
         passes.push_back(dPass);
-		passes.push_back(skyPass);
+		//passes.push_back(skyPass);
+		passes.push_back(particlePass);
+
 
 
     }

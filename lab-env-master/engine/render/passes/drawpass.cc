@@ -22,7 +22,7 @@ namespace Passes
     	svr->pBuffer->ReadBuffer();
 		glBlitFramebuffer(0, 0, svr->width, svr->height, 0, 0, svr->width, svr->height, GL_COLOR_BUFFER_BIT, GL_NEAREST); //Copy color
 		
-
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
