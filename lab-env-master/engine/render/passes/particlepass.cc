@@ -76,10 +76,10 @@ namespace Passes
 
 	void ParticlePass::UpdateParticles()
 	{
-		int newParticles = 1000; 
+		uint16 newParticles = 1000; 
 
 		// Add new particles 
-		for (GLuint i = 0; i < newParticles; ++i)
+		for (size_t i = 0; i < newParticles; ++i)
 		{
 			int unusedParticle = this->firstUnusedParticle();
 			this->respawnParticle(this->particles[unusedParticle]);
@@ -88,11 +88,11 @@ namespace Passes
 		for (GLuint i = 0; i < this->amount; ++i)
 		{
 			Particle &p = this->particles[i];
-			p.Life -= srv->dt; // reduce life
+			p.Life -= (GLfloat)srv->dt; // reduce life
 			if (p.Life > 0.0f)
 			{	// particle is alive, thus update
-				p.Position = p.Position - p.Velocity * srv->dt;;
-				p.Color[3] -= srv->dt * 2.5;
+				p.Position = p.Position - p.Velocity * (float)srv->dt;
+				p.Color[3] -= (float)srv->dt * 2.5f;
 			}
 		}
 	}

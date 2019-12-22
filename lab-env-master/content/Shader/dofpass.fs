@@ -13,7 +13,7 @@ uniform float resDownY;
 layout (location = 1) out vec4 outColor;  
   
 const float GOLDEN_ANGLE = 2.39996323;
-const float MAX_BLUR_SIZE = 10.0;
+const float MAX_BLUR_SIZE = 8.0;
 const float RAD_SCALE = 0.09; // Smaller = nicer blur, larger = faster
 
 vec3 dof_stochastic()

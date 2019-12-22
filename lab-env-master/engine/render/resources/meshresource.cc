@@ -73,19 +73,19 @@ namespace Resources
 
     MeshResource::~MeshResource()
     {
-        for (int i = 0; i < m_Textures.size(); i++)
+        for (size_t i = 0; i < m_Textures.size(); i++)
         {
             delete(m_Textures[i]);
         }
-        for (int i = 0; i < m_Normals.size(); i++)
+        for (size_t i = 0; i < m_Normals.size(); i++)
         {
             delete(m_Normals[i]);
         }
-        for (int i = 0; i < m_Masks.size(); i++)
+        for (size_t i = 0; i < m_Masks.size(); i++)
         {
             delete(m_Masks[i]);
         }
-        for (int i = 0; i < m_Spec.size(); i++)
+        for (size_t i = 0; i < m_Spec.size(); i++)
         {
             delete(m_Spec[i]);
         }
@@ -96,19 +96,19 @@ namespace Resources
 
     void MeshResource::Clear()
     {
-        for (int i = 0; i < m_Textures.size(); i++) 
+        for (size_t i = 0; i < m_Textures.size(); i++) 
         {
             delete(m_Textures[i]);
         }
-        for (int i = 0; i < m_Normals.size(); i++)
+        for (size_t i = 0; i < m_Normals.size(); i++)
         {
             delete(m_Normals[i]);
         }
-        for (int i = 0; i < m_Masks.size(); i++)
+        for (size_t i = 0; i < m_Masks.size(); i++)
         {
             delete(m_Masks[i]);
         }
-        for (int i = 0; i < m_Spec.size(); i++)
+        for (size_t i = 0; i < m_Spec.size(); i++)
         {
             delete(m_Spec[i]);
         }

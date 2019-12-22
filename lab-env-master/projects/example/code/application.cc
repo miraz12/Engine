@@ -52,7 +52,7 @@ namespace Example
         
         //prop->mesh->LoadMesh("content/ocrytek_sponza/sponza.obj");
         prop->mesh->LoadMesh("content/plane.obj");
-		prop->model.scale(10.f, 10.f, 10.f); 
+		//prop->model.scale(10.f, 10.f, 10.f); 
         //prop->mesh->LoadMesh("content/New folder/teapots.obj");
         //prop->mesh->LoadMesh("content/shaderball/export3dcoat.obj");
         //prop->mesh->LoadMesh("content/testObj.obj");
@@ -97,7 +97,7 @@ namespace Example
                 ui->Run();
             });
             // Set window resize function
-            window->SetWindowResizeCallback([this](float w, float h)
+            window->SetWindowResizeCallback([this](int w, int h)
             {
                 renderServer->GetInstance()->ResolutionUpdated(w, h);
             });

@@ -27,7 +27,7 @@ namespace Passes
 		// position buffer
 		glGenTextures(1, &downTex);
 		glBindTexture(GL_TEXTURE_2D, downTex);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width/ scale, svr->height / scale, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, (GLsizei)svr->width/ scale, (GLsizei)svr->height / scale, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -36,7 +36,7 @@ namespace Passes
 
 		glGenTextures(1, &downTexX);
 		glBindTexture(GL_TEXTURE_2D, downTexX);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, (GLsizei)svr->width / scale, (GLsizei)svr->height / scale, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -45,7 +45,7 @@ namespace Passes
 
 		glGenTextures(1, &downTexY);
 		glBindTexture(GL_TEXTURE_2D, downTexY);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, (GLsizei)svr->width / scale, (GLsizei)svr->height / scale, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -55,7 +55,7 @@ namespace Passes
 		// depth buffer
 		glGenTextures(1, &downDepth);
 		glBindTexture(GL_TEXTURE_2D, downDepth);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, svr->width / scale, svr->height / scale, 0, GL_RG, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, (GLsizei)svr->width / scale, (GLsizei)svr->height / scale, 0, GL_RG, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -120,12 +120,15 @@ namespace Passes
 		shader->mod1f("resDownX", dx);
 		shader->mod1f("resDownY", dy);
 
+		GLsizei texW = svr->width / scale;
+		GLsizei texH = svr->height / scale;
+
 		glBindTexture(GL_TEXTURE_2D, downTex);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, texW, texH, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glBindTexture(GL_TEXTURE_2D, downTexX);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, texW, texH, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glBindTexture(GL_TEXTURE_2D, downTexY);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, texW, texH, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glBindTexture(GL_TEXTURE_2D, downDepth);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, svr->width / scale, svr->height / scale, 0, GL_RG, GL_FLOAT, NULL);
 

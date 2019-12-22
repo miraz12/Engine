@@ -6,7 +6,7 @@
 #include "application.h"
 
 int
-main(int argc, const char** argv)
+main()
 {
 	Example::Application app;
 	if (app.Open())

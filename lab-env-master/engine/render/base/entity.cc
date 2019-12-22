@@ -56,7 +56,7 @@ namespace Base
     {
         std::vector<Property*> props = callbackProperties[Property::BeginFrame];
 
-        for (int i = 0; i < props.size(); ++i)
+        for (size_t i = 0; i < props.size(); ++i)
         {
             props[i]->OnBeginFrame();
         }
@@ -101,7 +101,7 @@ namespace Base
 
     void Entity::ActivateProperties()
     {
-        for (int i = 0; i < this->properties.size(); i++)
+        for (size_t i = 0; i < this->properties.size(); i++)
         {
             Property* prop = this->properties[i];
         

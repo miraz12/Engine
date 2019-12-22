@@ -119,10 +119,10 @@ private:
 /**
 */
 inline void
-Window::SetSize(int32 width, int32 height)
+Window::SetSize(int32 inWidth, int32 inHeight)
 {
-	this->width = width;
-	this->height = height;
+	width = inWidth;
+	height = inHeight;
 	if (nullptr != this->window) this->Resize();
 }
 
@@ -130,9 +130,9 @@ Window::SetSize(int32 width, int32 height)
 /**
 */
 inline void
-Window::SetTitle(const std::string& title)
+Window::SetTitle(const std::string& inTitle)
 {
-	this->title = title;
+	title = inTitle;
 	if (nullptr != this->window) this->Retitle();
 }
 

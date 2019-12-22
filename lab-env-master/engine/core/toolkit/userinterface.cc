@@ -51,7 +51,7 @@ namespace Toolkit
 
         if (ImGui::CollapsingHeader("G-Buffer"))
         {
-            int imageSize = 180;
+            float imageSize = 180;
             ImTextureID albedo = (void *)(intptr_t)srv->gBuffer->gAlbedoSpec;
             ImGui::Image(albedo, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
             ImGui::SameLine(200);

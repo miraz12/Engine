@@ -39,11 +39,12 @@ struct DirectionalLight : public BaseLight
 
     void Setup(std::shared_ptr<Resources::ShaderObject> s, int i = -1)
 	{
+		i;
         s->modVector3f("gDirectionalLight.Base.Color", vector3D(this->Color.x(), this->Color.y(), this->Color.z()));
         s->mod1f("gDirectionalLight.Base.AmbientIntensity", this->AmbientIntensity);
-        vector3D Direction = this->Direction;
-        Direction.normalize();
-        s->modVector3f("gDirectionalLight.Direction", vector3D(Direction.x(), Direction.y(), Direction.z()));
+        vector3D dir = Direction;
+		dir.normalize();
+        s->modVector3f("gDirectionalLight.Direction", vector3D(dir.x(), dir.y(), dir.z()));
         s->mod1f("gDirectionalLight.Base.DiffuseIntensity", this->DiffuseIntensity);
 	}
 };
@@ -116,11 +117,11 @@ struct SpotLight : public PointLight
         snprintf(Name, sizeof(Name), "gSpotLights[%d].Base.Position", i);
         s->modVector3f(Name, vector3D(this->Position.x(), this->Position.y(), this->Position.z()));
 
-        vector3D Direction = this->Direction;
-        Direction.normalize();
+        vector3D dir = this->Direction;
+        dir.normalize();
 
         snprintf(Name, sizeof(Name), "gSpotLights[%d].Direction", i);
-        s->modVector3f(Name, vector3D(Direction.x(), Direction.y(), Direction.z()));
+        s->modVector3f(Name, vector3D(dir.x(), dir.y(), dir.z()));
 
         snprintf(Name, sizeof(Name), "gSpotLights[%d].Cutoff", i);
         s->mod1f(Name, cosf((PI / 180.f) * (this->Cutoff))); //Convert to radians

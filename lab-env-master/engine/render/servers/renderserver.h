@@ -55,10 +55,10 @@ namespace Servers
 		bool downssample = true;
 		int dof_type = 0;
 
-        int width, height;
+        GLsizei width, height;
 	    bool resUpdated=false;
 
-		float t, prevt, dt; // time
+		double t, prevt, dt; // time
 
     private:
 

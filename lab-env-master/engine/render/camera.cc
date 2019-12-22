@@ -36,12 +36,12 @@ namespace Display
         return instance;
     }
 
-    void Camera::UpdateCamera(float w, float h)
+    void Camera::UpdateCamera(int w, int h)
     {
         Input::KeyHandler* key = Input::KeyHandler::GetInstance();
         m_width = w;
         m_height = h;
-        projection = projection.setPerspective(45.0f, (m_width / m_height), zNear, zFar);
+        projection = projection.setPerspective(45.0f, (float)(m_width / m_height), zNear, zFar);
         view = view.LookAtRH(position, position + camFront, headUp);
 
         if (key->leftShift)

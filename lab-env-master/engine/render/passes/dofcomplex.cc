@@ -34,9 +34,29 @@ namespace Passes
 		vector2D v1[17];
 		vector2D v2[17];
 
+		//static const float2 Kernel0Weights_RealX_ImY = float2(5.268909, -0.886528);
+		ve1 = vector2D(5.268909f, -0.886528f); //Weights
+		v1[0] = vector2D(-0.001243f, 0.0229809f);
+		v1[1] = vector2D(0.009042f, 0.026677f);
+		v1[2] = vector2D(0.020492f, 0.026577f);
+		v1[3] = vector2D(0.031342f, 0.023078f);
+		v1[4] = vector2D(0.040364f, 0.017362f);
+		v1[5] = vector2D(0.047031f, 0.010937f);
+		v1[6] = vector2D(0.051384f, 0.005236f);
+		v1[7] = vector2D(0.053764f, 0.001365f);
+		v1[8] = vector2D(0.054511f, 0.000000f);
+		v1[9] = vector2D(0.053764f, 0.001365f);
+		v1[10] = vector2D(0.051384f, 0.005236f);
+		v1[11] = vector2D(0.047031f, 0.010937f);
+		v1[12] = vector2D(0.040364f, 0.017362f);
+		v1[13] = vector2D(0.031342f, 0.023078f);
+		v1[14] = vector2D(0.020492f, 0.026577f);
+		v1[15] = vector2D(0.009042f, 0.026677f);
+		v1[16] = vector2D(-0.001243f, 0.0229809f);
+
 		//Component 1
-		ve1 = vector2D(0.411259, -0.548794); //Weights
-		v1[0] = vector2D(0.014096, -0.022658);
+		//ve1 = vector2D(0.411259, -0.548794); //Weights
+		/*v1[0] = vector2D(0.014096, -0.022658);
 		v1[1] = vector2D(-0.020612, -0.025574);
 		v1[2] = vector2D(-0.038708, 0.006957);
 		v1[3] = vector2D(-0.021449, 0.040468);
@@ -52,11 +72,11 @@ namespace Passes
 		v1[13] = vector2D(-0.021449, 0.040468);
 		v1[14] = vector2D(-0.038708, 0.006957);
 		v1[15] = vector2D(-0.020612, -0.025574);
-		v1[16] = vector2D(0.014096, -0.022658);
+		v1[16] = vector2D(0.014096, -0.022658);*/
 
 
 		//Component 2 
-		ve2 = vector2D(0.513282, 4.561110);; //Weights
+		/*ve2 = vector2D(0.513282, 4.561110);; //Weights
 		v2[0] = vector2D(0.000115, 0.009116);
 		v2[1] = vector2D(0.005324, 0.013416);
 		v2[2] = vector2D(0.013753, 0.016519);
@@ -73,7 +93,7 @@ namespace Passes
 		v2[13] = vector2D(0.024700, 0.017215);
 		v2[14] = vector2D(0.013753, 0.016519);
 		v2[15] = vector2D(0.005324, 0.013416);
-		v2[16] = vector2D(0.000115, 0.009116);
+		v2[16] = vector2D(0.000115, 0.009116);*/
 
 		xpass->modVector2fArray("kernelArray0", 17, v1);
 		xpass->modVector2fArray("kernelArray1", 17, v2);
@@ -97,12 +117,15 @@ namespace Passes
 		composit->mod1i("inDownSampled", 1);
 
 
+		GLsizei texW = (GLsizei)(svr->width / scale);
+		GLsizei texH = (GLsizei)(svr->height / scale);
+
 		glGenFramebuffers(1, &fbo);
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 		// red texture
 		glGenTextures(1, &colorOutRed);
 		glBindTexture(GL_TEXTURE_2D, colorOutRed);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, texW, texH, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -111,7 +134,7 @@ namespace Passes
 		//Blue texture
 		glGenTextures(1, &colorOutGreen);
 		glBindTexture(GL_TEXTURE_2D, colorOutGreen);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, texW, texH, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -120,7 +143,7 @@ namespace Passes
 		//Green texture 
 		glGenTextures(1, &colorOutBlue);
 		glBindTexture(GL_TEXTURE_2D, colorOutBlue);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, texW, texH, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -129,7 +152,7 @@ namespace Passes
 		//final color texture 
 		glGenTextures(1, &fragColor);
 		glBindTexture(GL_TEXTURE_2D, fragColor);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, texW, texH, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -222,14 +245,18 @@ namespace Passes
 		ypass->mod1f("pixelSizeX", dx);
 		ypass->mod1f("pixelSizeY", dy);
 
+		GLsizei texW = (GLsizei)(svr->width / scale);
+		GLsizei texH = (GLsizei)(svr->height / scale);
+
+
 		glBindTexture(GL_TEXTURE_2D, colorOutRed);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, texW, texH, 0, GL_RGBA, GL_FLOAT, NULL);
 		glBindTexture(GL_TEXTURE_2D, colorOutGreen);	
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, texW, texH, 0, GL_RGBA, GL_FLOAT, NULL);
 		glBindTexture(GL_TEXTURE_2D, colorOutBlue);		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, texW, texH, 0, GL_RGBA, GL_FLOAT, NULL);
 		glBindTexture(GL_TEXTURE_2D, fragColor);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width / scale, svr->height / scale, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, texW, texH, 0, GL_RGBA, GL_FLOAT, NULL);
 		
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glUseProgram(0);

@@ -51,10 +51,6 @@ void main()  //x direction
 		colorGreen.xy += multComplex(imageTexelG.xy,c0);
 		colorBlue.xy += multComplex(imageTexelB.xy,c0);
  
-		vec2 c1 = kernelArray1[i+MAX_COC];
-		colorRed.zw += multComplex(imageTexelR.zw,c1);
-		colorGreen.zw += multComplex(imageTexelG.zw,c1);
-		colorBlue.zw += multComplex(imageTexelB.zw,c1);
 
         
     }
@@ -63,9 +59,7 @@ void main()  //x direction
     float greenChannel = dot(colorGreen.xy, kernellWeights0);
     float blueChannel  = dot(colorBlue.xy, kernellWeights0);
 	
-	redChannel   += dot(colorRed.zw, kernellWeights1);
-	greenChannel += dot(colorGreen.zw, kernellWeights1);
-	blueChannel  += dot(colorBlue.zw, kernellWeights1);
+
 
 	
 	FragColor = vec4(vec3(redChannel,greenChannel,blueChannel),1.0);   
