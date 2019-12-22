@@ -36,8 +36,11 @@ void main()  //x direction
         colorRed.xy += sampleColor.r * c0;
 		colorGreen.xy += sampleColor.g * c0;
 		colorBlue.xy += sampleColor.b * c0;
-
-
+		
+		vec2 c1 = kernelArray1[i+MAX_COC];
+		colorRed.zw += sampleColor.r * c1;
+		colorGreen.zw += sampleColor.g * c1;
+		colorBlue.zw += sampleColor.b * c1;
         
     }
     colorOutRed = colorRed;
