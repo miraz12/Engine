@@ -41,7 +41,7 @@ namespace Display
         Input::KeyHandler* key = Input::KeyHandler::GetInstance();
         m_width = w;
         m_height = h;
-        projection = projection.setPerspective(45.0f, (float)(m_width / m_height), zNear, zFar);
+        projection = projection.setPerspective(45.0f, ((float)m_width / (float)m_height), zNear, zFar);
         view = view.LookAtRH(position, position + camFront, headUp);
 
         if (key->leftShift)
