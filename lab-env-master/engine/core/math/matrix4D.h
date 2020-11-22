@@ -315,12 +315,12 @@ matrix4D setPerspective(float fovY, float aspect, float zNear, float zFar)
 {
 	matrix4D temp;
 
-	//float halfFov = 0.5f * fovY;
-	//float sinFov = sin(halfFov);
-	//float cosFov = cos(halfFov);
+	float halfFov = 0.5f * fovY;
+	float sinFov = sin(halfFov);
+	float cosFov = cos(halfFov);
 
 	float D2R = PI / 180.0f;
-	float height = 1.0f / tan(D2R * fovY / 2);
+	float height = 1.0f/ tanf(D2R * fovY / 2.0f);
 	float width = height / aspect;
 
 	float dist = zFar / (zNear - zFar);

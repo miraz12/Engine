@@ -30,7 +30,7 @@ namespace Passes
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
 
-        std::vector<std::string> faces
+        /*std::vector<std::string> faces
         {
             "content/skybox/right.jpg",
             "content/skybox/left.jpg",
@@ -38,7 +38,17 @@ namespace Passes
             "content/skybox/bottom.jpg",
             "content/skybox/front.jpg",
             "content/skybox/back.jpg"
-        };
+        };*/
+
+		std::vector<std::string> faces
+		{
+			"content/skybox/posx.jpg",
+			"content/skybox/negx.jpg",
+			"content/skybox/posy.jpg",
+			"content/skybox/negy.jpg",
+			"content/skybox/posz.jpg",
+			"content/skybox/negz.jpg"
+		};
         cubemapTexture = loadCubemap(faces);
 
         shaderSkybox->bind();

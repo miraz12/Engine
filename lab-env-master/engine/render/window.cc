@@ -34,15 +34,15 @@ GLDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei 
 	switch (severity)
 	{
 	case GL_DEBUG_SEVERITY_LOW:
-		msg.append("<Low severity> ");
+		msg.append("\u001b[32m<Low severity> \u001b[0m");
 
 
 		break;
 	case GL_DEBUG_SEVERITY_MEDIUM:
-		msg.append("<Medium severity> ");
+		msg.append("\u001b[33m<Medium severity> \u001b[0m");
 		break;
 	case GL_DEBUG_SEVERITY_HIGH:
-		msg.append("<High severity> ");
+		msg.append("\u001b[31m<High severity> \u001b[0m");
 		break;
 	}
 

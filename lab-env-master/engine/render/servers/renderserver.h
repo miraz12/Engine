@@ -61,10 +61,6 @@ namespace Servers
 		double t, prevt, dt; // time
 
     private:
-
-
-
-
         Display::Window* window;
         static RenderServer* instance;
 

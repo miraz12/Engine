@@ -12,6 +12,7 @@
 #include "render/input/keyhandler.h"
 #include "render/managers/entitymanager.h"
 #include "core/toolkit/userinterface.h"
+#include "core/toolkit/sceneloader.h"
 #include "render/servers/renderserver.h"
 #include "render/managers/lightmanager.h"
 
@@ -31,17 +32,13 @@ namespace Example
         void Run() override;
 
     private:
-
-        /// Setup all the objects 
-        void ObjectSetup(); 
-
         Display::Window* window;
         Display::Camera* mainCamera;
         Input::KeyHandler* keyHandler;
         Managers::EntityManager* entityManager;
-        Servers::RenderServer* renderServer;
+		Managers::LightManager* lightManager;
+    	Servers::RenderServer* renderServer;
         Toolkit::UserInterface* ui;
-        Managers::LightManager* lightManager;
-
+		Toolkit::SceneLoader* sceneLoader;
     };
 } // namespace Example

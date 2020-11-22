@@ -34,26 +34,6 @@ namespace Passes
 		vector2D v1[17];
 		vector2D v2[17];
 
-		//static const float2 Kernel0Weights_RealX_ImY = float2(5.268909, -0.886528);
-		//ve1 = vector2D(5.268909f, -0.886528f); //Weights
-		//v1[0] = vector2D(-0.001243f, 0.0229809f);
-		//v1[1] = vector2D(0.009042f, 0.026677f);
-		//v1[2] = vector2D(0.020492f, 0.026577f);
-		//v1[3] = vector2D(0.031342f, 0.023078f);
-		//v1[4] = vector2D(0.040364f, 0.017362f);
-		//v1[5] = vector2D(0.047031f, 0.010937f);
-		//v1[6] = vector2D(0.051384f, 0.005236f);
-		//v1[7] = vector2D(0.053764f, 0.001365f);
-		//v1[8] = vector2D(0.054511f, 0.000000f);
-		//v1[9] = vector2D(0.053764f, 0.001365f);
-		//v1[10] = vector2D(0.051384f, 0.005236f);
-		//v1[11] = vector2D(0.047031f, 0.010937f);
-		//v1[12] = vector2D(0.040364f, 0.017362f);
-		//v1[13] = vector2D(0.031342f, 0.023078f);
-		//v1[14] = vector2D(0.020492f, 0.026577f);
-		//v1[15] = vector2D(0.009042f, 0.026677f);
-		//v1[16] = vector2D(-0.001243f, 0.0229809f);
-
 		//Component 1
 		ve1 = vector2D(0.411259f, -0.548794f); //Weights
 		v1[0] = vector2D(0.014096f, -0.022658f);
@@ -76,24 +56,24 @@ namespace Passes
 
 
 		//Component 2 
-		ve2 = vector2D(0.513282f, 4.561110f);; //Weights
-		v2[0] = vector2D(0.000115f, 0.009116f);
-		v2[1] = vector2D(0.005324f, 0.013416f);
-		v2[2] = vector2D(0.013753f, 0.016519f);
-		v2[3] = vector2D(0.024700f, 0.017215f);
-		v2[4] = vector2D(0.036693f, 0.015064f);
-		v2[5] = vector2D(0.047976f, 0.010684f);
-		v2[6] = vector2D(0.057015f, 0.005570f);
-		v2[7] = vector2D(0.062782f, 0.001529f);
-		v2[8] = vector2D(0.064754f, 0.000000f);
-		v2[9] = vector2D(0.062782f, 0.001529f);
-		v2[10] = vector2D(0.057015f, 0.005570f);
-		v2[11] = vector2D(0.047976f, 0.010684f);
-		v2[12] = vector2D(0.036693f, 0.015064f);
-		v2[13] = vector2D(0.024700f, 0.017215f);
-		v2[14] = vector2D(0.013753f, 0.016519f);
-		v2[15] = vector2D(0.005324f, 0.013416f);
-		v2[16] = vector2D(0.000115f, 0.009116f);
+		ve2 = vector2D(0.513282, 4.561110);; //Weights
+		v2[0] = vector2D(0.000115, 0.009116);
+		v2[1] = vector2D(0.005324, 0.013416);
+		v2[2] = vector2D(0.013753, 0.016519);
+		v2[3] = vector2D(0.024700, 0.017215);
+		v2[4] = vector2D(0.036693, 0.015064);
+		v2[5] = vector2D(0.047976, 0.010684);
+		v2[6] = vector2D(0.057015, 0.005570);
+		v2[7] = vector2D(0.062782, 0.001529);
+		v2[8] = vector2D(0.064754, 0.000000);
+		v2[9] = vector2D(0.062782, 0.001529);
+		v2[10] = vector2D(0.057015, 0.005570);
+		v2[11] = vector2D(0.047976, 0.010684);
+		v2[12] = vector2D(0.036693, 0.015064);
+		v2[13] = vector2D(0.024700, 0.017215);
+		v2[14] = vector2D(0.013753, 0.016519);
+		v2[15] = vector2D(0.005324, 0.013416);
+		v2[16] = vector2D(0.000115, 0.009116);
 
 		xpass->modVector2fArray("kernelArray0", 17, v1);
 		xpass->modVector2fArray("kernelArray1", 17, v2);
@@ -143,7 +123,7 @@ namespace Passes
 		//Green texture 
 		glGenTextures(1, &colorOutBlue);
 		glBindTexture(GL_TEXTURE_2D, colorOutBlue);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, texW, texH, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, svr->width/scale, svr->height/scale, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -208,6 +188,8 @@ namespace Passes
 		glBindTexture(GL_TEXTURE_2D, colorOutGreen);
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, colorOutBlue);
+
+
 		RenderQuad();
 
 		//composit 

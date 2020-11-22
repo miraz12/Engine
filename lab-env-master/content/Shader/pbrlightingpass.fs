@@ -23,9 +23,9 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0);
 const float PI = 3.14159265359;
 
 const vec3 lighPos[3] = vec3[3](
-vec3(0, 100, -180.f),
-vec3(100, 1000, 0.f),
-vec3(-950, 100, 0.f)
+vec3(-1000, 150, -50.f),
+vec3(-100, 150, -50.f),
+vec3(-1000, 100, 0.f)
 );
 
 void main()                                                                                 
@@ -45,12 +45,12 @@ void main()
     F0 = mix(F0, albedo, Metallic);
 	
 	//Hard coded lights for now.
-	vec3 lightColor = vec3(300000.0f, 300000.0f, 300000.0f);
+	vec3 lightColor = vec3(600000.0f, 600000.0f, 600000.0f);
 	
 	
 	// reflectance equation
     vec3 Lo = vec3(0.0);
-	for(int i = 0; i < 3; ++i) 
+	for(int i = 0; i < 2; ++i) 
     {
 
 		
@@ -95,9 +95,9 @@ void main()
     vec3 color = ambient + Lo;
 	
 	// HDR tonemapping
-    color = albedo / (albedo + vec3(1.0));
+    color = color / (color + vec3(1.0));
     // gamma correct
-    color = pow(albedo, vec3(1.0/2.2)); 
+    color = pow(color, vec3(1.0/2.2)); 
 	
 	gColor.rgb = color;
     gColor.a = texture(gDepth, TexCoord0).g; ;  

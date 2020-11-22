@@ -172,10 +172,10 @@ namespace Particles
         ParticlesContainer[particleIndex].vel = direction + randomdir * spread;
 
 
-        ParticlesContainer[particleIndex].r = unsigned char(colors.x() * 255);
-        ParticlesContainer[particleIndex].g = unsigned char(colors.y() * 255);
-        ParticlesContainer[particleIndex].b = unsigned char(colors.z() * 255);
-        ParticlesContainer[particleIndex].a = unsigned char(colors.w() * 255);
+        ParticlesContainer[particleIndex].r = (unsigned char)(colors.x() * 255);
+        ParticlesContainer[particleIndex].g = (unsigned char)(colors.y() * 255);
+        ParticlesContainer[particleIndex].b = (unsigned char)(colors.z() * 255);
+        ParticlesContainer[particleIndex].a = (unsigned char)(colors.w() * 255);
 
         ParticlesContainer[particleIndex].size = (rand() % 1000) * 0.0005f + 0.1f;
     }
@@ -197,7 +197,7 @@ namespace Particles
                 p->size += 0.001f;
 
                 //Make more transparent the older the particle
-                p->a = unsigned char(155 / LIFE_SPAN * p->life);
+                p->a = (unsigned char)(155 / LIFE_SPAN * p->life);
 
 
                 // Fill the GPU buffer

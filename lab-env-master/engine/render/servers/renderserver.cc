@@ -47,7 +47,7 @@ namespace Servers
 	
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        for (size_t i = 0; i < passes.size(); ++i)
+        for (int i = 0; i < passes.size(); ++i)
         {
             passes[i]->Execute();
         }
@@ -85,7 +85,7 @@ namespace Servers
 		passes.push_back(dGPass);
 		passes.push_back(cdPass);
         passes.push_back(dPass);
-		//passes.push_back(skyPass);
+		passes.push_back(skyPass);
 		//passes.push_back(particlePass);
 
 

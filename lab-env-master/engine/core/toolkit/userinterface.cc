@@ -53,17 +53,17 @@ namespace Toolkit
         {
             float imageSize = 180;
             ImTextureID albedo = (void *)(intptr_t)srv->gBuffer->gAlbedoSpec;
-            ImGui::Image(albedo, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+            ImGui::Image(albedo, ImVec2(imageSize, imageSize), ImVec2(0.0f, 1), ImVec2(1.0f, 0.0f), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
             ImGui::SameLine(200);
             ImTextureID normal = (void *)(intptr_t)srv->gBuffer->gNormal;
-            ImGui::Image(normal, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+            ImGui::Image(normal, ImVec2(imageSize, imageSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 
 
             ImTextureID pos = (void *)(intptr_t)srv->gBuffer->gPosition;
-            ImGui::Image(pos, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+            ImGui::Image(pos, ImVec2(imageSize, imageSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
             ImGui::SameLine(200);
             ImTextureID depth = (void *)(intptr_t)srv->gBuffer->gDepth;
-            ImGui::Image(depth, ImVec2(imageSize, imageSize), ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+            ImGui::Image(depth, ImVec2(imageSize, imageSize), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 
         }
         ImGui::End();

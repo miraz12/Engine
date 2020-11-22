@@ -15,7 +15,9 @@ uniform float pixelSizeY;
 
 layout(location = 0) out vec4 colorOutRed;  
 layout(location = 1) out vec4 colorOutGreen;  
-layout(location = 2) out vec4 colorOutBlue;  
+layout(location = 2) out vec4 colorOutBlue;
+
+ 
 
 
 void main()  //x direction
@@ -26,6 +28,7 @@ void main()  //x direction
     vec4 colorGreen = vec4(0,0,0,0);
     vec4 colorBlue = vec4(0,0,0,0);
     float filterRadius = texture(inFullRes, gl_FragCoord.xy*stepVal).a; //CoC Size saved in alpha
+
     for (int i=-MAX_COC; i <=MAX_COC; ++i)
     {
         vec2 sampleCoord = gl_FragCoord.xy *stepVal + stepVal*vec2(float(i),0.0)*filterRadius; 
@@ -36,16 +39,17 @@ void main()  //x direction
         colorRed.xy += sampleColor.r * c0;
 		colorGreen.xy += sampleColor.g * c0;
 		colorBlue.xy += sampleColor.b * c0;
-		
+
 		vec2 c1 = kernelArray1[i+MAX_COC];
 		colorRed.zw += sampleColor.r * c1;
 		colorGreen.zw += sampleColor.g * c1;
 		colorBlue.zw += sampleColor.b * c1;
+
         
     }
     colorOutRed = colorRed;
     colorOutGreen = colorGreen;
     colorOutBlue = colorBlue;
-   
+  
 }
 

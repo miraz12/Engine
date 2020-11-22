@@ -2,6 +2,7 @@
 #include "core/math/vector3D.h"
 #include "shaderobject.h"
 #include <memory>
+#include <string.h>
 
 #ifdef __WIN32__
 #define snprintf _snprintf_s
