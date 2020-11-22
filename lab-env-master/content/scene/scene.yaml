@@ -1,0 +1,5 @@
+- entity: cat
+  properties:
+    - type: GrPr
+      position: [0, 0, 0]
+      filename: content/cat.obj
