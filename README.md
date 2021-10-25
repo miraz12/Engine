@@ -5,7 +5,7 @@ Template "Engine" used for implementing fun stuff and used as base for some of m
 # Master Thesis, master branch
 Implementation of different depth of field methods. One using circular symmetric convolution to get a circular bokeh.
 
-<img src="pictures/compSponza2Circ.PNG?raw=true" width="600">
+<img src="pictures/sponza.png?raw=true" width="600">
 <img src="pictures/bokehCircular2.PNG?raw=true" width="600">
 
 # Terrain branch
